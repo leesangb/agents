@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:implement"
+  short_description: "Implementation capability"
+  default_prompt: "Use $sb:implement for this capability."
+
+policy:
+  allow_implicit_invocation: false

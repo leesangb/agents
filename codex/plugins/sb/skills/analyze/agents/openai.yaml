@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:analyze"
+  short_description: "Bounded evidence and impact analysis"
+  default_prompt: "Use $sb:analyze for bounded read-only code investigation."
+
+policy:
+  allow_implicit_invocation: false

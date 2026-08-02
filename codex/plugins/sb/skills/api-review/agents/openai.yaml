@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:api-review"
+  short_description: "Caller-facing API review capability"
+  default_prompt: "Use $sb:api-review for this capability."
+
+policy:
+  allow_implicit_invocation: false

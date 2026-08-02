@@ -1,0 +1,4 @@
+interface:
+  display_name: "sb:review-with-subagents"
+  short_description: "Evidence-gated specialist review workflow"
+  default_prompt: "Use $sb:review-with-subagents to identify concrete review questions and spawn only capabilities whose positive gates pass."

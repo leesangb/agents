@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:intent-review"
+  short_description: "Review names, types, and intent signals"
+  default_prompt: "Use $sb:intent-review to review whether the change expresses why it exists."
+
+policy:
+  allow_implicit_invocation: false

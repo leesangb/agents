@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:test-review"
+  short_description: "Test boundary review capability"
+  default_prompt: "Use $sb:test-review for this capability."
+
+policy:
+  allow_implicit_invocation: false

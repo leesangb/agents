@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:architecture-plan"
+  short_description: "Architecture planning capability"
+  default_prompt: "Use $sb:architecture-plan for this capability."
+
+policy:
+  allow_implicit_invocation: false
