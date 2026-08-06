@@ -8,7 +8,7 @@ The repository currently contains the Codex distribution of the `sb` plugin. Oth
 
 `codex/plugins/sb` packages composable code-change workflows around three execution profiles:
 
-- `sb-worker`: Luna max with workspace-write access
+- `sb-worker`: Terra high with workspace-write access
 - `sb-explorer`: Luna max with read-only access
 - `sb-thinker`: Sol high with read-only access
 
