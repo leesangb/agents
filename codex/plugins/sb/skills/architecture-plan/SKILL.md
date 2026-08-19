@@ -11,7 +11,9 @@ Author the technical plan after investigation and contract decisions are confirm
 
 - Read the target, direct callers, tests, local guidance, relevant history, and co-located learnings. Trust current code when a learning conflicts with live evidence and flag the conflict.
 - Separate fixed `contract-shaping` decisions from adaptable `implementation recommendation` decisions. Record evidence, rejected alternatives, and reopen/reconsideration conditions for each material decision.
+- When the plan must decide use-case structure, value or effect boundaries, module depth, ownership, or abstraction timing, read [Practical Design Foundations](../code/references/design-foundations.md) and apply only the questions supported by current evidence.
 - When the caller supplies a positive feature-composition, mechanism-emergence, or seam-change branch, read [Feature Composition and Mechanism Primitives](../code/references/composition.md) and apply its evidence contract.
+- Read [Implementation Outline Blueprint](../code/references/implementation-outline.md) before authoring the Recommended Implementation Outline. Keep only that section tree-shaped; express the rest of the plan in ordinary prose and bullets.
 - Keep pages/flows as orchestration and place repeated rules, transformations, URL policy, state transitions, and external-system mechanisms with the lowest owning capability.
 - Do not implement or edit files. Return a plan only.
 
@@ -30,7 +32,7 @@ For a `ready` result, return the `ready` tag followed by these sections, in this
 2. Confirmed facts with `path:line` or runtime evidence, plus separate inferences and unavailable evidence.
 3. Material Decision Context labeled `[contract-shaping]` or `[implementation recommendation]`.
 4. `Feature Assembly and Composition Evidence` from the shared reference, or `None` when no positive branch was supplied.
-5. A Recommended Implementation Outline with likely seams/files, responsibility placement, reversible prefactors, behavior changes, integration/cleanup, risks, and reopen conditions. Mark the outline adaptable unless the contract fixes it.
+5. A Recommended Implementation Outline rendered as the shared shallow module/interface/responsibility blueprint, with likely seams/files, responsibility placement, dependency direction, preserved paths, intentional non-calls, and reversible prefactors when material. Mark the outline adaptable unless the contract fixes it.
 6. Tests grouped by likely file (placement adaptable), one observable behavior per bullet, including primitive-interface and composition tests when both layers exist.
 7. Verification commands and runtime/integration evidence.
 

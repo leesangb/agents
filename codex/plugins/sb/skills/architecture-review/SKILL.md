@@ -12,6 +12,7 @@ Review the exact changed scope and directly caused neighbors. Return draft findi
 - Read full changed files, nearby screen/flow/package/layer code, direct callers, tests, discussion, and learnings.
 - Identify what changes together and whether screen/flow policy, rules, URL/query conversion, validation, rendering, external integration, and error policy are mixed.
 - Look for hidden concepts such as Filter, Selection, DateRange, Disclosure, Pagination, QueryStateSync, Policy, Lifecycle, or Draft when states/rules/transitions/transformations already move together. Do not introduce concepts merely to reduce repetition.
+- When the review question concerns use-case structure, value or effect boundaries, module depth, ownership, or abstraction timing, read [Practical Design Foundations](../code/references/design-foundations.md) and apply only the questions supported by reachable evidence. The reference alone does not create a finding.
 - When the review question includes positive composition evidence, read [Feature Composition and Mechanism Primitives](../code/references/composition.md) and assess the concrete ownership or dependency-direction question. Composition classification alone does not select this review.
 - Check page/flow orchestration versus capability ownership, physical versus logical boundaries, model/React lifecycle separation, tests at rule/UI/flow boundaries, premature Providers/Managers/Services/Adapters, dependency cycles, and the problem/cost tradeoff.
 

@@ -12,7 +12,7 @@ The repository currently contains the Codex distribution of the `sb` plugin. Oth
 - `sb-explorer`: Luna max with read-only access
 - `sb-thinker`: Sol high with read-only access
 
-`$sb:code` is the main entry point for routing executable changes through Fast, Deep, or Ultra workflows. `$sb:review-with-subagents` selects only evidence-backed review capabilities. The remaining skills are internal capabilities injected into the appropriate execution profile.
+`$sb:code` is the main entry point for routing executable changes through Fast, Deep, Ultra, or PoC workflows. The four workflows continue to use only the three profiles above: Deep and Ultra make the appropriate handoffs, while Fast and PoC stay Main-owned/direct. `$sb:review-with-subagents` selects only evidence-backed review capabilities. The remaining skills are internal capabilities injected into the appropriate execution profile.
 
 ### Install or update
 
@@ -30,7 +30,7 @@ cd codex
 ./install --check
 ```
 
-The installer preserves user-edited agent profiles by comparing them with the SHA-256 hashes recorded under `$CODEX_HOME/sb/state/`. It refuses to overwrite a profile that differs from the last SB-installed version.
+The installer preserves user-edited agent profiles and `sb-notes` helper by comparing them with SHA-256 hashes recorded under `$CODEX_HOME/sb/state/`. It refuses to overwrite a file that differs from the last SB-installed version. Deep and Ultra task state is stored privately under `${SB_NOTES_ROOT:-$HOME/.notes}` rather than in a repository singleton.
 
 ## Layout
 
@@ -41,6 +41,8 @@ codex/
 └── plugins/sb/
     ├── .codex-plugin/plugin.json      # plugin manifest
     ├── assets/agents/                 # namespaced Codex agent profiles
+    ├── assets/bin/sb-notes            # durable task-state helper
     ├── scripts/install-agents         # profile installer and conflict protection
+    ├── scripts/install-sb-notes       # helper installer and conflict protection
     └── skills/                         # workflow and capability skills
 ```

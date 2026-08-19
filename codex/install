@@ -3,12 +3,14 @@ set -eu
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 agent_installer="$script_dir/plugins/sb/scripts/install-agents"
+notes_installer="$script_dir/plugins/sb/scripts/install-sb-notes"
 plugin_manifest="$script_dir/plugins/sb/.codex-plugin/plugin.json"
 mode=${1:-install}
 
 case "$mode" in
   install)
     "$agent_installer" --preflight
+    "$notes_installer" --preflight
 
     if ! codex plugin marketplace list --json | grep -F "\"root\": \"$script_dir\"" >/dev/null; then
       codex plugin marketplace add "$script_dir" --json >/dev/null
@@ -16,15 +18,17 @@ case "$mode" in
 
     codex plugin add sb@agents --json
     "$agent_installer" --install
-    printf '%s\n' 'Installed sb@agents and sb-worker, sb-explorer, sb-thinker. Start a new Codex session to load them.'
+    "$notes_installer" --install
+    printf '%s\n' 'Installed sb@agents, sb-worker, sb-explorer, sb-thinker, and sb-notes. Start a new Codex session to load the plugin.'
     ;;
   --check)
     "$agent_installer" --check
+    "$notes_installer" --check
     plugin_version=$(sed -n 's/.*"version": "\([^"]*\)".*/\1/p' "$plugin_manifest" | head -n 1)
     plugin_list=$(codex plugin list --json)
     printf '%s' "$plugin_list" | grep -F '"pluginId": "sb@agents"' >/dev/null
     printf '%s' "$plugin_list" | grep -F "\"version\": \"$plugin_version\"" >/dev/null
-    printf '%s\n' "Verified sb@agents $plugin_version and namespaced agents."
+    printf '%s\n' "Verified sb@agents $plugin_version, namespaced agents, and sb-notes."
     ;;
   *)
     printf '%s\n' 'Usage: ./install [--check]' >&2

@@ -51,7 +51,7 @@ If no branch has concrete code, call-site, behavior, or test evidence, record `c
 
 ## Independent Decisions
 
-Composition evidence does not itself choose Fast, Deep, or Ultra; authorize a new abstraction; or select a reviewer.
+Composition evidence does not itself choose Fast, Deep, Ultra, or PoC; authorize a new abstraction; or select a reviewer.
 
 - Use Fast when target, behavior, verification, ownership, interface, and dependency direction are known.
 - Use Deep when a plan-changing ownership, interface, or dependency-direction decision remains unresolved.

@@ -9,9 +9,10 @@ Implement the approved plan as the single writer for source and tests. Treat the
 
 ## Before editing
 
-1. Read `implementation-notes.local.md`, applicable local instructions, the target files, direct callers, nearby tests, and relevant learnings.
+1. Require the caller-provided absolute `task_path` and `state_path`; do not derive, migrate, or inspect `implementation-notes.local.md`. Read `state.md` with `${CODEX_HOME:-$HOME/.codex}/bin/sb-notes read-state --task-path "$task_path"` only after checking it against current code, Git, tests, and user direction. Record its SHA-256 as the replacement baseline. Read a checkpoint or artifact only when the caller supplies its relevant path.
 2. Confirm the requested outcome, observable completion evidence, constraints, invariants, scope boundaries, negative evidence, and every `contract-shaping` decision.
 3. When the approved plan contains positive composition evidence, read [Feature Composition and Mechanism Primitives](../code/references/composition.md) and implement its approved feature assembly, mechanism ownership, and seam consequences.
+4. Read [Repository- and Task-Scoped Notes](../code/references/task-notes.md) when the task uses Deep or Ultra. Treat a missing path, malformed state, or notes-root permission failure as actionable and return it to Main; never create a repository-local fallback.
 
 ## Implementation rules
 
@@ -20,8 +21,9 @@ Implement the approved plan as the single writer for source and tests. Treat the
 - Reuse existing mechanisms for feature composition. Extract a new primitive only when the approved plan identifies its independent obligation; otherwise retain the existing seam and record that evidence.
 - A simpler internal seam, file, order, or test placement is allowed only when the contract and verification meaning remain intact. Record non-obvious departures and their rationale in the notes.
 - If a discovery changes any contract field, scope, invariant, exception, or contract-shaping decision, stop that concern, log a **blocking contract deviation** with evidence and reopen status, and return it to the caller. Never adapt that decision yourself.
+- Replace bounded state only through `sb-notes replace-state --task-path "$task_path" --expected-hash <read-state-sha256> --file <prepared-state>` and append typed evidence through `sb-notes checkpoint --task-path "$task_path" ... --file <prepared-checkpoint>`. A stale baseline is actionable: reread live state and return any conflicting change to Main rather than overwriting it. Do not edit state, metadata, checkpoints, or artifacts directly.
 - Keep one worker responsible for all source/test fixes across review iterations. Do not commit unless explicitly authorized.
 
 ## Completion
 
-Run targeted tests, typecheck, and lint; broaden checks for shared/public/cross-runtime changes. Report exact commands and results, changed files/behavior, deviations, unverified checks, and unresolved blockers. Inspect the current notes after final verification; capture a durable learning only when it is plausibly expensive to rediscover.
+Run targeted tests, typecheck, and lint; broaden checks for shared/public/cross-runtime changes. Report exact commands and results, changed files/behavior, deviations, unverified checks, and unresolved blockers. Update the caller-provided bounded state and append a final checkpoint after verification; capture a durable learning only when it is plausibly expensive to rediscover.

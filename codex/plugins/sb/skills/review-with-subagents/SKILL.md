@@ -5,7 +5,7 @@ description: Select and coordinate zero or more fresh sb-thinker instances with 
 
 # Review With Subagents
 
-Start with no reviewers. Select a capability only for a concrete question supported by the current artifact, spawn independent questions in parallel as fresh `sb-thinker` instances, then consolidate the findings. This skill reviews only by default; apply fixes only when the caller explicitly asks. Fast code changes do not load this skill; Deep and Ultra callers select an explicit profile.
+Start with no reviewers. Select a capability only for a concrete question supported by the current artifact, spawn independent questions in parallel as fresh `sb-thinker` instances, then consolidate the findings. This skill reviews only by default; apply fixes only when the caller explicitly asks. PoC and Fast code changes do not load this skill; Deep and Ultra callers select an explicit profile.
 
 If custom execution profiles are unavailable, use the built-in `default` for orchestration, `explorer` for `$sb:analyze`, and `worker` with `$sb:implement` for any requested fix. Keep review thinkers read-only and preserve the explicit capability injection; do not rely on unsupported plugin agent registration.
 
@@ -21,7 +21,7 @@ If custom execution profiles are unavailable, use the built-in `default` for orc
    - Select a capability only when both fields are concrete and the question belongs to that capability. Evidence must cite changed behavior or caller obligation, unresolved ownership/dependency decision, test boundary, or operational risk from the artifact.
    - If no candidate passes, return `reviewers: none` with verification evidence that closes the task and stop without spawning.
    - Prefer parallel spawn only when two or more selected questions are independent.
-   - Pass every fresh thinker the same exact scope, assumptions, and behavior-preservation constraints.
+   - Pass every fresh thinker the same exact scope, assumptions, and behavior-preservation constraints. For Deep or Ultra task state, Main passes the exact caller-resolved `state_path` and only explicitly relevant checkpoint/artifact paths; reviewers are read-only and never rederive or mutate the store.
    - Include the capability's trigger evidence and review question in its prompt; do not ask for a general second opinion.
    - Ask for draft findings only. The `sb-thinker` must not edit files.
 

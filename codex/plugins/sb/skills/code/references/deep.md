@@ -12,7 +12,7 @@ The goal is to resolve meaningful uncertainty before implementation while keepin
 - [Workflow](#workflow)
 - [Deep Plan Format](#deep-plan-format)
 - [Guardrails](#guardrails)
-- [Implementation Notes Contract](#implementation-notes-contract)
+- [Task Notes Contract](#task-notes-contract)
 
 ## Interface
 
@@ -65,15 +65,17 @@ Workflow tier alone never triggers dialogue.
 4. Implement with one `sb-worker` using `$sb:implement`.
    - Begin only after approval and resume validation permit implementation.
    - Send the complete approved Deep Plan as the canonical handoff; do not narrow the Outcome Contract into a separate packet.
+   - Main first runs `${CODEX_HOME:-$HOME/.codex}/bin/sb-notes init` for a new task or `resolve --task-path <exact-task-path>` for resume, then passes its returned absolute `task_path` and `state_path` unchanged to the worker. On every fix, review, resume, and report, reuse those exact paths rather than deriving them from the current worktree.
    - Keep source and test edits with the same `sb-worker` through all iterations.
-   - At the first canonical-plan handoff, overwrite `implementation-notes.local.md` with the shared template. Read it at the start of every implementation or fix iteration and reuse it without reinitializing. Reviewers receive only the current-task notes; never stage or commit the file.
+   - The worker reads only the caller-provided `state_path` by default, compares it with live evidence, atomically replaces bounded state through the helper, and appends typed checkpoints. Do not inspect, migrate, or modify the legacy repository singleton.
    - Follow vertical TDD where behavior changes: one observable behavior, minimal implementation, green, then the next behavior.
    - When the router recorded a positive composition branch, read [Feature Composition and Mechanism Primitives](composition.md), preserve its feature-composition versus mechanism-emergence distinction, and implement and test the approved evidence.
-   - Record non-obvious choices, contract-preserving departures from the recommended outline, and verification evidence in the scratch notes.
+   - Record non-obvious choices, contract-preserving departures from the recommended outline, and verification evidence in the resolved task state.
 
 5. Verify and review the implementation.
    - Run targeted tests, typecheck, and lint, then broaden only for shared modules, public contracts, or cross-runtime behavior.
    - Load `$sb:review-with-subagents` with the **Deep** profile (maximum three reviews total). Build its required `capability | trigger evidence | review question` selection ledger from the actual diff and verification results.
+   - Give every reviewer the same exact `state_path` and only explicit checkpoint/artifact paths relevant to its question. Reviewers are read-only and do not rederive task locations.
    - Spawn only fresh thinkers whose selected capability gates pass. If none pass, record `reviewers: none` with verification evidence that closes the task and skip the review/fix loop.
    - Do not add a separate simplification pass on this path.
    - Every blocker must include a reachable trigger path or observed failing behavior.
@@ -89,13 +91,15 @@ Workflow tier alone never triggers dialogue.
    - List exact commands and results, including failures and checks that could not run.
    - State that Deep was selected and name the decisive uncertainty or cross-seam signal.
    - Report whether the immediate `ready` path was used or how many bounded dialogue rounds were needed; unresolved frontier expansion that caused Ultra rerouting is a routing result, not a hidden decision.
-   - Summarize material implementation choices and contract deviations recorded in `implementation-notes.local.md`.
+   - Summarize material implementation choices and contract deviations from the resolved task state and name the exact resolved task/state paths.
    - Report the reviewer selection ledger, including `reviewers: none` when no positive gate passed.
-   - Report only the learning path returned by `$capture-learning`, or `none`; keep the ignored scratch file as current-task history.
+   - Report only the learning path returned by `$capture-learning`, or `none`; keep task state as bounded local history.
 
 ## Deep Plan Format
 
 Main must present this structure in the conversation before implementation. Use concise sections, concrete file or seam references, and behavior language.
+
+Render the `Recommended Implementation Outline` using [Implementation Outline Blueprint](implementation-outline.md). Keep the other sections in ordinary prose and bullets.
 
 ```markdown
 ## Deep Plan
@@ -134,12 +138,7 @@ Main must present this structure in the conversation before implementation. Use 
 
 - Direction: one-sentence implementation direction and responsibility placement. This is adaptable guidance unless the Outcome Contract explicitly fixes it.
 
-1. Responsibility or capability change
-   - Likely seam and files
-   - Prefactor, if it directly makes the change easier
-2. Behaviour change
-   - Provider and consumer responsibilities
-3. Integration and cleanup required by the agreed scope
+<shallow module/interface/responsibility blueprint>
 
 ### Tests
 
@@ -167,34 +166,6 @@ Presentation, approval, waiting, and later resumption of this canonical plan fol
 - Do not commit user changes or create commits unless the user or repository workflow explicitly requests it.
 - Do not treat file count alone as complexity; follow the uncertainty and risk that selected this workflow.
 
-## Implementation Notes Contract
+## Task Notes Contract
 
-`implementation-notes.local.md` is ignored local scratch for exactly one canonical task, not a deliverable. Initialize it from this structure at the first canonical-plan handoff, reuse it for fix iterations, and never archive, stage, or commit it. Reviewers receive only the current-task notes.
-
-```markdown
-# Implementation Notes
-
-## Outcome Progress
-
-- [ ] Outcome or observable behaviour goal
-
-## Decisions
-
-- Kind: contract-shaping / implementation recommendation
-- Direction, evidence-backed reason, rejected alternative, and reopen condition or reconsideration signal
-
-## Deviations
-
-- Discovery:
-- Choice or recommendation:
-- Reason:
-- Impacted Outcome Contract field, if any:
-- Reopen condition status for a contract-shaping decision: met / not met / unclear / not applicable
-- Status: contract preserved; continued / blocking contract deviation returned to Main
-
-## Verification
-
-- Command or runtime check — pass / fail / not run
-```
-
-Main and the worker treat logged choices as the current task history. Fresh review thinkers receive only the current-task notes so they evaluate deliberate deviations instead of rediscovering them as unexplained changes.
+Read [Repository- and Task-Scoped Notes](task-notes.md). It defines the helper lifecycle, exact handoff fields, bounded state schema, checkpoint/artifact selection, evidence priority, permission failures, and separate learning capture. `implementation-notes.local.md` remains untouched legacy ignored content and is never task state.

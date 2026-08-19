@@ -78,6 +78,8 @@ Use a structured Fast Plan when the work has anything useful to expose beyond ta
 
 Keep the plan compact and place it in the conversation. Do not create a separate artifact unless the user asks.
 
+Render the `Recommended Implementation Outline` using [Implementation Outline Blueprint](implementation-outline.md). Keep the other sections in ordinary prose and bullets.
+
 ```markdown
 ## Fast Plan
 
@@ -92,7 +94,8 @@ Keep the plan compact and place it in the conversation. Do not create a separate
 - Relevant exceptions or negative evidence: omit when none
 
 ### Recommended Implementation Outline
-- `path/or/seam` — smallest intended change; adaptable when the Outcome Contract remains intact
+
+<shallow module/interface/responsibility blueprint; adaptable when the Outcome Contract remains intact>
 
 ### Feature Assembly (new behavior)
 - Desired top-level call, existing capabilities, requirement-owned policy, and missing mechanism if any

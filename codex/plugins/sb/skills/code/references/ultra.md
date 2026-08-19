@@ -12,7 +12,7 @@ The goal is to resolve high-cost uncertainty and expensive decisions before impl
 - [Workflow](#workflow)
 - [Ultra Plan Format](#ultra-plan-format)
 - [Guardrails](#guardrails)
-- [Implementation Notes Contract](#implementation-notes-contract)
+- [Task Notes Contract](#task-notes-contract)
 
 ## Interface
 
@@ -86,18 +86,20 @@ no-dialogue path.
    - Begin this step only after the router's approval and resume-validation policy permits implementation.
    - Send the complete approved Ultra Plan as the canonical handoff, plus only material non-plan-changing context discovered after approval. Do not summarize it into a narrower packet or create a separate handoff artifact.
    - Before sending, apply the router's **Planning and Resuming** policy to any new context.
+   - Main first runs `${CODEX_HOME:-$HOME/.codex}/bin/sb-notes init` for a new task or `resolve --task-path <exact-task-path>` for resume, then passes its returned absolute `task_path` and `state_path` unchanged to the worker. Use those exact paths through every fix, review, resume, and final report; never derive a replacement from the current worktree.
    - Tell the `sb-worker` to hold the Outcome Contract fixed while treating the Recommended Implementation Outline as guidance. The worker may adjust internal files, seams, order, reversible prefactors, and test placement when the contract and verification meaning remain intact.
    - Keep source and test edits with the same `sb-worker` through all iterations.
-   - At the first canonical-plan handoff, overwrite `implementation-notes.local.md` at the repository root with the current-task template; read it again at the start of every implementation or fix iteration and reuse it for fix packets without reinitializing. It is ignored scratch for exactly this task, and reviewers receive only the current-task notes.
+   - The worker reads only the caller-provided `state_path` by default, compares it with live evidence, atomically replaces bounded state through the helper, and appends typed checkpoints. Do not inspect, migrate, or modify the legacy repository singleton.
    - Follow vertical TDD when behavior changes: one behavior test, minimal implementation, green, then the next behavior.
    - When the router recorded a positive composition branch, read [Feature Composition and Mechanism Primitives](composition.md), preserve its feature-composition versus mechanism-emergence distinction, and implement and test the approved evidence.
-   - Record Outcome Contract progress, non-obvious implementation decisions, verification evidence, and material departures from the Recommended Implementation Outline.
+   - Record Outcome Contract progress, non-obvious implementation decisions, verification evidence, and material departures from the Recommended Implementation Outline in the resolved task state.
    - When changing an implementation recommendation while preserving the Outcome Contract, retain its rationale and rejected alternatives as context, log the reason when non-obvious, and continue without approval.
    - If a discovery would change the requested outcome or intent, observable behavior or completion meaning, an explicit constraint or invariant, scope boundary, material exception, or any contract-shaping decision, log it as a blocking contract deviation and return it to Main. For a contract-shaping decision, report the evidence and whether its reopen condition appears met; meeting it triggers Main reconsideration but never authorizes the worker to change the decision. Main reopens investigation, Decision Dialogue, Wayfinder, thinker planning, or final confirmation as appropriate before implementation continues.
 
 7. Verify and review the implemented diff.
    - Run targeted tests, typecheck, and lint, then broaden for shared modules, public contracts, migrations, or cross-runtime behavior.
    - Load `$sb:review-with-subagents` and apply the **Ultra** profile (maximum two reviews). Build its required `capability | trigger evidence | review question` selection ledger from the actual diff, risk context, and verification results; zero reviewers is valid.
+   - Give every reviewer the same exact `state_path` and only explicit checkpoint/artifact paths relevant to its question. Reviewers are read-only and do not rederive task locations.
    - Spawn only fresh thinkers whose selected capability gates pass. If none pass, record `reviewers: none` with verification evidence that closes their concerns.
    - Run one fresh `sb-thinker` with `$sb:simplify-review` only when the diff supplies both a concrete simplification trigger—such as a new abstraction, duplicate state/path, transitional residue, or material complexity—and a question not answered by verification. Record both before spawning; otherwise record it as skipped. Keep this pass outside the Ultra review cap.
    - Every blocker must include a reachable trigger path or observed failing behavior.
@@ -118,14 +120,16 @@ no-dialogue path.
    - Report exact commands and results, including failures and unrun checks.
    - State that Ultra was selected and name the decisive high-cost or coordination signal.
    - Report whether the immediate `ready` path was used and, when dialogue occurred, how many frontier rounds were required.
-   - Summarize material implementation choices and contract deviations recorded in `implementation-notes.local.md`, including any decision that was reopened.
+   - Summarize material implementation choices and contract deviations from the resolved task state, including any decision that was reopened, and name the exact resolved task/state paths.
    - Report the reviewer selection ledger, including `reviewers: none` and a skipped simplification pass when their positive gates did not pass.
-   - Report only the learning path returned by `$capture-learning`, or `none`; keep the ignored notes as current-task scratch rather than a durable report.
+   - Report only the learning path returned by `$capture-learning`, or `none`; keep task state as bounded local history rather than a durable report.
    - Mention unresolved risks or assumptions without generating a separate report unless the user asked for one.
 
 ## Ultra Plan Format
 
 Main must present this structure in the conversation before implementation. Use concise sections, concrete file or seam references, and behavior language.
+
+Render the `Recommended Implementation Outline` using [Implementation Outline Blueprint](implementation-outline.md). Keep the other sections in ordinary prose and bullets.
 
 ```markdown
 ## Ultra Plan
@@ -164,12 +168,7 @@ Main must present this structure in the conversation before implementation. Use 
 
 - Direction: one-sentence implementation direction and responsibility placement. This is adaptable guidance unless the Outcome Contract explicitly fixes it.
 
-1. Responsibility or capability change
-   - Likely seam and files
-   - Prefactor, if it directly makes the change easier
-2. Behavior change
-   - Provider and consumer responsibilities
-3. Integration and cleanup required by the agreed scope
+<shallow module/interface/responsibility blueprint>
 
 ### Tests
 
@@ -197,34 +196,6 @@ Presentation, approval, waiting, and later resumption of this canonical plan fol
 - Do not commit user changes or create commits unless the user or repository workflow explicitly requests it.
 - Do not treat file count alone as complexity; follow the risk and uncertainty that selected this workflow.
 
-## Implementation Notes Contract
+## Task Notes Contract
 
-`implementation-notes.local.md` is ignored local scratch for exactly one canonical task, not a deliverable. Initialize it from this structure at the first canonical-plan handoff, reuse it for fix iterations, and never archive, stage, or commit it. Reviewers receive only the current-task notes.
-
-```markdown
-# Implementation Notes
-
-## Outcome Progress
-
-- [ ] Outcome or observable behavior goal
-
-## Decisions
-
-- Kind: contract-shaping / implementation recommendation
-- Direction, evidence-backed reason, rejected alternative, and reopen condition or reconsideration signal
-
-## Deviations
-
-- Discovery:
-- Choice or recommendation:
-- Reason:
-- Impacted Outcome Contract field, if any:
-- Reopen condition status for a contract-shaping decision: met / not met / unclear / not applicable
-- Status: contract preserved; continued / blocking contract deviation returned to Main
-
-## Verification
-
-- Command or runtime check — pass / fail / not run
-```
-
-Main and the worker treat logged choices as the current task history. Fresh review thinkers receive only the current-task notes so they evaluate deliberate deviations instead of rediscovering them as unexplained changes.
+Read [Repository- and Task-Scoped Notes](task-notes.md). It defines the helper lifecycle, exact handoff fields, bounded state schema, checkpoint/artifact selection, evidence priority, permission failures, and separate learning capture. `implementation-notes.local.md` remains untouched legacy ignored content and is never task state.
