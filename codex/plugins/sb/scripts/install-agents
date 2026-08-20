@@ -9,8 +9,16 @@ target_dir="$target_root/agents"
 state_dir="$target_root/sb/state"
 manifest_file="$state_dir/installed-agents.sha256"
 legacy_snapshot_dir="$target_root/sb/installed-agents"
-profiles='sb-worker sb-explorer sb-thinker'
+profiles='sb-thinker'
+deprecated_profiles='sb-worker sb-explorer'
 mode=${1:---install}
+thinker_stage=''
+thinker_stage_cleanup=1
+manifest_stage=''
+manifest_stage_cleanup=1
+ownership_baseline_dir=''
+ownership_baseline_cleanup=1
+manifest_baseline_file=''
 
 case "$target_root" in
   ''|'/')
@@ -18,6 +26,48 @@ case "$target_root" in
     exit 2
     ;;
 esac
+
+die() {
+  printf '%s\n' "install-agents: $*" >&2
+  exit 1
+}
+
+assert_safe_directory_path() {
+  managed_path=$1
+  managed_label=$2
+  case "$managed_path" in
+    /*) ;;
+    *) die "unsafe managed $managed_label is not absolute: $managed_path" ;;
+  esac
+
+  remaining=${managed_path#/}
+  current=''
+  while [ -n "$remaining" ]; do
+    component=${remaining%%/*}
+    if [ "$remaining" = "$component" ]; then
+      remaining=''
+    else
+      remaining=${remaining#*/}
+    fi
+    case "$component" in ''|'.'|'..') die "unsafe managed $managed_label component in $managed_path" ;; esac
+    current="$current/$component"
+    [ ! -L "$current" ] || die "unsafe managed $managed_label symlink: $current"
+    if [ -e "$current" ] && [ ! -d "$current" ]; then
+      die "unsafe managed $managed_label is not a directory: $current"
+    fi
+  done
+}
+
+validate_managed_paths() {
+  assert_safe_directory_path "$target_root" 'Codex home'
+  assert_safe_directory_path "$target_dir" 'agents directory'
+  assert_safe_directory_path "$target_root/sb" 'SB state root'
+  assert_safe_directory_path "$state_dir" 'agent state directory'
+  assert_safe_directory_path "$legacy_snapshot_dir" 'legacy snapshot directory'
+  if [ -L "$manifest_file" ] || { [ -e "$manifest_file" ] && [ ! -f "$manifest_file" ]; }; then
+    die "unsafe managed manifest: $manifest_file"
+  fi
+}
 
 for profile in $profiles; do
   source_file="$source_dir/$profile.toml"
@@ -43,11 +93,180 @@ hash_file() {
 }
 
 installed_hash() {
-  if [ ! -f "$manifest_file" ]; then
+  if [ -z "$manifest_baseline_file" ] || [ ! -f "$manifest_baseline_file" ]; then
     return
   fi
 
-  awk -v expected="$1.toml" '$2 == expected { print $1; exit }' "$manifest_file"
+  awk -v expected="$1.toml" '$2 == expected { print $1; exit }' "$manifest_baseline_file"
+}
+
+cleanup_install_temporaries() {
+  if [ "$thinker_stage_cleanup" -eq 1 ] && [ -n "$thinker_stage" ]; then
+    rm -f "$thinker_stage"
+  fi
+  if [ "$manifest_stage_cleanup" -eq 1 ] && [ -n "$manifest_stage" ]; then
+    rm -f "$manifest_stage"
+  fi
+  if [ "$ownership_baseline_cleanup" -eq 1 ] && [ -n "$ownership_baseline_dir" ] && [ -d "$ownership_baseline_dir" ]; then
+    rm -f "$ownership_baseline_dir"/*
+    rmdir "$ownership_baseline_dir"
+  fi
+}
+
+exact_file_operation() {
+  exact_operation=$1
+  exact_source=$2
+  exact_target=$3
+  if /usr/bin/perl -MFcntl=:DEFAULT,:mode,O_NOFOLLOW -e '
+    use strict;
+    use warnings;
+
+    my ($operation, $source, $target) = @ARGV;
+    sysopen(my $source_handle, $source, O_RDONLY | O_NOFOLLOW)
+      or die "cannot open source without following symlinks: $source: $!\n";
+    my @source_stat = stat($source_handle);
+    @source_stat && S_ISREG($source_stat[2])
+      or die "source is not a regular file: $source\n";
+
+    if ($operation eq "snapshot") {
+      sysopen(my $target_handle, $target,
+        O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW, 0400)
+        or die "cannot create exact snapshot target: $target: $!\n";
+      binmode($source_handle);
+      binmode($target_handle);
+      while (1) {
+        my $read = sysread($source_handle, my $buffer, 65536);
+        defined($read) or die "cannot read snapshot source: $source: $!\n";
+        last if $read == 0;
+        my $offset = 0;
+        while ($offset < $read) {
+          my $written = syswrite($target_handle, $buffer, $read - $offset, $offset);
+          defined($written) && $written > 0
+            or die "cannot write exact snapshot target: $target: $!\n";
+          $offset += $written;
+        }
+      }
+      my @target_stat = stat($target_handle);
+      @target_stat && S_ISREG($target_stat[2])
+        or die "snapshot target is not a regular file: $target\n";
+      close($target_handle)
+        or die "cannot close exact snapshot target: $target: $!\n";
+    } elsif ($operation eq "link") {
+      link($source, $target)
+        or die "cannot create exact hard-link target: $target: $!\n";
+      my @target_stat = lstat($target);
+      @target_stat && S_ISREG($target_stat[2]) &&
+        $source_stat[0] == $target_stat[0] &&
+        $source_stat[1] == $target_stat[1]
+        or die "exact hard-link identity verification failed: $target\n";
+    } else {
+      die "unsupported exact file operation: $operation\n";
+    }
+  ' "$exact_operation" "$exact_source" "$exact_target"; then
+    return 0
+  fi
+
+  printf '%s\n' "Exact $exact_operation failed; preserved recovery bytes at source: $exact_source" >&2
+  return 1
+}
+
+capture_regular_baseline() {
+  baseline_source_file=$1
+  baseline_target_file=$2
+  if ! exact_file_operation snapshot "$baseline_source_file" "$baseline_target_file"; then
+    if [ -f "$baseline_target_file" ] && [ ! -L "$baseline_target_file" ]; then
+      rm -f "$baseline_target_file"
+    fi
+    return 1
+  fi
+  chmod 0400 "$baseline_target_file"
+}
+
+capture_ownership_baseline() {
+  baseline_needed=0
+  manifest_baseline_expected=0
+  baseline_snapshot_profiles=''
+  if [ -f "$manifest_file" ]; then
+    baseline_needed=1
+    manifest_baseline_expected=1
+  fi
+  for profile in sb-thinker $deprecated_profiles; do
+    baseline_source="$legacy_snapshot_dir/$profile.toml"
+    if [ -f "$baseline_source" ] && [ ! -L "$baseline_source" ]; then
+      baseline_needed=1
+      baseline_snapshot_profiles="$baseline_snapshot_profiles $profile"
+    fi
+  done
+  [ "$baseline_needed" -eq 1 ] || return 0
+
+  ownership_baseline_dir=$(mktemp -d "$target_root/sb/.agent-ownership.XXXXXX") || return 1
+  chmod 0700 "$ownership_baseline_dir"
+  if [ "$manifest_baseline_expected" -eq 1 ]; then
+    manifest_baseline_file="$ownership_baseline_dir/manifest"
+    capture_regular_baseline "$manifest_file" "$manifest_baseline_file" || return 1
+  fi
+  for profile in $baseline_snapshot_profiles; do
+    baseline_source="$legacy_snapshot_dir/$profile.toml"
+    baseline_target="$ownership_baseline_dir/$profile.toml"
+    capture_regular_baseline "$baseline_source" "$baseline_target" || return 1
+  done
+}
+
+baseline_snapshot_file() {
+  profile=$1
+  if [ -n "$ownership_baseline_dir" ] && [ -f "$ownership_baseline_dir/$profile.toml" ]; then
+    printf '%s\n' "$ownership_baseline_dir/$profile.toml"
+  fi
+}
+
+restore_quarantined_file() {
+  restore_target=$1
+  if [ ! -e "$restore_target" ] && [ ! -L "$restore_target" ] && exact_file_operation link "$quarantined_file" "$restore_target"; then
+    rm -f "$quarantined_file"
+    rmdir "$quarantined_dir"
+    printf '%s\n' "Concurrent change restored safely at: $restore_target" >&2
+    return 0
+  fi
+
+  printf '%s\n' "Recovery required: preserve current path $restore_target and quarantined file $quarantined_file" >&2
+  return 1
+}
+
+quarantine_owned_file() {
+  quarantine_target=$1
+  quarantine_expected_hash=$2
+  quarantine_label=$3
+  quarantine_parent=$(dirname -- "$quarantine_target")
+  quarantined_dir=$(mktemp -d "$quarantine_parent/.sb-$quarantine_label.quarantine.XXXXXX") || return 1
+  chmod 0700 "$quarantined_dir"
+  quarantined_file="$quarantined_dir/original"
+
+  if ! mv "$quarantine_target" "$quarantined_file"; then
+    rmdir "$quarantined_dir" 2>/dev/null || true
+    printf '%s\n' "Concurrent change prevented quarantine: $quarantine_target" >&2
+    return 1
+  fi
+
+  if [ -L "$quarantined_file" ] || [ ! -f "$quarantined_file" ] || [ "$(hash_file "$quarantined_file")" != "$quarantine_expected_hash" ]; then
+    printf '%s\n' "Concurrent change replaced the verified file before quarantine: $quarantine_target" >&2
+    restore_quarantined_file "$quarantine_target" || true
+    return 1
+  fi
+}
+
+discard_quarantined_file() {
+  rm -f "$quarantined_file"
+  rmdir "$quarantined_dir"
+  quarantined_file=''
+  quarantined_dir=''
+}
+
+delete_owned_file() {
+  delete_target=$1
+  delete_expected_hash=$2
+  delete_label=$3
+  quarantine_owned_file "$delete_target" "$delete_expected_hash" "$delete_label" || return 1
+  discard_quarantined_file
 }
 
 check_conflicts() {
@@ -55,7 +274,13 @@ check_conflicts() {
   for profile in $profiles; do
     source_file="$source_dir/$profile.toml"
     target_file="$target_dir/$profile.toml"
-    legacy_snapshot_file="$legacy_snapshot_dir/$profile.toml"
+    legacy_baseline_file=$(baseline_snapshot_file "$profile")
+
+    if [ -L "$target_file" ] || { [ -e "$target_file" ] && [ ! -f "$target_file" ]; }; then
+      printf '%s\n' "Conflict: unsafe agent target: $target_file" >&2
+      conflicts=1
+      continue
+    fi
 
     if [ ! -e "$target_file" ] || cmp -s "$target_file" "$source_file"; then
       continue
@@ -67,7 +292,7 @@ check_conflicts() {
       continue
     fi
 
-    if [ -f "$legacy_snapshot_file" ] && cmp -s "$target_file" "$legacy_snapshot_file"; then
+    if [ -n "$legacy_baseline_file" ] && cmp -s "$target_file" "$legacy_baseline_file"; then
       continue
     fi
 
@@ -81,51 +306,214 @@ check_conflicts() {
   fi
 }
 
-write_manifest() {
+retire_deprecated_profiles() {
+  for profile in $deprecated_profiles; do
+    target_file="$target_dir/$profile.toml"
+    legacy_snapshot_file="$legacy_snapshot_dir/$profile.toml"
+    legacy_baseline_file=$(baseline_snapshot_file "$profile")
+    [ -f "$target_file" ] && [ ! -L "$target_file" ] || continue
+
+    current_hash=$(hash_file "$target_file")
+    previous_hash=$(installed_hash "$profile")
+    snapshot_matches=0
+    if [ -n "$legacy_baseline_file" ] && cmp -s "$target_file" "$legacy_baseline_file"; then
+      snapshot_matches=1
+    fi
+
+    if { [ -z "$previous_hash" ] || [ "$current_hash" != "$previous_hash" ]; } && [ "$snapshot_matches" -ne 1 ]; then
+      printf '%s\n' "Preserved deprecated agent with unproven or modified provenance: $target_file" >&2
+      continue
+    fi
+
+    delete_owned_file "$target_file" "$current_hash" "retire-$profile" || return 1
+    printf '%s\n' "Retired deprecated managed agent: $target_file"
+
+    if [ "$snapshot_matches" -eq 1 ] && [ -f "$legacy_snapshot_file" ] && [ ! -L "$legacy_snapshot_file" ]; then
+      snapshot_baseline_hash=$(hash_file "$legacy_baseline_file")
+      if ! delete_owned_file "$legacy_snapshot_file" "$snapshot_baseline_hash" "snapshot-$profile"; then
+        ownership_baseline_cleanup=0
+        printf '%s\n' "Recovery baseline snapshot: $legacy_baseline_file" >&2
+        return 1
+      fi
+    fi
+  done
+}
+
+stage_thinker() {
+  thinker_source="$source_dir/sb-thinker.toml"
+  thinker_source_hash=$(hash_file "$thinker_source")
+  thinker_stage=$(mktemp "$target_dir/.sb-thinker.stage.XXXXXX") || return 1
+  if ! cp "$thinker_source" "$thinker_stage"; then
+    rm -f "$thinker_stage"
+    thinker_stage=''
+    printf '%s\n' 'Failed to stage sb-thinker; the live profile and manifest were not changed.' >&2
+    return 1
+  fi
+  chmod 0644 "$thinker_stage"
+  if [ -L "$thinker_stage" ] || [ ! -f "$thinker_stage" ] || [ "$(hash_file "$thinker_stage")" != "$thinker_source_hash" ]; then
+    rm -f "$thinker_stage"
+    thinker_stage=''
+    printf '%s\n' 'Failed to verify the staged sb-thinker; the live profile and manifest were not changed.' >&2
+    return 1
+  fi
+}
+
+publish_thinker() {
+  target_file="$target_dir/sb-thinker.toml"
+  old_quarantined=0
+  if [ -L "$target_file" ] || { [ -e "$target_file" ] && [ ! -f "$target_file" ]; }; then
+    printf '%s\n' "Conflict: unsafe agent target: $target_file" >&2
+    return 1
+  fi
+
+  if [ -e "$target_file" ]; then
+    current_hash=$(hash_file "$target_file")
+    previous_hash=$(installed_hash 'sb-thinker')
+    legacy_baseline_file=$(baseline_snapshot_file 'sb-thinker')
+    if ! cmp -s "$target_file" "$source_dir/sb-thinker.toml" &&
+       { [ -z "$previous_hash" ] || [ "$current_hash" != "$previous_hash" ]; } &&
+       ! { [ -n "$legacy_baseline_file" ] && cmp -s "$target_file" "$legacy_baseline_file"; }; then
+      printf '%s\n' "Concurrent change made the thinker unowned before publication: $target_file" >&2
+      return 1
+    fi
+    quarantine_owned_file "$target_file" "$current_hash" 'thinker' || return 1
+    old_quarantined=1
+  fi
+
+  if exact_file_operation link "$thinker_stage" "$target_file"; then
+    rm -f "$thinker_stage"
+    thinker_stage=''
+    [ "$old_quarantined" -eq 0 ] || discard_quarantined_file
+    return 0
+  fi
+
+  if [ -f "$target_file" ] && [ ! -L "$target_file" ] && [ "$thinker_stage" -ef "$target_file" ]; then
+    rm -f "$thinker_stage"
+    thinker_stage=''
+    [ "$old_quarantined" -eq 0 ] || discard_quarantined_file
+    return 0
+  fi
+
+  thinker_stage_cleanup=0
+  printf '%s\n' "Concurrent change prevented thinker publication: $target_file" >&2
+  printf '%s\n' "Recovery staged thinker: $thinker_stage" >&2
+  if [ "$old_quarantined" -eq 1 ]; then
+    printf '%s\n' "Recovery prior thinker: $quarantined_file" >&2
+  fi
+  return 1
+}
+
+stage_manifest() {
   mkdir -p "$state_dir"
-  temporary_manifest="$manifest_file.tmp.$$"
-  trap 'rm -f "$temporary_manifest"' 0 1 2 15
-  : > "$temporary_manifest"
+  validate_managed_paths
+  manifest_stage=$(mktemp "$state_dir/.installed-agents.sha256.stage.XXXXXX") || return 1
+  : > "$manifest_stage"
 
   for profile in $profiles; do
     source_file="$source_dir/$profile.toml"
-    printf '%s  %s.toml\n' "$(hash_file "$source_file")" "$profile" >> "$temporary_manifest"
+    printf '%s  %s.toml\n' "$(hash_file "$source_file")" "$profile" >> "$manifest_stage"
   done
 
-  chmod 0644 "$temporary_manifest"
-  mv "$temporary_manifest" "$manifest_file"
-  trap - 0 1 2 15
+  chmod 0644 "$manifest_stage"
 }
 
-remove_legacy_snapshots() {
-  for profile in $profiles; do
-    rm -f "$legacy_snapshot_dir/$profile.toml"
-  done
+publish_manifest() {
+  old_quarantined=0
+  if [ "$manifest_baseline_present" -eq 1 ]; then
+    if [ -L "$manifest_file" ] || [ ! -f "$manifest_file" ]; then
+      printf '%s\n' "Concurrent change removed or made the manifest unsafe: $manifest_file" >&2
+      return 1
+    fi
+    current_manifest_hash=$(hash_file "$manifest_file")
+    if [ "$current_manifest_hash" != "$manifest_baseline_hash" ]; then
+      manifest_stage_cleanup=0
+      ownership_baseline_cleanup=0
+      printf '%s\n' "Concurrent change modified the manifest: $manifest_file" >&2
+      printf '%s\n' "Recovery staged manifest: $manifest_stage" >&2
+      printf '%s\n' "Recovery baseline manifest: $manifest_baseline_file" >&2
+      return 1
+    fi
+    quarantine_owned_file "$manifest_file" "$manifest_baseline_hash" 'manifest' || return 1
+    old_quarantined=1
+  elif [ -e "$manifest_file" ] || [ -L "$manifest_file" ]; then
+    manifest_stage_cleanup=0
+    printf '%s\n' "Concurrent change created the manifest: $manifest_file" >&2
+    printf '%s\n' "Recovery staged manifest: $manifest_stage" >&2
+    return 1
+  fi
+
+  if exact_file_operation link "$manifest_stage" "$manifest_file"; then
+    rm -f "$manifest_stage"
+    manifest_stage=''
+    [ "$old_quarantined" -eq 0 ] || discard_quarantined_file
+    return 0
+  fi
+
+  if [ -f "$manifest_file" ] && [ ! -L "$manifest_file" ] && [ "$manifest_stage" -ef "$manifest_file" ]; then
+    rm -f "$manifest_stage"
+    manifest_stage=''
+    [ "$old_quarantined" -eq 0 ] || discard_quarantined_file
+    return 0
+  fi
+
+  manifest_stage_cleanup=0
+  printf '%s\n' "Concurrent change prevented manifest publication: $manifest_file" >&2
+  printf '%s\n' "Recovery staged manifest: $manifest_stage" >&2
+  if [ "$old_quarantined" -eq 1 ]; then
+    printf '%s\n' "Recovery prior manifest: $quarantined_file" >&2
+  fi
+  return 1
+}
+
+remove_current_profile_snapshot() {
+  legacy_snapshot_file="$legacy_snapshot_dir/sb-thinker.toml"
+  legacy_baseline_file=$(baseline_snapshot_file 'sb-thinker')
+  if [ -n "$legacy_baseline_file" ] && cmp -s "$legacy_baseline_file" "$source_dir/sb-thinker.toml"; then
+    snapshot_hash=$(hash_file "$legacy_baseline_file")
+    if ! delete_owned_file "$legacy_snapshot_file" "$snapshot_hash" 'snapshot-sb-thinker'; then
+      ownership_baseline_cleanup=0
+      printf '%s\n' "Recovery baseline snapshot: $legacy_baseline_file" >&2
+      return 1
+    fi
+  fi
   rmdir "$legacy_snapshot_dir" 2>/dev/null || true
 }
+
+validate_managed_paths
+trap 'cleanup_install_temporaries' 0 1 2 15
+capture_ownership_baseline
+manifest_baseline_present=0
+manifest_baseline_hash=''
+if [ -n "$manifest_baseline_file" ]; then
+  manifest_baseline_present=1
+  manifest_baseline_hash=$(hash_file "$manifest_baseline_file")
+fi
 
 case "$mode" in
   --preflight)
     check_conflicts
+    cleanup_install_temporaries
+    trap - 0 1 2 15
     ;;
   --install)
     check_conflicts
     mkdir -p "$target_dir"
-    for profile in $profiles; do
-      source_file="$source_dir/$profile.toml"
-      target_file="$target_dir/$profile.toml"
-      cp "$source_file" "$target_file"
-      chmod 0644 "$target_file"
-    done
-    write_manifest
-    remove_legacy_snapshots
-    printf '%s\n' "Installed namespaced agents in $target_dir."
+    validate_managed_paths
+    stage_thinker
+    retire_deprecated_profiles
+    publish_thinker
+    remove_current_profile_snapshot
+    stage_manifest
+    publish_manifest
+    cleanup_install_temporaries
+    trap - 0 1 2 15
+    printf '%s\n' "Installed sb-thinker in $target_dir."
     ;;
   --check)
     for profile in $profiles; do
       source_file="$source_dir/$profile.toml"
       target_file="$target_dir/$profile.toml"
-      if [ ! -f "$target_file" ] || ! cmp -s "$target_file" "$source_file"; then
+      if [ -L "$target_file" ] || [ ! -f "$target_file" ] || ! cmp -s "$target_file" "$source_file"; then
         printf '%s\n' "Agent is missing or stale: $target_file" >&2
         exit 1
       fi
@@ -134,7 +522,9 @@ case "$mode" in
         exit 1
       fi
     done
-    printf '%s\n' "Verified namespaced agents in $target_dir."
+    cleanup_install_temporaries
+    trap - 0 1 2 15
+    printf '%s\n' "Verified sb-thinker in $target_dir."
     ;;
   *)
     printf '%s\n' 'Usage: install-agents [--preflight|--install|--check]' >&2

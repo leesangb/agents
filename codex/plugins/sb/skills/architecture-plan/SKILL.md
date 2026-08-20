@@ -5,6 +5,8 @@ description: Turn confirmed evidence and a fixed Outcome Contract into a tagged 
 
 # Architecture Plan
 
+The caller decides whether to invoke this planner. Main may author an evidence-backed plan directly or delegate this capability to `sb-thinker` when a separate read-only high-reasoning pass is useful; Deep or Ultra never makes the planner a mandatory stage solely because of its tier.
+
 Author the technical plan after investigation and contract decisions are confirmed. The caller is the sole author of the fixed Outcome Contract; quote the caller's current fixed contract snapshot unchanged. When the caller is Deep or Ultra, or unresolved design choices remain after investigation, read [Decision Dialogue](../code/references/decision-dialogue.md) and apply its shared state machine. Surface discoverable missing or conflicting evidence as an unresolved prerequisite for Main, not as an automatic user decision; apply the shared eligibility gates before exposing any user frontier. Main alone authors an updated fixed snapshot before the next planner call when an answer changes the contract. The planning thinker never asks the user directly.
 
 ## Planning discipline
@@ -36,4 +38,4 @@ For a `ready` result, return the `ready` tag followed by these sections, in this
 6. Tests grouped by likely file (placement adaptable), one observable behavior per bullet, including primitive-interface and composition tests when both layers exist.
 7. Verification commands and runtime/integration evidence.
 
-Keep the plan concise, evidence-backed, and explicit about what the worker may change without approval.
+Keep the plan concise, evidence-backed, and explicit about what the designated writer may change without approval.

@@ -5,9 +5,9 @@ description: Select and coordinate zero or more fresh sb-thinker instances with 
 
 # Review With Subagents
 
-Start with no reviewers. Select a capability only for a concrete question supported by the current artifact, spawn independent questions in parallel as fresh `sb-thinker` instances, then consolidate the findings. This skill reviews only by default; apply fixes only when the caller explicitly asks. PoC and Fast code changes do not load this skill; Deep and Ultra callers select an explicit profile.
+Start with no reviewers. This skill is the single source of truth for reviewer selection, spawning, waiting, and aggregation. Select a capability only for a concrete question supported by the current artifact, spawn independent questions in parallel as fresh `sb-thinker` instances, then consolidate the findings. This skill reviews only by default; apply fixes only when the caller explicitly asks. PoC and Fast code changes do not load this skill; Deep and Ultra callers select an explicit profile.
 
-If custom execution profiles are unavailable, use the built-in `default` for orchestration, `explorer` for `$sb:analyze`, and `worker` with `$sb:implement` for any requested fix. Keep review thinkers read-only and preserve the explicit capability injection; do not rely on unsupported plugin agent registration.
+Use Main for orchestration, the built-in `explorer` for `$sb:analyze`, and the built-in `worker` with `$sb:implement` for any delegated fix. Use the custom `sb-thinker` only for the materially distinct read-only high-reasoning review itself. Preserve explicit capability injection; do not rely on unsupported plugin agent registration.
 
 ## Workflow
 
@@ -36,7 +36,7 @@ If custom execution profiles are unavailable, use the built-in `default` for orc
    - Lead with actionable findings ordered by severity.
    - Include file references when available.
    - Include skipped/low-confidence findings only when useful.
-   - If the caller requested a refinement loop, convert actionable blockers into one scoped fix packet for the same `sb-worker` with `$sb:implement`.
+   - If the caller requested a refinement loop, convert actionable blockers into one scoped fix packet for the designated single writer, using the built-in `worker` with `$sb:implement` when implementation was delegated.
 
 ## Reviewer Selection
 
@@ -63,7 +63,7 @@ Reviewer positive gates, all opt-in:
 - `risk-review`: select when auth, stored-data mutation, deletion, migrations, rollout, feature flags, or production configuration creates a concrete failure, recovery, security, or operational question.
 - `spec-review`: select when mapping an explicit spec or acceptance criterion to the implementation leaves a concrete compliance or omission question.
 
-Use `sb-explorer` with `$sb:analyze` before review when behavior, call chains, or impact scope is unclear.
+Use the built-in `explorer` with `$sb:analyze` before review when behavior, call chains, or impact scope is unclear.
 
 Generic caps when no workflow profile overrides them:
 
@@ -106,13 +106,13 @@ For implementation refinement:
 ```text
 Build `capability | trigger evidence | review question` rows from the current implementation diff, then spawn only concrete candidates, each in a fresh `sb-thinker` thread.
 If no row passes, return `reviewers: none` and stop.
-Wait for all results, falsify and deduplicate findings, then aggregate actionable blockers into one scoped fix packet for the same `sb-worker` with `$sb:implement`.
+Wait for all results, falsify and deduplicate findings, then aggregate actionable blockers into one scoped fix packet for the same writer, using the built-in `worker` with `$sb:implement` when the work was delegated.
 Ask before sending the packet unless the user already asked to apply fixes.
 ```
 
 ## Output Contract
 
-Return the reviewed scope and selection ledger once. If no capability passes, return `reviewers: none`, verification evidence that made review unnecessary, and the next action. Otherwise follow with deduplicated actionable findings ordered by severity. For each finding name the owning capability, precise location, reachable evidence, consequence or why it matters, smallest safe fix, and verification. Include skipped or low-confidence findings and good-as-is observations only when useful, then end with the next action: no change, a scoped worker packet, clarification, or further verification.
+Return the reviewed scope and selection ledger once. If no capability passes, return `reviewers: none`, verification evidence that made review unnecessary, and the next action. Otherwise follow with deduplicated actionable findings ordered by severity. For each finding name the owning capability, precise location, reachable evidence, consequence or why it matters, smallest safe fix, and verification. Include skipped or low-confidence findings and good-as-is observations only when useful, then end with the next action: no change, a scoped writer packet, clarification, or further verification.
 
 ## Guardrails
 

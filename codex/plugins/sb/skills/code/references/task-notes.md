@@ -1,11 +1,11 @@
 # Repository- and Task-Scoped Notes
 
-Deep and Ultra implementation notes belong to one repository, branch, and canonical task. They are durable local state, not a repository file and never a replacement for current code, Git, or test evidence.
+Deep and Ultra task notes are an optional durable local state mechanism, not a mandatory workflow stage. Activate them only when work is expected to cross sessions or the user/caller explicitly needs durable resume. When inactive, do not initialize or derive a store. When active, notes belong to one repository, branch, and canonical task; they are not a repository file and never replace current code, Git, or test evidence.
 
 ## Ownership and Handoff
 
-- **Main** initializes a new store once, after plan approval, with `${CODEX_HOME:-$HOME/.codex}/bin/sb-notes init`; a later session resumes only through `sb-notes resolve --task-path <exact-task-path>`. Both return the same two absolute fields, `task_path` and `state_path`, which Main passes unchanged to the worker and every reviewer.
-- **Worker** receives those exact paths. It reads only `state.md` by default, compares it with live code/Git/tests, records that state's SHA-256, replaces it through compare-and-swap `sb-notes replace-state --expected-hash <sha256>`, and appends its own typed checkpoint through `sb-notes checkpoint`.
+- **Main** decides whether durable state is active. When active, it initializes a new store once, after plan approval, with `${CODEX_HOME:-$HOME/.codex}/bin/sb-notes init`; a later session resumes only through `sb-notes resolve --task-path <exact-task-path>`. Both return the same two absolute fields, `task_path` and `state_path`, which Main passes unchanged to the writer and every reviewer.
+- **Writer** receives those exact paths. It reads only `state.md` by default, compares it with live code/Git/tests, records that state's SHA-256, replaces it through compare-and-swap `sb-notes replace-state --expected-hash <sha256>`, and appends its own typed checkpoint through `sb-notes checkpoint`.
 - **Reviewers** are read-only. They receive `state_path` and only explicitly relevant checkpoint or artifact paths; they never derive a task location or load history by default.
 - **Main** uses the same exact paths for fix packets, review, resume, and final reporting. `resolve` validates the complete store; it must not rederive identity from its current directory.
 

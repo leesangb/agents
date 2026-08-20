@@ -7,18 +7,15 @@ description: Use for requests to implement, modify, fix, refactor, migrate, or p
 
 This file only chooses the execution workflow. It does not define implementation steps.
 
-## Execution Profile and Skill Composition
+## Dynamic Orchestration and Skill Composition
 
-`$sb:code` composes an execution profile with an explicit capability skill only when the selected workflow hands work off:
+Main dynamically owns orchestration: spawning, follow-up, waiting, convergence, and the decision to work directly or delegate. Deep and Ultra define rigor, approval, safety, and evidence gates; they do not prescribe a fixed explorer → planner → worker → reviewer graph.
 
-- `sb-explorer` + `$sb:analyze` for bounded read-only investigation.
-- `sb-thinker` + `$sb:architecture-plan` for technical planning.
-- `sb-worker` + `$sb:implement` for the single writing handoff on the Deep and Ultra paths.
-- A fresh `sb-thinker` + the selected `$sb:*-review` capability for each independent Deep or Ultra review question; never reuse the planning thinker thread for review.
+Use the built-in `explorer` and `worker` as the default delegated execution roles. The only custom execution profile is `sb-thinker`, retained for materially distinct read-only high-reasoning planning or review. Capability skills remain reusable: inject `$sb:analyze`, `$sb:architecture-plan`, `$sb:implement`, or a review capability only when the current work benefits from that handoff.
 
 Fast and PoC remain Main-owned direct paths. PoC makes no execution-profile, capability, or reviewer handoff.
 
-Install these namespaced profiles with the repository's `codex/install` bootstrap. When they are unavailable, use the built-in `worker`, `explorer`, and `default` execution behavior as a fallback, while preserving the explicit capability skill and read-only/write boundaries. Plugins do not register custom agents; do not invent plugin manifest fields for that purpose.
+Install `sb-thinker` with the repository's `codex/install` bootstrap. Preserve read-only planning/review boundaries, one writer for source and tests, and fresh independent review threads. Plugins do not register custom agents; do not invent plugin manifest fields for that purpose.
 
 ## Scope: Code Changes Only
 
@@ -73,7 +70,7 @@ When a branch has concrete evidence, read [Feature Composition and Mechanism Pri
 - After the Ultra gate selects PoC, state its execution note and begin the experiment without plan approval. Do not treat that note as a canonical plan or as production approval.
 - Use `router-authorized Fast` for the first Fast presentation above; reserve `approved plan` for a structured plan the user explicitly approved.
 - Reopen or reroute planning only when the user's intent or Outcome Contract changed, relevant code materially changed and made the plan stale, required fields of the selected plan format are missing, or a new Deep or Ultra signal appears. Return only to the relevant earlier workflow step needed to resolve that condition; otherwise preserve the existing plan and continue from it. If this validation changes the canonical plan, present the updated plan and stop for fresh explicit approval.
-- For Deep and Ultra, Main resolves task state once through the shared [Repository- and Task-Scoped Notes](references/task-notes.md) contract, then passes its exact absolute paths unchanged through worker, reviewer, resume, and report handoffs. Fast and PoC do not use task state.
+- For Deep and Ultra, activate shared [Repository- and Task-Scoped Notes](references/task-notes.md) only when the work is expected to cross sessions or durable resume is explicitly needed. When active, Main resolves task state once and passes its exact absolute paths unchanged through implementation, review, resume, and report handoffs. Fast and PoC do not use task state.
 
 ## Conditional Decision Dialogue
 

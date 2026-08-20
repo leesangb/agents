@@ -1,6 +1,6 @@
 {
   "name": "sb",
-  "version": "0.1.0+codex.20260817103004",
+  "version": "0.1.0+codex.20260820010523",
   "description": "Portable code-change workflows and evidence-gated review capabilities for Codex.",
   "author": {
     "name": "Local developer"
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "SB",
     "shortDescription": "Portable code workflow capabilities",
-    "longDescription": "Compose Fast, Deep, Ultra, and PoC code-change workflows. Deep and Ultra use generic worker, explorer, and thinker profiles plus explicit analysis, planning, implementation, and review skills; Fast and PoC remain Main-owned direct paths.",
+    "longDescription": "Compose Fast, Deep, Ultra, and PoC code-change workflows under dynamic Main orchestration. Built-in worker and explorer roles are the execution defaults; the custom read-only sb-thinker remains available for high-reasoning planning and review. Fast and PoC semantics remain unchanged.",
     "developerName": "Local developer",
     "category": "Developer Tools",
     "capabilities": [],

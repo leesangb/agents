@@ -19,7 +19,7 @@ case "$mode" in
     codex plugin add sb@agents --json
     "$agent_installer" --install
     "$notes_installer" --install
-    printf '%s\n' 'Installed sb@agents, sb-worker, sb-explorer, sb-thinker, and sb-notes. Start a new Codex session to load the plugin.'
+    printf '%s\n' 'Installed sb@agents, sb-thinker, and sb-notes; safely retired proven managed sb-worker/sb-explorer copies. Start a new Codex session to load the plugin.'
     ;;
   --check)
     "$agent_installer" --check
@@ -28,7 +28,7 @@ case "$mode" in
     plugin_list=$(codex plugin list --json)
     printf '%s' "$plugin_list" | grep -F '"pluginId": "sb@agents"' >/dev/null
     printf '%s' "$plugin_list" | grep -F "\"version\": \"$plugin_version\"" >/dev/null
-    printf '%s\n' "Verified sb@agents $plugin_version, namespaced agents, and sb-notes."
+    printf '%s\n' "Verified sb@agents $plugin_version, sb-thinker, and sb-notes."
     ;;
   *)
     printf '%s\n' 'Usage: ./install [--check]' >&2
