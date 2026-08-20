@@ -23,13 +23,16 @@ Use Main for orchestration, the built-in `explorer` for `$sb:analyze`, and the b
    - Prefer parallel spawn only when two or more selected questions are independent.
    - Pass every fresh thinker the same exact scope, assumptions, and behavior-preservation constraints. For Deep or Ultra task state, Main passes the exact caller-resolved `state_path` and only explicitly relevant checkpoint/artifact paths; reviewers are read-only and never rederive or mutate the store.
    - Include the capability's trigger evidence and review question in its prompt; do not ask for a general second opinion.
-   - Ask for draft findings only. The `sb-thinker` must not edit files.
+   - Ask for draft findings only. Each candidate includes its claim, scoped-change relation when the scope is a diff or PR, reachable trigger, material consequence, strongest checked disconfirming evidence, evidence provenance, and provisional severity. The `sb-thinker` must not edit files or assign the final disposition.
 
 3. Wait and aggregate.
    - Wait for all spawned `sb-thinker` instances. Never reuse a planning thread for review; each review gets a fresh instance even though planning and review share the same execution profile.
    - Deduplicate findings. Prefer the capability whose rubric owns the concern.
    - Drop speculative, duplicate, out-of-scope, or behavior-changing suggestions unless they are explicit risks.
-   - Enforce the evidence bar: a finding is only severe when it comes with a reachable trigger path (example code, inputs, or state producing the failure). No trigger → downgrade or move it to low-confidence; never present an untriggered claim as a blocker.
+   - Main owns final severity and disposition. Independently falsify every candidate instead of accepting the reviewer's provisional severity.
+   - For a diff or PR, classify the scoped-change relation as `introduced`, `worsened`, `newly_exposed`, `pre_existing`, `unrelated`, or `unknown`. Only the first three are blocker-eligible; downgrade, omit, or clearly separate the others from the scoped review. Reviews without a comparison baseline skip only this causality gate.
+   - A blocker-eligible finding must have a reachable trigger path, a material consequence, and the strongest available disconfirming evidence checked without defeating the claim. Missing evidence makes the candidate low-confidence or non-blocking, not severe by default.
+   - Reviewer count is not evidence provenance. Correlated findings based on the same artifact, assumptions, or reasoning collapse into one candidate and never gain confidence merely through agreement.
    - Keep praise or "good as-is" notes when they explain why no change is needed.
 
 4. Return one consolidated review.
@@ -56,8 +59,8 @@ Reviewer positive gates, all opt-in:
 
 - `code-review`: select for an explicit general code-review request over a non-trivial executable diff, or when non-mechanical logic creates a specific correctness, regression, maintainability, dead-code, or leaky-abstraction question not closed by tests or deterministic checks.
 - `test-review`: select when observable behavior changed and there is a concrete question about the responsibility boundary, missing scenario, or whether tests prove behavior rather than implementation details.
-- `api-review`: select when caller-visible names, inputs, outputs, ordering, errors, lifecycle, or setup obligations changed and there is a concrete caller-experience question.
-- `architecture-review`: select when responsibility ownership or dependency direction actually changed and there is a concrete placement/change-axis question, such as two credible owners or a hidden stateful mechanism.
+- `api-review`: select when a changed callable or cross-module interface creates a concrete caller-experience question: excessive setup, ordering, cleanup, or lifecycle orchestration; leaked implementation knowledge; internal IDs, wrappers, callbacks, configuration, or conversions that the module may be able to own; or a plausible language/runtime builtin that could replace a custom concept.
+- `architecture-review`: select only when responsibility ownership or dependency direction actually changed and a concrete placement, module-depth, or change-axis question remains independently of caller pain, such as two credible owners or a hidden stateful mechanism. Do not pair it automatically with `api-review`.
 - `intent-review`: select when a new abstraction, type, or public name carries a concrete constraint or rationale that may be invisible at its declaration or use sites.
 - `oop-review`: select when inheritance, implementation relationships, extension surfaces, mutable domain invariants, or substitutability changed and a concrete behavioral-contract question exists.
 - `risk-review`: select when auth, stored-data mutation, deletion, migrations, rollout, feature flags, or production configuration creates a concrete failure, recovery, security, or operational question.
@@ -76,6 +79,7 @@ Zero reviewers is a normal result at every size. When trigger evidence or the re
 Concern ownership and deduplication:
 
 - Assign a material finding to the capability whose rubric directly owns the triggered concern; retain an overlapping `code-review` finding only when it independently demonstrates a concrete runtime correctness or maintainability risk.
+- `api-review` owns the caller mental model, caller obligations, ceremony, leaked implementation knowledge, and module depth as experienced through caller leverage. `architecture-review` owns the distinct, caller-pain-independent question of mechanism placement, cohesion, structural depth, and dependency direction. When one concern supplies only supporting evidence for the other, return one finding rather than two.
 - `oop-review` owns semantic substitutability, encapsulation, inheritance/interface contracts, and domain-invariant findings. Deduplicate those findings with `code-review` using the ownership rule above.
 - `oop-review` `Suggestion` findings are non-blocking and must not create a fix or convergence loop by themselves.
 
@@ -94,7 +98,8 @@ The `sb-thinker` must:
 - keep this scope fixed,
 - review only,
 - avoid file edits,
-- return draft findings with file references,
+- return candidate findings with file references and provisional severity, never a final disposition,
+- for each candidate include its claim, scoped-change relation when applicable, reachable trigger, material consequence, strongest checked disconfirming evidence, and evidence provenance,
 - back any correctness or behavior claim with a concrete trigger path — example code, call sequence, or input/state that actually produces the failure in this codebase; label it speculative if no reachable trigger exists,
 - preserve current behavior unless the requested change explicitly changes it.
 
@@ -112,7 +117,7 @@ Ask before sending the packet unless the user already asked to apply fixes.
 
 ## Output Contract
 
-Return the reviewed scope and selection ledger once. If no capability passes, return `reviewers: none`, verification evidence that made review unnecessary, and the next action. Otherwise follow with deduplicated actionable findings ordered by severity. For each finding name the owning capability, precise location, reachable evidence, consequence or why it matters, smallest safe fix, and verification. Include skipped or low-confidence findings and good-as-is observations only when useful, then end with the next action: no change, a scoped writer packet, clarification, or further verification.
+Return the reviewed scope and selection ledger once. If no capability passes, return `reviewers: none`, verification evidence that made review unnecessary, and the next action. Otherwise follow with Main's deduplicated final dispositions ordered by severity, not raw reviewer verdicts. For each finding name the owning capability, precise location, scoped-change relation when applicable, reachable evidence, material consequence, strongest checked disconfirming evidence, evidence provenance, smallest safe fix, and verification. Include skipped or low-confidence findings and good-as-is observations only when useful, then end with the next action: no change, a scoped writer packet, clarification, or further verification.
 
 ## Guardrails
 
