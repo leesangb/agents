@@ -4,6 +4,19 @@ Use these ideas as tools for a concrete design question, not as a checklist or d
 
 For each applicable question, identify the current evidence, the smallest useful move, and a counter-signal that would make the move harmful. When evidence is absent, preserve the existing design.
 
+Good code shows the user's current task honestly with the fewest useful concepts and hides complex mechanics behind the place that can own them completely. Preserve necessary complexity that protects correctness; make every other layer, abstraction, and extension point earn its present cost.
+
+## Judgment Priority
+
+When principles pull in different directions, decide in this order:
+
+1. Preserve correct user-observable behavior and data.
+2. Make the normal use case and product policy visible.
+3. Keep procedures and implementation knowledge out of callers that do not own them.
+4. Give state, invariants, lifecycle, and error contracts one clear owner.
+5. Require every added type, interface, layer, helper, and file to reduce a current concrete cost.
+6. Prefer fewer names, branches, call hops, and concepts when the earlier priorities remain intact.
+
 ## 1. Start From the Use Case
 
 **Question:** Where should the requested behavior be visible and coordinated?
@@ -56,6 +69,7 @@ For each applicable question, identify the current evidence, the smallest useful
 
 - Make the first case usable before making it reusable.
 - Start directly, then extract after real examples reveal stable shared semantics or an independent invariant, lifecycle, error contract, performance contract, or test surface.
+- Every layer, interface, helper, and file has carrying cost. Add one only when it protects an invariant, hides repeated knowledge, owns an independent contract, unifies real implementations, groups one reason to change, or creates a useful test seam.
 - Treat speculative capabilities and flexibility as costs: implementation, delay, concepts, configuration, tests, call hops, maintenance, and eventual repair.
 - Refactor to keep the code malleable; YAGNI rejects presumptive capability, not improvements that simplify current behavior.
 - Preserve duplication when the apparent similarity represents different reasons to change.
@@ -73,6 +87,17 @@ For each applicable question, identify the current evidence, the smallest useful
 
 **Counter-signals:** guards that obscure normal domain alternatives, helpers that only rename adjacent lines, or failure machinery added without a reachable case or runtime evidence.
 
+## 7. Test Stable Responsibilities
+
+**Question:** Which stable responsibility owns the behavior, and what does its caller or user observe?
+
+- Test a rule through the smallest interface that owns it and a use-case sequence or effect at its composition point.
+- Prefer returned values, state transitions, emitted events, persisted values, request payloads, and rendered behavior over private state, helper names, and incidental call order.
+- Let internal helpers change freely while the caller-visible guarantee stays protected.
+- Skip isolated tests for pass-through helpers that own no behavior; move the test to the stable responsibility boundary.
+
+**Counter-signals:** tests that repeat implementation statements with mocks, helper-level coverage that leaves an end-to-end invariant unowned, or one broad page test hiding several independent responsibilities.
+
 ## Resolve the Apparent Tensions
 
 - **Vertical slices and deep modules:** compose the use case vertically; deepen only mechanisms whose ownership and obligations are independently real.
@@ -81,6 +106,13 @@ For each applicable question, identify the current evidence, the smallest useful
 - **Types and contracts:** use types for constructible states and value precision; use assertions for obligations and guarantees the type system cannot express economically.
 - **Locality and separation:** colocate knowledge that changes together while keeping domain decisions separate from infrastructure effects.
 - **YAGNI and strategic design:** avoid future capability while continuing to simplify interfaces and keep present code easy to change.
+
+## Apply the Principles in Review
+
+- Start from the changed use case, real callers, data flow, and preserved behavior. Use only principles supported by that evidence; do not fill a checklist.
+- Name the observed burden before the design term. Say what callers repeat, what invariant can break, or where change propagates before calling a module shallow or a responsibility misplaced.
+- For each suggestion, identify the current user goal, the unnecessary knowledge or risk, the smallest before/after shape, and the counterevidence that would withdraw the suggestion.
+- Report one root cause once. Several principles may explain it, but new terminology does not create another finding.
 
 ## Source Vocabulary
 

@@ -10,6 +10,9 @@ implement="$repo_root/codex/plugins/sb/skills/implement/SKILL.md"
 review="$repo_root/codex/plugins/sb/skills/review-with-subagents/SKILL.md"
 code_review="$repo_root/codex/plugins/sb/skills/code-review/SKILL.md"
 api_review="$repo_root/codex/plugins/sb/skills/api-review/SKILL.md"
+architecture_review="$repo_root/codex/plugins/sb/skills/architecture-review/SKILL.md"
+test_review="$repo_root/codex/plugins/sb/skills/test-review/SKILL.md"
+design_foundations="$repo_root/codex/plugins/sb/skills/code/references/design-foundations.md"
 manifest="$repo_root/codex/plugins/sb/.codex-plugin/plugin.json"
 
 fail() {
@@ -44,6 +47,13 @@ grep -Fq 'Reviewer count is not evidence provenance' "$review" || fail 'correlat
 grep -Fq 'Do not pair it automatically with `api-review`' "$review" || fail 'API and architecture review are coupled without independent questions'
 grep -Fq 'module depth as experienced through caller leverage' "$review" || fail 'API review does not own caller-facing module depth'
 grep -Fq 'caller-pain-independent question of mechanism placement, cohesion, structural depth, and dependency direction' "$review" || fail 'architecture review does not own independent structural depth'
+grep -Fq 'bounded discovery axis' "$review" || fail 'Main must still invent a finding-like review question'
+grep -Fq 'priority hypothesis, not a limit' "$review" || fail 'review questions can suppress the mandatory capability scan'
+grep -Fq 'required artifacts are missing' "$review" || fail 'incomplete capability output can be accepted as good-as-is'
+grep -Fq 'Silence is not agreement' "$review" || fail 'reviewer silence can still be aggregated as consensus'
+grep -Fq 'shared caller obligation or absent owner' "$review" || fail 'aggregation cannot synthesize a supported root cause'
+grep -Fq 'axis | disposition | required artifacts complete/missing' "$review" || fail 'reviewers lack a generic coverage envelope'
+grep -Fq 'Main never authors missing capability artifacts' "$review" || fail 'Main still reimplements capability-owned evidence'
 
 grep -Fq 'Return candidate findings ordered by provisional severity' "$code_review" || fail 'code-review still owns final severity'
 grep -Fq 'compare the candidate with the baseline' "$code_review" || fail 'code-review does not compare diff findings with the baseline'
@@ -56,6 +66,24 @@ grep -Fq 'Judge module depth by caller leverage' "$api_review" || fail 'api-revi
 grep -Fq 'internal IDs, wrappers, callback wiring, provider configuration' "$api_review" || fail 'api-review does not detect leaked implementation mechanics'
 grep -Fq 'legitimate caller decision' "$api_review" || fail 'api-review can mistake requirement policy for caller burden'
 grep -Fq 'Defer a distinct ownership or dependency-direction question' "$api_review" || fail 'api-review does not separate caller burden from structural placement'
+grep -Fq 'uses it independently of forwarding' "$api_review" || fail 'api-review does not trace callback or configuration source and use'
+grep -Fq 'Different implementations do not by themselves make the choice caller-owned' "$api_review" || fail 'api-review mistakes implementation variation for caller policy'
+grep -Fq 'stable caller context' "$api_review" || fail 'api-review does not compare static context with dynamic caller policy'
+grep -Fq 'first stateful cache, state, or render consumer' "$api_review" || fail 'api-review stops before downstream stateful consumers'
+grep -Fq 'failure → fallback → recovery' "$api_review" || fail 'api-review does not inspect recovery state transitions'
+grep -Fq 'selected axis or reachable evidence' "$api_review" || fail 'api-review performs downstream traversal without an ownership trigger'
+grep -Fq 'enough representative call sites' "$api_review" || fail 'api-review requires exhaustive callers before distinct patterns justify it'
+
+grep -Fq 'newly introduced or distributed ownership' "$architecture_review" || fail 'architecture-review ignores responsibility introduced or split by the change'
+grep -Fq 'stable responsibility boundary' "$test_review" || fail 'test-review does not anchor behavior at its stable owner'
+
+grep -Fq '## Judgment Priority' "$design_foundations" || fail 'design foundations lack conflict priority'
+grep -Fq 'Every layer, interface, helper, and file has carrying cost' "$design_foundations" || fail 'design foundations do not require structure to repay its cost'
+grep -Fq '## 7. Test Stable Responsibilities' "$design_foundations" || fail 'design foundations lack test ownership guidance'
+grep -Fq 'Name the observed burden before the design term' "$design_foundations" || fail 'design vocabulary can replace concrete evidence'
+if rg -q 'at most two (principles|questions)|maximum two (principles|questions)' "$design_foundations" "$review" "$api_review" "$architecture_review" "$code_review" "$test_review"; then
+  fail 'design review still imposes a fixed principle-count cap'
+fi
 
 if rg -q 'sb-worker|sb-explorer' "$manifest"; then
   fail 'plugin manifest still claims deprecated custom profiles'
