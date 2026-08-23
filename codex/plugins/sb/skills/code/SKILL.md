@@ -61,6 +61,7 @@ When a branch has concrete evidence, read [Feature Composition and Mechanism Pri
 
 ## Planning and Resuming
 
+- Every plan step must state both the action and why it is necessary. Use the reason to expose the intended outcome, dependency, risk, or verification value; do not merely restate the action in different words.
 - Planning-only and implementation requests follow the same routing and validation or investigation. Produce the selected workflow's Fast, Deep, or Ultra planning presentation; do not make an ordinary preliminary plan first. A selected PoC instead uses its execution note and starts without a canonical plan or approval step.
 - For a clear Fast implementation request, use the Fast workflow's **Inline Fast Note** only when every trivial-change criterion holds. Otherwise present its structured Fast Plan. Either form is **router-authorized**: present it, then continue in the same turn without a second approval.
 - An Inline Fast Note is an execution notice, not a canonical plan, and never satisfies a planning-only request. Keep every structured Fast Plan, Deep Plan, or Ultra Plan in the conversation as the canonical plan; do not create a second plan artifact merely because implementation will happen later.
@@ -75,6 +76,12 @@ When a branch has concrete evidence, read [Feature Composition and Mechanism Pri
 ## Conditional Decision Dialogue
 
 Deep and Ultra planning may use the shared [Decision Dialogue](references/decision-dialogue.md) state machine. Workflow tier alone never triggers dialogue: `architecture-plan` returns `ready` immediately only when no unresolved discoverable prerequisite and no eligible frontier remain, or `needs-decisions` for Main to investigate a prerequisite or relay a non-empty frontier. Main owns the user interaction and fixed Outcome Contract; answers returned by decision ID are planning inputs, not plan approval. Present and approve the complete `ready` plan once, then preserve Fast's existing path and review-selection rules.
+
+## Evidence-Backed Collaboration
+
+- Treat a user's challenge, objection, or proposed correction as evidence to evaluate, not a conclusion to echo. Reconcile it against the current code, execution results, documented constraints, and concrete tradeoffs before responding.
+- When the challenge changes the judgment, say which evidence changed it and update the plan. When it does not, disagree directly, name the specific cost or risk, and recommend the better-supported path. State uncertainty at its actual level instead of manufacturing agreement or confidence.
+- After giving the evidence and recommendation, follow the user's final direction when it remains within the Outcome Contract, safety constraints, and granted authority.
 
 ## Routing Decision
 

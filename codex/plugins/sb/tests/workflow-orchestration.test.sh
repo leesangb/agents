@@ -23,6 +23,8 @@ fail() {
 grep -Fq 'Main dynamically owns orchestration' "$router" || fail 'router does not give Main dynamic orchestration ownership'
 grep -Fq 'built-in `explorer` and `worker`' "$router" || fail 'router does not make built-in execution roles the default'
 grep -Fq 'only custom execution profile is `sb-thinker`' "$router" || fail 'router does not retain thinker as the only custom profile'
+grep -Fq 'Every plan step must state both the action and why it is necessary' "$router" || fail 'plan steps do not expose their rationale'
+grep -Fq 'evidence to evaluate, not a conclusion to echo' "$router" || fail 'user objections can trigger reflexive agreement'
 
 for workflow in "$deep" "$ultra"; do
   grep -Fq 'Main decides whether to work directly or delegate' "$workflow" || fail "Main cannot choose direct or delegated work in $workflow"
