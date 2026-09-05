@@ -32,7 +32,7 @@ Deep produces an evidence-backed detailed plan, one single-writer implementation
 - **Built-in `explorer` with `$sb:analyze`**: is the default delegated read-only investigation role when a separate pass is useful; investigation is not a mandatory handoff.
 - **`sb-thinker` with `$sb:architecture-plan`**: is an optional materially distinct read-only high-reasoning planner. Main may author the plan directly. When delegated, reuse the planning thread while resolving the same design tree, never reuse it for review, and start fresh after a material reframe or stale evidence.
 - **Main or a built-in `worker` with `$sb:implement`**: becomes the single writer for source and tests, including every fix iteration. Main chooses once and preserves single-writer ownership.
-- **`$sb:review-with-subagents`**: owns reviewer selection, fresh read-only thinker spawning, waiting, and aggregation for concrete questions supported by the implementation diff.
+- **`$sb:review-with-subagents`**: owns reviewer selection, the fixed review envelope, fresh read-only reviewer and auditor spawning, bounded adversarial validation, waiting, and aggregation for concrete questions supported by the implementation diff.
 
 ## Decision Dialogue
 
@@ -75,13 +75,14 @@ Workflow tier alone never triggers dialogue.
 
 5. Verify and review the implementation.
    - Run targeted tests, typecheck, and lint, then broaden only for shared modules, public contracts, or cross-runtime behavior.
-   - Invoke `$sb:review-with-subagents` with the **Deep** profile and actual diff/verification evidence. It owns the selection ledger and all reviewer selection, spawning, waiting, and aggregation rules.
-   - When task notes are active, pass the same exact `state_path` and only explicit checkpoint/artifact paths relevant to review. If the skill returns `reviewers: none`, record its closing verification evidence and skip the review/fix loop.
+   - Invoke `$sb:review-with-subagents` with the **Deep** profile and actual diff/verification evidence. It owns the selection ledger and all reviewer selection, artifact-freeze, adversarial-validation, spawning, waiting, and aggregation rules.
+   - When task notes are active, pass the same exact `state_path` and only explicit checkpoint/artifact paths relevant to review. If the skill returns `reviewers: none`, record its closing verification evidence and skip the review/fix loop. If it returns `review_status: unresolved`, do not generate a fix packet; gather the named evidence or report the unresolved disagreement.
    - Do not add a separate simplification pass on this path.
    - Every blocker must include a reachable trigger path or observed failing behavior.
 
 6. Fix and converge with a hard cap.
    - When review is invoked, **Round 1** is the first post-implementation review. Each round consists of one review invocation, an optional single scoped fix packet to the same writer with `$sb:implement`, and the affected checks after that fix.
+   - A review invocation may contain the review skill's bounded two-pass reviewer-auditor exchange. That inner exchange never edits the artifact and does not consume another post-implementation review/fix round.
    - Re-review only the changed concern in the next round unless the fix materially changes the risk shape.
    - Run no more than **three post-implementation review/fix rounds total**. Round 3 may apply its fix packet and let Main verify the affected checks, but it must not trigger a fourth reviewer invocation. If that evidence cannot close a blocker without another review, report the blocker as unresolved.
    - If a finding would change the Outcome Contract, scope, or a contract-shaping decision, log a blocking contract deviation and return it to Main for replanning instead of adapting it in the fix packet.
@@ -92,7 +93,7 @@ Workflow tier alone never triggers dialogue.
    - State that Deep was selected and name the decisive uncertainty or cross-seam signal.
    - Report whether the immediate `ready` path was used or how many bounded dialogue rounds were needed; unresolved frontier expansion that caused Ultra rerouting is a routing result, not a hidden decision.
    - Summarize material implementation choices and contract deviations; when task notes were active, use the resolved state and name the exact resolved task/state paths.
-   - Report the reviewer selection ledger, including `reviewers: none` when no positive gate passed.
+   - Report the reviewer selection ledger and review status, including `reviewers: none` or `review_status: unresolved` when applicable.
    - Report only the learning path returned by `$capture-learning`, or `none`; keep task state as bounded local history.
 
 ## Deep Plan Format
@@ -161,7 +162,7 @@ Presentation, approval, waiting, and later resumption of this canonical plan fol
 ## Guardrails
 
 - Do not let investigation become permission for unrelated cleanup.
-- Do not create a reviewer-of-reviewers layer; Main aggregates the selected reviewer findings directly.
+- Use only the one centralized, non-recursive audit layer owned by `$sb:review-with-subagents`; Main and callers must not add another reviewer-of-reviewers layer.
 - Do not weaken types, assertions, tests, trust-boundary validation, security checks, accessibility, or data-loss prevention to converge.
 - Do not commit user changes or create commits unless the user or repository workflow explicitly requests it.
 - Do not treat file count alone as complexity; follow the uncertainty and risk that selected this workflow.

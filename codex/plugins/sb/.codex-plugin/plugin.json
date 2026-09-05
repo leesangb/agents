@@ -1,7 +1,7 @@
 {
   "name": "sb",
-  "version": "0.1.0+codex.20260823184146",
-  "description": "Portable code-change workflows and evidence-gated review capabilities for Codex.",
+  "version": "0.1.0+codex.20260827150235",
+  "description": "Portable code-change workflows and packet-adjudicated review capabilities for Codex.",
   "author": {
     "name": "Local developer"
   },
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "SB",
     "shortDescription": "Portable code workflow capabilities",
-    "longDescription": "Compose Fast, Deep, Ultra, and PoC code-change workflows under dynamic Main orchestration. Built-in worker and explorer roles are the execution defaults; the custom read-only sb-thinker remains available for high-reasoning planning and review. Fast and PoC semantics remain unchanged.",
+    "longDescription": "Compose Fast, Deep, Ultra, and PoC code-change workflows under dynamic Main orchestration. Specialist reviewers produce self-contained evidence packets after Main verification; a bounded packet-only auditor adjudicates them before findings can drive fixes.",
     "developerName": "Local developer",
     "category": "Developer Tools",
     "capabilities": [],

@@ -31,8 +31,7 @@ Ultra produces an evidence-backed plan, one implementation, evidence-gated indep
 - **Built-in `explorer` with `$sb:analyze`**: is the default delegated read-only investigation role when a separate pass is useful. It does not implement.
 - **`sb-thinker` with `$sb:architecture-plan`**: is an optional materially distinct read-only high-reasoning planner. Main may author the plan directly. When delegated, it quotes Main's fixed Outcome Contract and already-resolved decisions unchanged, returns the tagged planning result, and is never reused for review.
 - **Main or a built-in `worker` with `$sb:implement`**: becomes the single writer for code and tests, including every fix iteration. Main chooses once and preserves single-writer ownership.
-- **`$sb:review-with-subagents`**: owns reviewer selection, fresh read-only thinker spawning, waiting, and aggregation for concrete questions supported by a plan or diff.
-- **`sb-thinker` with `$sb:simplify-review`**: provides a read-only simplification review only when substantive implementation leaves a concrete abstraction, duplication, residue, or complexity question. Its detailed checking criteria remain separate from the shared review roster.
+- **`$sb:review-with-subagents`**: owns reviewer selection, the fixed review envelope, fresh read-only reviewer and auditor spawning, bounded adversarial validation, waiting, and aggregation for concrete questions supported by a plan or diff. Under the Ultra profile it also owns the separately gated `$sb:simplify-review` pass outside the regular reviewer cap.
 
 ## Decision Dialogue
 
@@ -98,14 +97,12 @@ no-dialogue path.
 
 7. Verify and review the implemented diff.
    - Run targeted tests, typecheck, and lint, then broaden for shared modules, public contracts, migrations, or cross-runtime behavior.
-   - Invoke `$sb:review-with-subagents` with the **Ultra** profile and the actual diff, risk context, and verification evidence. It owns the selection ledger and all reviewer selection, spawning, waiting, and aggregation rules.
-   - When task notes are active, pass the same exact `state_path` and only explicit checkpoint/artifact paths relevant to review. If the skill returns `reviewers: none`, record its closing verification evidence.
-   - Run one fresh `sb-thinker` with `$sb:simplify-review` only when the diff supplies both a concrete simplification trigger—such as a new abstraction, duplicate state/path, transitional residue, or material complexity—and a question not answered by verification. Record both before spawning; otherwise record it as skipped. Keep this pass outside the Ultra review cap.
+   - Invoke `$sb:review-with-subagents` with the **Ultra** profile and the actual diff, risk context, and verification evidence. It owns the selection ledger and all reviewer selection, the separately gated simplifier outside the regular cap, artifact-freeze, adversarial-validation, spawning, waiting, and aggregation rules.
+   - When task notes are active, pass the same exact `state_path` and only explicit checkpoint/artifact paths relevant to review. If the skill returns `reviewers: none`, record its closing verification evidence. If it returns `review_status: unresolved`, do not generate a fix packet; gather the named evidence or report the unresolved disagreement.
    - Every blocker must include a reachable trigger path or observed failing behavior.
 
 8. Fix and converge.
-   - Main uses the review skill's deduplicated findings and sends one scoped blocker packet back to the same writer with `$sb:implement` only when actionable blockers remain.
-   - If `$sb:simplify-review` identifies a material finding, include it in that packet; after the fix and affected checks, use a fresh thinker to re-review only the changed simplification concern.
+   - Main uses the review skill's adversarially validated, deduplicated findings—including any validated simplification finding—and sends one scoped blocker packet back to the same writer with `$sb:implement` only when actionable blockers remain.
    - The same writer applies the packet, updates Outcome Contract progress and deviations, and returns fresh evidence.
    - Re-run affected tests and runtime checks after each fix.
    - Re-review only the changed concern unless the fix materially changes the diff's risk shape.
@@ -120,7 +117,7 @@ no-dialogue path.
    - State that Ultra was selected and name the decisive high-cost or coordination signal.
    - Report whether the immediate `ready` path was used and, when dialogue occurred, how many frontier rounds were required.
    - Summarize material implementation choices and contract deviations, including any decision that was reopened; when task notes were active, use the resolved state and name the exact resolved task/state paths.
-   - Report the reviewer selection ledger, including `reviewers: none` and a skipped simplification pass when their positive gates did not pass.
+   - Report the reviewer selection ledger and review status, including `reviewers: none`, `review_status: unresolved`, and a skipped simplification pass when applicable.
    - Report only the learning path returned by `$capture-learning`, or `none`; keep task state as bounded local history rather than a durable report.
    - Mention unresolved risks or assumptions without generating a separate report unless the user asked for one.
 
@@ -190,7 +187,7 @@ Presentation, approval, waiting, and later resumption of this canonical plan fol
 ## Guardrails
 
 - Do not let investigation become permission for unrelated cleanup.
-- Do not create a reviewer-of-reviewers layer. Delegate reviewer selection to `$sb:review-with-subagents`; Main aggregates findings directly.
+- Use only the one centralized, non-recursive audit layer owned by `$sb:review-with-subagents`; Main and callers must not add another reviewer-of-reviewers layer.
 - Do not weaken types, assertions, tests, trust-boundary validation, security checks, accessibility, or data-loss prevention to converge.
 - Do not commit user changes or create commits unless the user or repository workflow explicitly requests it.
 - Do not treat file count alone as complexity; follow the risk and uncertainty that selected this workflow.

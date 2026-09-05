@@ -5,7 +5,7 @@ description: Review whether tests protect changed observable behavior at the cor
 
 # Test Review
 
-Review test strategy and existing tests without adding tests. Return concrete findings first, then useful coverage; do not edit files or post comments.
+Review test strategy and existing tests without adding or executing tests. Inspect only source, existing tests, and verification evidence supplied by Main; do not run tests, builds, linters, typecheckers, benchmarks, applications, or other verification commands. Return concrete findings first, then useful coverage; do not edit files or post comments.
 
 ## Review questions
 

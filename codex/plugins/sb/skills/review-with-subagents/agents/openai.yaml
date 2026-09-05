@@ -1,4 +1,4 @@
 interface:
   display_name: "sb:review-with-subagents"
-  short_description: "Evidence-gated specialist review workflow"
-  default_prompt: "Use $sb:review-with-subagents to identify concrete review questions and spawn only capabilities whose positive gates pass."
+  short_description: "Packet-adjudicated specialist review"
+  default_prompt: "Use $sb:review-with-subagents to select evidence-backed specialist reviews, collect self-contained reviewer packets, and adjudicate them without duplicate test execution or auditor repository access."
