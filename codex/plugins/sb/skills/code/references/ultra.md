@@ -72,7 +72,7 @@ no-dialogue path.
    - Reuse the same planning thinker while resolving the same design tree. After a material reframe or stale evidence, start a fresh planner with the updated contract and evidence. Never reuse a planning thinker for review.
    - Label material decisions in the design tree as `contract-shaping` or `implementation recommendation`; omit trivial local choices and raw exploration. A contract-shaping choice is fixed only by Main from user answers and evidence, never by the thinker.
    - Answers are planning inputs, not approval. When the result is `ready`, Main fixes the final contract snapshot, verifies and presents the complete plan once for explicit approval before implementation. If a new contract-shaping decision or evidence meets a reopen condition, Main updates the next snapshot before continuing.
-   - List behavior tests by test file and identify the first tracer-bullet behavior.
+   - Identify existing verification and any missing behavior protection. List tests by file when relevant; identify a first behavior test only when a new test is needed.
    - For an expensive-to-reverse plan decision, load `$sb:review-with-subagents` and apply its **Plan Review** profile. Plan Review is an Ultra-only profile.
 
 5. Present and confirm the Ultra plan.
@@ -89,14 +89,14 @@ no-dialogue path.
    - Activate durable task notes only when work is expected to cross sessions or explicitly needs durable resume. When active, Main first runs `${CODEX_HOME:-$HOME/.codex}/bin/sb-notes init` for a new task or `resolve --task-path <exact-task-path>` for resume, then passes its returned absolute `task_path` and `state_path` unchanged to the writer. Use those exact paths through every fix, review, resume, and final report; never derive a replacement from the current worktree.
    - The writer holds the Outcome Contract fixed while treating the Recommended Implementation Outline as guidance, and may adjust internal files, seams, order, reversible prefactors, and test placement when the contract and verification meaning remain intact.
    - When task notes are active, the writer reads only the caller-provided `state_path` by default, compares it with live evidence, atomically replaces bounded state through the helper, and appends typed checkpoints. When inactive, it performs no task-state operations. Never inspect, migrate, or modify the legacy repository singleton.
-   - Follow vertical TDD when behavior changes: one behavior test, minimal implementation, green, then the next behavior.
+   - Follow `$sb:implement` for test necessity: use existing checks first and add behavior tests only for missing protection or an explicit request. Use vertical TDD when a behavior test is needed.
    - When the router recorded a positive composition branch, read [Feature Composition and Mechanism Primitives](composition.md), preserve its feature-composition versus mechanism-emergence distinction, and implement and test the approved evidence.
    - When task notes are active, record Outcome Contract progress, non-obvious implementation decisions, verification evidence, and material departures from the Recommended Implementation Outline in the resolved task state.
    - When changing an implementation recommendation while preserving the Outcome Contract, retain its rationale and rejected alternatives as context, log the reason when non-obvious, and continue without approval.
    - If a discovery would change the requested outcome or intent, observable behavior or completion meaning, an explicit constraint or invariant, scope boundary, material exception, or any contract-shaping decision, log it as a blocking contract deviation and return it to Main. For a contract-shaping decision, report the evidence and whether its reopen condition appears met; meeting it triggers Main reconsideration but never authorizes the writer to change the decision. Main reopens investigation, Decision Dialogue, Wayfinder, thinker planning, or final confirmation as appropriate before implementation continues.
 
 7. Verify and review the implemented diff.
-   - Run targeted tests, typecheck, and lint, then broaden for shared modules, public contracts, migrations, or cross-runtime behavior.
+   - Follow `$sb:implement` for proportionate verification: run relevant checks and required project checks, then broaden or repeat only for new changes, failures, or unresolved concerns. Include migration, public-contract, and runtime evidence when needed to establish the Outcome Contract.
    - Invoke `$sb:review-with-subagents` with the **Ultra** profile and the actual diff, risk context, and verification evidence. It owns the selection ledger and all reviewer selection, the separately gated simplifier outside the regular cap, artifact-freeze, adversarial-validation, spawning, waiting, and aggregation rules.
    - When task notes are active, pass the same exact `state_path` and only explicit checkpoint/artifact paths relevant to review. If the skill returns `reviewers: none`, record its closing verification evidence. If it returns `review_status: unresolved`, do not generate a fix packet; gather the named evidence or report the unresolved disagreement.
    - Every blocker must include a reachable trigger path or observed failing behavior.
@@ -111,19 +111,13 @@ no-dialogue path.
    - Stop and return to the user only when the Outcome Contract must change, fixes oscillate, the same blocker repeats without new evidence, an external dependency prevents progress, or continuing would require new authority or scope.
 
 9. Report.
-   - Lead with the outcome, then evidence and detail.
-   - Summarize behavior, important decisions, observable tests and final status, review fixes, and runtime evidence.
-   - Report exact commands and results, including failures and unrun checks.
-   - State that Ultra was selected and name the decisive high-cost or coordination signal.
-   - Report whether the immediate `ready` path was used and, when dialogue occurred, how many frontier rounds were required.
-   - Summarize material implementation choices and contract deviations, including any decision that was reopened; when task notes were active, use the resolved state and name the exact resolved task/state paths.
-   - Report the reviewer selection ledger and review status, including `reviewers: none`, `review_status: unresolved`, and a skipped simplification pass when applicable.
-   - Report only the learning path returned by `$capture-learning`, or `none`; keep task state as bounded local history rather than a durable report.
-   - Mention unresolved risks or assumptions without generating a separate report unless the user asked for one.
+   - Follow the router's [Reporting](../SKILL.md#reporting) guidance. Include material implementation decisions, contract deviations or reopened decisions, review findings/fixes, and any unresolved review or verification gap. Use resolved task state when active; include its exact paths only when useful for follow-up. Do not generate a separate report unless requested.
 
 ## Ultra Plan Format
 
 Main must present this structure in the conversation before implementation. Use concise sections, concrete file or seam references, and behavior language.
+
+Always include the Outcome Contract, relevant confirmed facts, Recommended Implementation Outline, and Verification so the user has an overview before approval. Include the other sections and optional fields only when they carry relevant information; omit empty sections rather than filling them with `None` or `None material`. Omitting inapplicable fields does not make the plan incomplete.
 
 Render the `Recommended Implementation Outline` using [Implementation Outline Blueprint](implementation-outline.md). Keep the other sections in ordinary prose and bullets.
 
@@ -137,7 +131,7 @@ Render the `Recommended Implementation Outline` using [Implementation Outline Bl
 - Observable behavior and completion evidence:
 - Constraints and invariants to preserve:
 - Explicitly out of scope:
-- Implementation-relevant exceptions or negative evidence: write `None material` when none
+- Implementation-relevant exceptions or negative evidence, when present
 
 ### Confirmed Facts
 
@@ -149,13 +143,13 @@ Render the `Recommended Implementation Outline` using [Implementation Outline Bl
 - `[contract-shaping]` decision — chosen direction, evidence-backed rationale, rejected alternative, and reopen condition; never writer-adaptable, with the condition serving only as a trigger to return evidence to Main for reconsideration
 - `[implementation recommendation]` decision — recommended direction, evidence-backed rationale, rejected alternative, and reconsideration signal; adaptable when the Outcome Contract remains intact
 - Include user decisions confirmed through Decision Dialogue when present
-- Write `None material` when no decision needs this context
+- Omit this section when no material decision needs this context
 
 ### Feature Assembly and Composition Evidence
 
 - Desired top-level call:
 - Existing capabilities and requirement-owned policy:
-- Positive branch(es) and evidence, or `None`:
+- Positive branch(es) and evidence, when present:
 - Existing mechanism(s) to reuse:
 - New mechanism candidate and independent obligation, when any:
 - Seam consequence and dependency direction:
@@ -168,7 +162,7 @@ Render the `Recommended Implementation Outline` using [Implementation Outline Bl
 
 ### Tests
 
-- `path/to/test` (new or existing, placement adaptable) — mark the tracer bullet
+- `path/to/test` (existing coverage or a justified addition, placement adaptable)
   - observable behavior
   - When composition evidence exists, cover mechanism behavior through its interface and requirement policy at the composition layer.
 

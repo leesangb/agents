@@ -140,7 +140,13 @@ Do not guess that a task is small. If the main agent cannot name the target, exp
 - Prefer Fast when the evidence satisfies its interface. Do not use Deep or Ultra merely because more agents are available.
 - If a Fast task reveals a Deep signal before completion, stop expanding the Fast path, return to this router, and continue with Deep; if it reveals an Ultra signal, continue with Ultra.
 - If a PoC reveals an Ultra signal, changes its experiment question or safety boundary, or receives a keep/ship/productionize/harden request, stop the experiment and return to this router. Do not silently promote or widen it.
-- State the selected path and the decisive routing evidence in the final response.
+- Mention the selected path and decisive routing evidence in the final response only when they explain a material decision, limitation, or next step.
+
+## Reporting
+
+Lead with the outcome, then the verification that supports it and any unresolved risks or required checks that could not run. Include changed files, commands, and implementation details when they help the user assess the result. Routine successful checks may be summarized; retain exact commands and results in implementation/review handoffs and active task state. Never hide a failure or missing completion evidence to shorten the report.
+
+Include workflow names, dialogue counts, reviewer selection ledgers, skipped passes, and task-state paths only when they explain a material decision, limitation, or next step, or the user asks for them. Report a learning path only when a learning was actually captured. Omit empty sections and `none` placeholders. Preserve required internal review statuses and evidence packets; the final user-facing report need not repeat their administrative fields.
 
 ## Quick Examples
 

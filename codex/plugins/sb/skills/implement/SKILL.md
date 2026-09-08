@@ -16,7 +16,7 @@ Implement the approved plan as the single writer for source and tests. The calle
 
 ## Implementation rules
 
-- Follow existing patterns and keep changes narrowly scoped. Use vertical TDD for behavior changes: one observable test, minimal implementation, green, then continue.
+- Follow existing patterns and keep changes narrowly scoped. Run the existing relevant tests or deterministic checks first. Add or update a test only when they do not protect the changed observable behavior, or the user explicitly requests one; avoid tests that merely mirror the implementation. When a behavior test is needed, use vertical TDD: one observable test, minimal implementation, green, then continue.
 - Preserve trust-boundary validation, assertions, types, security, accessibility, data-loss prevention, error handling, and performance-sensitive behavior.
 - Reuse existing mechanisms for feature composition. Extract a new primitive only when the approved plan identifies its independent obligation; otherwise retain the existing seam and record that evidence.
 - A simpler internal seam, file, order, or test placement is allowed only when the contract and verification meaning remain intact. Record non-obvious departures and their rationale in the notes.
@@ -26,4 +26,6 @@ Implement the approved plan as the single writer for source and tests. The calle
 
 ## Completion
 
-Run targeted tests, typecheck, and lint; broaden checks for shared/public/cross-runtime changes. Report exact commands and results, changed files/behavior, deviations, unverified checks, and unresolved blockers. When durable task state is active, update the caller-provided bounded state and append a final checkpoint after verification; capture a durable learning only when it is plausibly expensive to rediscover.
+Run the tests or deterministic checks that establish the requested behavior. Run typecheck and lint when applicable to the changed surface, and complete required project checks. After checks pass, broaden or repeat them only when new changes, failures, or unresolved concerns justify it; shared/public/cross-runtime impact informs that judgment rather than automatically requiring a wider suite.
+
+Return exact verification commands and results, changed behavior, and any material deviations, unverified required checks, or unresolved blockers to the caller. When durable task state is active, update the caller-provided bounded state and append a final checkpoint after verification; capture a durable learning only when it is plausibly expensive to rediscover. For a user-facing final response, follow the router's [Reporting](../code/SKILL.md#reporting) guidance.

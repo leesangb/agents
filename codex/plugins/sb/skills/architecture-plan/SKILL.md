@@ -28,14 +28,14 @@ Return exactly one top-level result, never a mixture of both:
 
 ## Output
 
-For a `ready` result, return the `ready` tag followed by these sections, in this order:
+For a `ready` result, return the `ready` tag followed by the applicable sections below, in this order. Always retain the fixed Outcome Contract, relevant confirmed facts, implementation overview, and verification needed for approval. Omit inapplicable sections rather than adding empty placeholders.
 
 1. The caller-provided fixed Outcome Contract snapshot quoted unchanged.
 2. Confirmed facts with `path:line` or runtime evidence, plus separate inferences and unavailable evidence.
 3. Material Decision Context labeled `[contract-shaping]` or `[implementation recommendation]`.
-4. `Feature Assembly and Composition Evidence` from the shared reference, or `None` when no positive branch was supplied.
+4. `Feature Assembly and Composition Evidence` from the shared reference when a positive branch was supplied.
 5. A Recommended Implementation Outline rendered as the shared shallow module/interface/responsibility blueprint, with likely seams/files, responsibility placement, dependency direction, preserved paths, intentional non-calls, and reversible prefactors when material. Mark the outline adaptable unless the contract fixes it.
-6. Tests grouped by likely file (placement adaptable), one observable behavior per bullet, including primitive-interface and composition tests when both layers exist.
+6. Relevant existing tests and justified additions grouped by likely file (placement adaptable), one observable behavior per bullet. Add tests only for changed behavior not protected by existing verification or an explicit request; cover primitive and composition responsibilities when affected. Omit this section when deterministic checks in Verification suffice.
 7. Verification commands and runtime/integration evidence.
 
 Keep the plan concise, evidence-backed, and explicit about what the designated writer may change without approval.

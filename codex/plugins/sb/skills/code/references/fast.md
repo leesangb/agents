@@ -35,9 +35,10 @@ If any of these becomes unknown, or a Deep or Ultra signal appears, stop and ret
    - Keep the change bounded to the Outcome Contract and use existing seams and patterns.
 
 3. Verify the result.
+   - Use existing relevant tests or deterministic checks first. Add or update tests only for changed observable behavior they do not protect, or when explicitly requested; avoid tests that merely mirror the implementation.
    - Run the focused test or deterministic check that proves the requested behavior.
-   - Run targeted typecheck and lint when available.
-   - Broaden verification only when the changed code is shared or widely imported.
+   - Run targeted typecheck and lint when applicable to the changed surface, and complete required project checks.
+   - After checks pass, broaden or repeat them only for new changes, failures, or unresolved concerns; shared or widely imported code may justify additional coverage.
    - For deterministic mechanical changes, verify the transformation and check for missed or stale occurrences.
 
 4. Fix and converge.
@@ -47,10 +48,7 @@ If any of these becomes unknown, or a Deep or Ultra signal appears, stop and ret
    - Do not start an unrelated cleanup pass.
 
 5. Report.
-   - Lead with the outcome.
-   - List changed behavior and files, exact checks and results, and any unverified item.
-   - State that Fast was selected and name the decisive execution-ready evidence.
-   - Report only the learning path returned by `$capture-learning`, or `none`.
+   - Follow the router's [Reporting](../SKILL.md#reporting) guidance: outcome, relevant verification, and any unresolved issue. Omit procedural fields that do not help assess the result.
 
 ## Fast Presentation
 

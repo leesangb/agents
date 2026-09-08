@@ -69,12 +69,12 @@ Workflow tier alone never triggers dialogue.
    - Main decides whether to implement directly or delegate to the built-in `worker`. Keep source and test edits with that same writer through all iterations.
    - Activate durable task notes only when work is expected to cross sessions or explicitly needs durable resume. When active, Main first runs `${CODEX_HOME:-$HOME/.codex}/bin/sb-notes init` for a new task or `resolve --task-path <exact-task-path>` for resume, then passes its returned absolute `task_path` and `state_path` unchanged to the writer. On every fix, review, resume, and report, reuse those exact paths rather than deriving them from the current worktree.
    - When task notes are active, the writer reads only the caller-provided `state_path` by default, compares it with live evidence, atomically replaces bounded state through the helper, and appends typed checkpoints. When inactive, it performs no task-state operations. Never inspect, migrate, or modify the legacy repository singleton.
-   - Follow vertical TDD where behavior changes: one observable behavior, minimal implementation, green, then the next behavior.
+   - Follow `$sb:implement` for test necessity: use existing checks first and add behavior tests only for missing protection or an explicit request. Use vertical TDD when a behavior test is needed.
    - When the router recorded a positive composition branch, read [Feature Composition and Mechanism Primitives](composition.md), preserve its feature-composition versus mechanism-emergence distinction, and implement and test the approved evidence.
    - When task notes are active, record non-obvious choices, contract-preserving departures from the recommended outline, and verification evidence in the resolved task state.
 
 5. Verify and review the implementation.
-   - Run targeted tests, typecheck, and lint, then broaden only for shared modules, public contracts, or cross-runtime behavior.
+   - Follow `$sb:implement` for proportionate verification: run relevant checks and required project checks, then broaden or repeat only for new changes, failures, or unresolved concerns.
    - Invoke `$sb:review-with-subagents` with the **Deep** profile and actual diff/verification evidence. It owns the selection ledger and all reviewer selection, artifact-freeze, adversarial-validation, spawning, waiting, and aggregation rules.
    - When task notes are active, pass the same exact `state_path` and only explicit checkpoint/artifact paths relevant to review. If the skill returns `reviewers: none`, record its closing verification evidence and skip the review/fix loop. If it returns `review_status: unresolved`, do not generate a fix packet; gather the named evidence or report the unresolved disagreement.
    - Do not add a separate simplification pass on this path.
@@ -88,17 +88,13 @@ Workflow tier alone never triggers dialogue.
    - If a finding would change the Outcome Contract, scope, or a contract-shaping decision, log a blocking contract deviation and return it to Main for replanning instead of adapting it in the fix packet.
 
 7. Report.
-   - Lead with the outcome, then changed behavior, files, review findings and fixes, observable evidence, and unresolved risks.
-   - List exact commands and results, including failures and checks that could not run.
-   - State that Deep was selected and name the decisive uncertainty or cross-seam signal.
-   - Report whether the immediate `ready` path was used or how many bounded dialogue rounds were needed; unresolved frontier expansion that caused Ultra rerouting is a routing result, not a hidden decision.
-   - Summarize material implementation choices and contract deviations; when task notes were active, use the resolved state and name the exact resolved task/state paths.
-   - Report the reviewer selection ledger and review status, including `reviewers: none` or `review_status: unresolved` when applicable.
-   - Report only the learning path returned by `$capture-learning`, or `none`; keep task state as bounded local history.
+   - Follow the router's [Reporting](../SKILL.md#reporting) guidance. Include material implementation decisions, contract deviations, review findings/fixes, and any unresolved review or verification gap. Use resolved task state when active; include its exact paths only when useful for follow-up.
 
 ## Deep Plan Format
 
 Main must present this structure in the conversation before implementation. Use concise sections, concrete file or seam references, and behavior language.
+
+Always include the Outcome Contract, relevant confirmed facts, Recommended Implementation Outline, and Verification so the user has an overview before approval. Include the other sections and optional fields only when they carry relevant information; omit empty sections rather than filling them with `None` or `None material`. Omitting inapplicable fields does not make the plan incomplete.
 
 Render the `Recommended Implementation Outline` using [Implementation Outline Blueprint](implementation-outline.md). Keep the other sections in ordinary prose and bullets.
 
@@ -112,7 +108,7 @@ Render the `Recommended Implementation Outline` using [Implementation Outline Bl
 - Observable behaviour and completion evidence:
 - Constraints and invariants to preserve:
 - Explicitly out of scope:
-- Implementation-relevant exceptions or negative evidence: write `None material` when none
+- Implementation-relevant exceptions or negative evidence, when present
 
 ### Confirmed Facts
 
@@ -124,13 +120,13 @@ Render the `Recommended Implementation Outline` using [Implementation Outline Bl
 - `[contract-shaping]` decision — chosen direction, evidence-backed rationale, rejected alternative, and reopen condition; never writer-adaptable
 - `[implementation recommendation]` decision — recommended direction, evidence-backed rationale, rejected alternative, and reconsideration signal; adaptable when the Outcome Contract remains intact
 - Include user decisions confirmed before plan approval when present
-- Write `None material` when no decision needs this context
+- Omit this section when no material decision needs this context
 
 ### Feature Assembly and Composition Evidence
 
 - Desired top-level call:
 - Existing capabilities and requirement-owned policy:
-- Positive branch(es) and evidence, or `None`:
+- Positive branch(es) and evidence, when present:
 - Existing mechanism(s) to reuse:
 - New mechanism candidate and independent obligation, when any:
 - Seam consequence and dependency direction:
@@ -143,7 +139,7 @@ Render the `Recommended Implementation Outline` using [Implementation Outline Bl
 
 ### Tests
 
-- `path/to/test` (new or existing, placement adaptable) — mark the tracer bullet
+- `path/to/test` (existing coverage or a justified addition, placement adaptable)
   - observable behaviour
   - When composition evidence exists, cover mechanism behavior through its interface and requirement policy at the composition layer.
 
