@@ -4,7 +4,7 @@ Use these ideas as tools for a concrete design question, not as a checklist or d
 
 For each applicable question, identify the current evidence, the smallest useful move, and a counter-signal that would make the move harmful. When evidence is absent, preserve the existing design.
 
-Good code shows the user's current task honestly with the fewest useful concepts and hides complex mechanics behind the place that can own them completely. Preserve necessary complexity that protects correctness; make every other layer, abstraction, and extension point earn its present cost.
+Good code shows the user's current task honestly with the fewest useful concepts and hides complex mechanics behind the place that can own them completely. Preserve necessary complexity that protects correctness. Keep other layers, abstractions, and extension points only when their current benefit justifies their implementation and maintenance cost.
 
 ## Judgment Priority
 
@@ -56,12 +56,12 @@ When principles pull in different directions, decide in this order:
 **Question:** What must callers know, and which module owns the relevant state, invariant, lifecycle, or mechanism?
 
 - Prefer a deep module: substantial useful behavior behind a small interface that includes all caller-visible obligations.
-- Push parsing mechanics, protocol details, ordering, cleanup, and state surgery into the lowest module that can own them completely.
+- Push parsing mechanics, protocol details, ordering, cleanup, and internal state updates into the lowest module that can own them completely.
 - Keep behavior with the state and invariants it changes; tell the owner the domain operation instead of reading its state and mutating it elsewhere.
 - Optimize for locality: a maintainer should find the behavior, knowledge, and verification in the smallest reasonable area.
 - Judge depth by caller leverage and hidden knowledge, not implementation size.
 
-**Counter-signals:** pass-through interfaces, similar call names repeated down a deep stack, helper shrapnel, callers reconstructing one operation, getter eradication that makes collaboration less clear, or a large module that merely mixes unrelated change axes.
+**Counter-signals:** pass-through interfaces, similar call names repeated down a deep stack, an operation fragmented across helpers that hide no implementation details, callers reconstructing one operation, getter eradication that makes collaboration less clear, or a large module that merely mixes unrelated change axes.
 
 ## 5. Extract From Evidence
 
@@ -102,7 +102,7 @@ When principles pull in different directions, decide in this order:
 
 - **Vertical slices and deep modules:** compose the use case vertically; deepen only mechanisms whose ownership and obligations are independently real.
 - **Transaction Script and richer domain structure:** begin with the direct request flow; move logic when stable invariants or repeated domain behavior reveal an owner.
-- **Ports and YAGNI:** isolate a real external conversation, not every dependency; a hypothetical variation does not earn a seam.
+- **Ports and YAGNI:** isolate a real external conversation, not every dependency. Do not add an interface solely to support a hypothetical variation.
 - **Types and contracts:** use types for constructible states and value precision; use assertions for obligations and guarantees the type system cannot express economically.
 - **Locality and separation:** colocate knowledge that changes together while keeping domain decisions separate from infrastructure effects.
 - **YAGNI and strategic design:** avoid future capability while continuing to simplify interfaces and keep present code easy to change.

@@ -60,7 +60,7 @@ no-dialogue path.
    - Recommend `$wayfinder` only when the effort is larger than one agent session **and** the path to the destination is still obscured by dependent investigations or decisions.
    - Do not use Wayfinder merely because implementation is large or time-consuming. If the destination and route are already clear, continue to the technical plan.
    - Explain why a shared map is needed and ask the user to confirm starting Wayfinder. Do not invoke it automatically.
-   - After the user confirms, name the destination first, chart the frontier on the configured issue tracker, and resolve no more than one ticket per session.
+   - After the user confirms, state the requested outcome, create tickets for unresolved investigations and decisions on the configured issue tracker, and resolve no more than one ticket per session.
    - Wayfinder is planning by default. Do not start implementation until the map has made the route clear and the resulting Ultra plan is confirmed.
    - Feed Wayfinder evidence and decisions back to Main; Main alone updates the Outcome Contract when the router's plan-update policy permits it.
 

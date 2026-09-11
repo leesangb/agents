@@ -1,6 +1,6 @@
 {
   "name": "sb",
-  "version": "0.1.0+codex.20260827150235",
+  "version": "0.1.0+codex.20260908143406",
   "description": "Portable code-change workflows and packet-adjudicated review capabilities for Codex.",
   "author": {
     "name": "Local developer"
