@@ -25,34 +25,8 @@ Judge simplicity by whether concepts can vary independently where requirements a
 
 ## Output
 
-Use the generic review envelope below so the orchestrator can audit the result. Preserve the simplification-specific fields rather than replacing them with a generic code-review suggestion.
+Return material findings ordered by provisional impact; Main owns final severity and disposition. For each include location, scoped-change relation when applicable, reachable trigger, consequence, checked counterevidence and provenance, the unnecessary work or concept, smallest correction, benefit and added cost, behavior-preservation evidence, and focused verification.
 
-For coupling findings, include the concepts, why their dependency is unnecessary, and the concrete change case in `Unnecessary work or concept`. Show the current dependency and proposed relationship in `Simpler shape` when that makes the issue clearer. Include reduced change scope and added costs; omit inapplicable fields and empty deferred sections. A whole-system dependency map or size score is not required.
+For coupling findings, explain which concepts need to vary independently, why the current dependency is unnecessary, and the concrete change case. A current/proposed relationship sketch is useful when it clarifies that claim. Omit inapplicable fields, empty deferred sections, whole-system maps, and size scores. Use stable finding IDs when participating in an audit exchange.
 
-```markdown
-axis | disposition | required artifacts complete/missing
-
-## Material Simplification Findings
-
-### [S1] Finding title
-- Location: `path:line`
-- Scoped-change relation: introduced | worsened | newly_exposed | pre_existing | unrelated | unknown
-- Reachable trigger:
-- Material consequence:
-- Strongest checked disconfirming evidence:
-- Evidence provenance:
-- Provisional severity:
-- Unnecessary work or concept:
-- Simpler shape:
-- Benefit and cost:
-- Behaviour-preservation evidence:
-- Verification:
-
-## Deferred Concerns
-- None
-
-## Result
-- No material simplification found.
-```
-
-Repeat finding blocks for material findings, order by impact, and end with `Material findings found: N` when findings exist. Use stable `S<number>` IDs across any audit response. Do not assign final severity or disposition, and do not report taste or pre-existing cleanup.
+If no material simplification survives the evidence bar, return a concise supported result. Do not report taste or pre-existing cleanup.

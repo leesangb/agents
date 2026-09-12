@@ -1,39 +1,16 @@
-# Implementation Outline Blueprint
+# Implementation Outline
 
-Use this reference when presenting the `Recommended Implementation Outline` in a Fast, Deep, or Ultra plan.
+Use a structural sketch when it helps explain responsibility, interfaces, or dependency changes. Prose or a short bullet is enough for a local edit.
 
-Keep the rest of the plan in ordinary prose and bullets. Render only the implementation outline as a shallow tree when the change has meaningful module, interface, responsibility, seam, or dependency structure. A single local edit may remain one concise bullet when a tree would add no clarity.
+Show the relevant modules or likely files, caller-visible obligations, ownership, and preserved constraints. Keep implementation mechanics adaptable unless the Outcome Contract fixes them. Choose a tree, before/after sketch, or another compact representation that explains the decision; no marker set or depth is required.
 
-Do not print a legend in the plan. Apply these markers directly where they carry information:
-
-- `=` preserves an existing module, interface, responsibility, or call path.
-- `~` extends an existing module, interface, responsibility, or composition point.
-- `+` introduces a new module, interface, responsibility, or dependency.
-- `×` intentionally excludes a call, dependency, mutation, or side effect.
-
-Make the blueprint describe:
-
-- modules and likely seams or files;
-- the interface each caller must know;
-- responsibility placement and ownership movement;
-- provider-to-consumer dependency direction;
-- preserved paths and intentional non-calls when they constrain the design.
-
-Keep the tree shallow, normally two to four levels. A marker on a parent applies to its subtree unless a child overrides it. Use a short inline note only for responsibility, rationale, or an invariant that the tree cannot express by structure alone.
-
-Do not turn the blueprint into a detailed call stack or pseudocode. Unless the Outcome Contract fixes them, omit internal algorithms, helper or hook choices, concrete state containers, exact event sequences, file splitting, and step-by-step control flow. Keep those choices adaptable for implementation.
-
-Prefer this shape:
+For example:
 
 ```text
-~ Existing module or composition point (`likely/path`)
-├─ interface: caller-visible obligation
-├─ responsibility: behavior owned behind the interface
-├─ + New collaborating module
-│  ├─ interface: smallest useful surface
-│  └─ responsibility: hidden behavior or lifecycle
-├─ = Existing downstream path
-└─ × Forbidden dependency or side effect
+Position capability
+  reads and changes page-level coordinates
+  reuses the existing movement command
+    preserves child movement and undo restoration
 ```
 
-Treat the entire outline as adaptable guidance unless the Outcome Contract explicitly fixes a node or relationship.
+Include intentional exclusions only when they constrain the design. Do not turn a planning illustration into an unnecessary commitment to helper names, file splits, or internal algorithms.

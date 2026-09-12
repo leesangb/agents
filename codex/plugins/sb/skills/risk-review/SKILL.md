@@ -15,4 +15,4 @@ Review the exact supplied scope read-only and return risks ordered by likelihood
 
 ## Output
 
-For each risk include precise evidence, the problem the change solves, the new failure mode, consequence, likelihood/impact, practical mitigation, and focused validation. Avoid speculative or style-only concerns.
+For each risk include precise location and evidence, the reachable failure mode, consequence, likelihood/impact, practical mitigation, and focused validation. Explain the problem the change solves when needed to judge the tradeoff. Avoid speculative or style-only concerns.

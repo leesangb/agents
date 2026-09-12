@@ -19,4 +19,4 @@ Review the exact changed scope and directly caused neighbors. Return draft findi
 
 ## Output
 
-Order findings by architectural risk. Include severity, precise location, reachable evidence, mixed axis/hidden concept/ownership/dependency issue, smallest structural improvement, logical boundary, behavior-preserving prefactor if needed, and verification. If no actionable finding remains, state why the structure is balanced.
+Order findings by architectural risk. Include provisional severity, precise location, reachable evidence, the ownership or dependency issue and its consequence, smallest structural improvement, and verification. Explain the logical boundary or a behavior-preserving prefactor when needed to understand the correction. If no actionable finding remains, state why the structure is balanced.

@@ -62,10 +62,11 @@ evidence; credible options; recommended answer and reason; plan consequence
 - Main returns the user's answers by decision ID to the same planning thinker.
   The thinker records them, recomputes the design tree, and returns `ready` or a
   new `needs-decisions` result. The thinker never addresses the user directly.
-- Deep asks at most three independent decisions per round and allows at most
-  two dialogue rounds. If any eligible frontier remains after round 2, or the
-  frontier keeps expanding or cannot fit one bounded implementation packet,
-  Main reroutes to Ultra.
+- Deep asks at most three independent decisions per round. Continue while
+  new evidence or answers make progress; there is no fixed round limit.
+  Reroute to Ultra when dependent investigations or decisions no longer fit
+  one bounded implementation plan. Repetition without new evidence follows
+  the stopping criteria in [Planning and Resuming](planning.md).
 - Ultra works the full currently eligible frontier round by round until the
   result is `ready` (subject to its Wayfinder and plan-review rules).
 - Reuse the same planning thinker while resolving the same design tree. Start a

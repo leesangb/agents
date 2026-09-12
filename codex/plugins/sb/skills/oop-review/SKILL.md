@@ -128,28 +128,9 @@ Do not assign blocker severity without a reachable trigger or observable consequ
 
 ## Return finding drafts
 
-Order findings by severity. For each finding, use:
+Order findings by provisional severity. Include precise location, the relevant OOP principle and contract evidence, a reachable trigger, consequence, smallest safe design correction, and focused verification. Use the most precise relevant line and cite other locations as supporting evidence. Separate non-blocking suggestions from design blockers. Choose the format that makes the contract and consequence clear; a fixed template is not required.
 
-```markdown
-### [Severity] Short title
-
-- **Location:** `path/to/file.ts:line`
-- **Principle:** LSP | Encapsulation | Inheritance | Abstraction | Domain Modeling | Type Safety
-- **Contract evidence:** The relevant contract and reachable trigger or observable behavior
-- **Consequence:** The concrete current or plausible evolution cost
-- **Smallest safe fix:** The minimum design-level correction that addresses the cause
-- **Verification:** The focused check that would prove the correction
-```
-
-Use the most precise relevant line. When one finding spans locations, identify one primary location and list the others as supporting evidence. Separate non-blocking suggestions from design blockers.
-
-If no concrete defects remain, report:
-
-```markdown
-No concrete OOP or TypeScript design defects found in the reviewed scope.
-```
-
-Do not generate placeholder suggestions or a style-review section.
+If no concrete defects remain, return a concise evidence-backed no-findings result for the selected scope. Omit placeholder suggestions and style-review sections.
 
 ## Verify the review
 

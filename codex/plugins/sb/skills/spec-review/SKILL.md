@@ -5,7 +5,7 @@ description: Check an implementation and its tests against an explicit specifica
 
 # Spec Review
 
-Review the supplied artifact against the supplied spec or acceptance criteria without editing. Return a requirement-by-requirement checklist with precise evidence.
+Review the supplied artifact against the supplied spec or acceptance criteria without editing. Account for every requirement with precise evidence; use a checklist when it helps the reader assess compliance.
 
 ## Review
 

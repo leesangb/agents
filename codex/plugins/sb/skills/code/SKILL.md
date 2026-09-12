@@ -1,170 +1,35 @@
 ---
 name: code
-description: Use for requests to implement, modify, fix, refactor, migrate, or plan future changes to executable product or tooling behavior, including application source, tests, executable scripts, runtime/build/deployment configuration, or operational agent/workflow behavior. Routes each request to the Fast, Deep, Ultra, or PoC code-change workflow.
+description: Route implementation and planning requests that change product code, executable tooling, configuration, or agent workflows.
 ---
 
 # Code Change Workflow Router
 
-This file only chooses the execution workflow. It does not define implementation steps.
+Read the applicable local instructions and enough target code, direct callers, and nearby verification to select one workflow. Planning-only requests use the same routing as implementation requests. Read only the selected workflow and references its task needs.
 
-## Dynamic Orchestration and Skill Composition
+## Scope
 
-Main dynamically owns orchestration: spawning, follow-up, waiting, convergence, and the decision to work directly or delegate. Deep and Ultra define rigor, approval, safety, and evidence gates; they do not prescribe a fixed explorer → planner → worker → reviewer graph.
+Use this router for executable behavior, including operational agent instructions. For prose, explanations, diagrams, and standalone visual artifacts, use the relevant skill directly; rendering code alone does not make an artifact a product change. For mixed requests, route only the executable-change portion.
 
-Use the built-in `explorer` and `worker` as the default delegated execution roles. The only custom execution profile is `sb-thinker`, retained for materially distinct read-only high-reasoning planning or review. Capability skills remain reusable: inject `$sb:analyze`, `$sb:architecture-plan`, `$sb:implement`, or a review capability only when the current work benefits from that handoff.
+## Select a workflow
 
-Fast and PoC remain Main-owned direct paths. PoC makes no execution-profile, capability, or reviewer handoff.
+Apply these gates in order:
 
-Install `sb-thinker` with the repository's `codex/install` bootstrap. Preserve read-only planning/review boundaries, one writer for source and tests, and fresh independent review threads. Plugins do not register custom agents; do not invent plugin manifest fields for that purpose.
+1. **[Ultra](references/ultra.md)** for explicit ultra/max/thorough/full-path requests; authentication, authorization, security, privacy, stored-data mutation/deletion, schema/migration/backfill, rollout, production configuration, or external compatibility risk; or long-running coordination across dependent investigations, decisions, or environments.
+2. **[PoC](references/poc.md)** for an explicitly disposable experiment with no Ultra signal. Speed wording alone is not experimental intent. Keeping or shipping a PoC returns here for production routing.
+3. **[Deep](references/deep.md)** when a bounded read leaves cause, impact, product behavior, or a plan-changing design decision unresolved; when a caller-visible obligation or cross-package responsibility/dependency changes; or when investigation, competing designs, or an explicitly deep approach is the task. Name the concrete uncertainty or changed obligation.
+4. **[Fast](references/fast.md)** when target, expected behavior, and verification are known and no earlier gate applies: a validated user plan, local reversible change, known cause with a focused check, mechanical transformation, or established nearby pattern.
 
-## Scope: Code Changes Only
+If Fast eligibility cannot be established, use Deep; use Ultra when the uncertainty is high-cost or requires dependent stages. File count and available agents do not determine the tier. New evidence that invalidates the selected path returns here; never silently widen Fast or promote PoC to production.
 
-Before selecting Fast, Deep, Ultra, or PoC, decide whether the requested work changes executable product or tooling behaviour. This router applies to application source, tests, executable scripts, runtime/build/deployment configuration, and operational agent/workflow instructions.
+## Ownership and conditional references
 
-Do not use this router for a non-code deliverable such as:
+Main owns routing, user interaction, approval, and orchestration. Fast and PoC are direct paths. In Deep and Ultra, delegate only a concrete useful concern: built-in `explorer` with `$sb:analyze`, read-only `sb-thinker` with `$sb:architecture-plan` or a review capability, and built-in `worker` with `$sb:implement`. Keep one implementation writer and fresh independent review threads.
 
-- prose documentation, specs, plans, reports, release notes, or copy;
-- diagrams, charts, visualizations, slide-like artifacts, or explanatory HTML;
-- generated images or other design/reference assets that are not shipped as product behaviour.
+For Fast, Deep, and Ultra, [Planning and Resuming](references/planning.md) owns plan contents, approval, and completion policy. Deep and Ultra retain explicit plan approval; technical alternatives retain the [Decision Dialogue](references/decision-dialogue.md) eligibility rules.
 
-Creating or editing files does not by itself make a task a code change. HTML, CSS, JavaScript, scripts, or data used only to produce or render a requested non-code artifact do not make that artifact a product code change.
-
-The code package contains only executable-change routing and code investigation, planning, implementation, and review capabilities. Design, documentation, explanation, QA, and other non-code capabilities remain ordinary skills outside `$sb:code` and must be invoked directly.
-
-For non-code work, stop routing here and follow the user's request and any applicable skill directly. Do not create a Fast/Deep/Ultra plan, start a PoC, require plan approval, or invoke implementation/code reviewers unless the user explicitly asks for review. Verify the requested artifact itself in proportion to its purpose.
-
-Use this router normally when the request modifies an application's source, product UI, tests, runtime behavior, build, deployment, or operational automation, even if the user also wants documentation or an explanation. For a mixed request, apply this router only to the code-changing portion; produce the non-code deliverable through its direct workflow.
-
-For every code change, including a request to make a plan for a future code change without implementing it yet:
-
-1. Read the applicable local instructions.
-2. Read only enough target code, direct call sites, and nearby tests to classify the task.
-3. Apply the routing decision below.
-4. Read and follow only the selected workflow.
-
-## Feature Assembly and Composition Gate
-
-For every new user- or system-visible behavior, sketch the desired top-level assembly before routing:
-
-- Desired top-level call:
-- Existing capabilities to compose:
-- Requirement-owned policy:
-- Missing mechanism, if any:
-
-Treat the work as composition-sensitive only when current evidence positively matches at least one branch:
-
-- **Feature composition**: the new capability coordinates two or more existing module interfaces and the requirement owns a cross-capability decision such as ordering, branching, state transition, error or rollback behavior, permission, persistence/cache/network policy, or lifecycle.
-- **Mechanism emergence**: behavior that can be named without requirement vocabulary owns an independent invariant, state or lifecycle, ordering/buffering/scheduling, retry/cancellation/cleanup, error or performance contract, or test surface.
-- **Seam change**: the change creates or changes an interface, moves ownership, changes dependency direction or caller obligations, relocates test responsibility, or wires a mechanism at a composition root.
-
-When a branch has concrete evidence, read [Feature Composition and Mechanism Primitives](references/composition.md) and record its evidence fields. Otherwise omit composition analysis. Feature composition alone calls for composing existing mechanisms, not extracting a new one. Composition classification alone is neither a Deep signal nor reviewer evidence; use the routing rules below and require a separate unresolved decision or review question.
-
-## Planning and Resuming
-
-- Every plan step must state both the action and why it is necessary. Use the reason to expose the intended outcome, dependency, risk, or verification value; do not merely restate the action in different words.
-- Planning-only and implementation requests follow the same routing and validation or investigation. Produce the selected workflow's Fast, Deep, or Ultra planning presentation; do not make an ordinary preliminary plan first. A selected PoC instead uses its execution note and starts without a canonical plan or approval step.
-- For a clear Fast implementation request, use the Fast workflow's **Inline Fast Note** only when every trivial-change criterion holds. Otherwise present its structured Fast Plan. Either form is **router-authorized**: present it, then continue in the same turn without a second approval.
-- An Inline Fast Note is an execution notice, not a canonical plan, and never satisfies a planning-only request. Keep every structured Fast Plan, Deep Plan, or Ultra Plan in the conversation as the canonical plan; do not create a second plan artifact merely because implementation will happen later.
-- A planning-only Fast Plan, a materially updated Fast Plan, and every newly presented or materially updated Deep or Ultra Plan must be presented and then paused for explicit user approval before any code edit or implementation packet.
-- Treat a follow-up such as "approve", "go ahead", "proceed", "implement", "좋아", "진행해", "구현해", or "ㄱㄱ" as approval only when it clearly refers to the current canonical plan. Plan-shaping answers, questions, and feedback are not final plan approval.
-- On a router-authorized Fast presentation or explicit approval, validate it against current intent and code, then resume the selected workflow at implementation without authoring another planning presentation or asking for approval again.
-- After the Ultra gate selects PoC, state its execution note and begin the experiment without plan approval. Do not treat that note as a canonical plan or as production approval.
-- Use `router-authorized Fast` for the first Fast presentation above; reserve `approved plan` for a structured plan the user explicitly approved.
-- Reopen or reroute planning only when the user's intent or Outcome Contract changed, relevant code materially changed and made the plan stale, required fields of the selected plan format are missing, or a new Deep or Ultra signal appears. Return only to the relevant earlier workflow step needed to resolve that condition; otherwise preserve the existing plan and continue from it. If this validation changes the canonical plan, present the updated plan and stop for fresh explicit approval.
-- For Deep and Ultra, activate shared [Repository- and Task-Scoped Notes](references/task-notes.md) only when the work is expected to cross sessions or durable resume is explicitly needed. When active, Main resolves task state once and passes its exact absolute paths unchanged through implementation, review, resume, and report handoffs. Fast and PoC do not use task state.
-
-## Conditional Decision Dialogue
-
-Deep and Ultra planning may use the shared [Decision Dialogue](references/decision-dialogue.md) state machine. Workflow tier alone never triggers dialogue: `architecture-plan` returns `ready` immediately only when no unresolved discoverable prerequisite and no eligible frontier remain, or `needs-decisions` for Main to investigate a prerequisite or relay a non-empty frontier. Main owns the user interaction and fixed Outcome Contract; answers returned by decision ID are planning inputs, not plan approval. Present and approve the complete `ready` plan once, then preserve Fast's existing path and review-selection rules.
-
-## Evidence-Backed Collaboration
-
-- Treat a user's challenge, objection, or proposed correction as evidence to evaluate, not a conclusion to echo. Reconcile it against the current code, execution results, documented constraints, and concrete tradeoffs before responding.
-- When the challenge changes the judgment, say which evidence changed it and update the plan. When it does not, disagree directly, name the specific cost or risk, and recommend the better-supported path. State uncertainty at its actual level instead of manufacturing agreement or confidence.
-- After giving the evidence and recommendation, follow the user's final direction when it remains within the Outcome Contract, safety constraints, and granted authority.
-
-## Routing Decision
-
-Use this order. An Ultra signal overrides PoC, Deep, and Fast; an explicit PoC signal after the Ultra gate overrides Deep and Fast; a Deep signal overrides Fast.
-
-### 1. Route to Ultra when any Ultra signal is present
-
-- **Explicit high-rigor request**: the user asks for ultra, max, thorough, or the current full investigation/review path.
-- **Irreversible or high-cost risk**: the change touches authentication, authorization, security, privacy, stored-data mutation, deletion, schema, migration, backfill, rollout, production configuration, or compatibility with external consumers.
-- **Long-running coordination**: the work needs staged investigation, dependent design decisions, or verification across multiple environments or seams.
-
-Select [Ultra Code Change Workflow](references/ultra.md).
-
-### 2. Route to PoC only for explicit experimental intent after the Ultra gate
-
-Select PoC when the user explicitly asks to test an idea through disposable code—for example, “실험해보자”, “PoC로 해봐”, “프로토타입으로 붙여봐”, “spike this”, or an equivalent request—and the Ultra gate found no risk.
-
-- **Explicit purpose**: the request's purpose is to answer a bounded experiment question by building and observing the smallest safe implementation.
-- **Not a speed tier**: wording such as “빠르게”, “빨리”, “quickly”, or “fast” alone does not establish experimental intent; apply the Deep or Fast rules instead.
-- **Lifecycle boundary**: PoC is a purpose and lifecycle branch, not a lower-rigor version of Fast. It never establishes production readiness. A request to keep, ship, productionize, harden, or otherwise rely on a PoC result returns to this router; treat its diff as evidence for Fast, Deep, or Ultra rather than accepted production code.
-
-Select [PoC Code Change Workflow](references/poc.md).
-
-### 3. Route to Deep when any Deep signal is present
-
-- **Unknown cause or impact**: the root cause, runtime flow, affected callers, or regression surface is still unclear after a bounded read of the target and its direct neighbours.
-- **Plan-changing decision**: there are multiple credible approaches that would change an interface, ownership, dependency direction, data shape, or user flow differently.
-- **Cross-seam change**: the work changes a caller-visible obligation—such as names, inputs, outputs, required ordering/setup/cleanup, error behavior, lifecycle, or compatibility—or makes a real responsibility/dependency-direction decision across packages or runtimes. The evidence must name that changed obligation or decision.
-- **Unresolved product behaviour**: a new user-visible flow has unclear states, error handling, input range, accessibility behaviour, or acceptance priority.
-- **Investigation is the work**: the user asks for root-cause analysis, architecture exploration, competing designs, broad impact analysis, or explicitly asks for a deep approach.
-
-Select [Deep Code Change Workflow](references/deep.md).
-
-### 4. Otherwise route to Fast when the task is execution-ready
-
-The task is execution-ready when the expected behaviour and verification can be stated after the bounded routing read, and at least one of these is true:
-
-- The user already supplied an actionable plan, target, acceptance criteria, or concrete implementation direction, and it still matches the current code.
-- The change is local and reversible, with bounded callers and no ownership or contract decision.
-- The root cause is known and one clear regression test can prove the fix.
-- The work is deterministic or mechanical, such as a rename, import rewrite, formatting change, generated update, or codemod, even when it touches many files.
-- An existing nearby pattern can be followed without inventing a new abstraction.
-
-Select [Fast Code Change Workflow](references/fast.md).
-
-### 5. If Fast eligibility cannot be established, route to Deep after the Ultra and PoC gates
-
-Do not guess that a task is small. If the main agent cannot name the target, expected behaviour, and verification after the bounded routing read, use Deep; if the uncertainty is irreversible, high-cost, or long-running, use Ultra.
-
-## Routing Notes
-
-- A positive composition branch does not select Deep by itself. Use Fast when ownership, interface, and dependency direction are known; use Deep only when a plan-changing decision about them remains unresolved.
-- File count alone is not a routing signal. A hundred-file deterministic codemod can be Fast; a one-file authorization or data-loss change is Ultra.
-- User-provided plans are strong Fast signals, not unquestioned truth. Verify that named files, symbols, assumptions, and tests still match the current code.
-- Fast must not invent a second gate for a clear first implementation presentation. If validating the task raises a question about intent, behaviour, ownership, interface, scope, or verification that requires user confirmation, route to Deep; if it reveals irreversible/high-cost risk or long-running coordination, route to Ultra. If a structured Fast Plan is materially updated, present it and wait for explicit approval.
-- Prefer Fast when the evidence satisfies its interface. Do not use Deep or Ultra merely because more agents are available.
-- If a Fast task reveals a Deep signal before completion, stop expanding the Fast path, return to this router, and continue with Deep; if it reveals an Ultra signal, continue with Ultra.
-- If a PoC reveals an Ultra signal, changes its experiment question or safety boundary, or receives a keep/ship/productionize/harden request, stop the experiment and return to this router. Do not silently promote or widen it.
-- Mention the selected path and decisive routing evidence in the final response only when they explain a material decision, limitation, or next step.
+Read [Feature Composition and Mechanism Primitives](references/composition.md) when the task actually composes capabilities with requirement-owned policy, exposes an independent mechanism obligation, or changes a responsibility/interface boundary. Composition evidence alone does not select a higher tier or a reviewer.
 
 ## Reporting
 
-Lead with the outcome, then the verification that supports it and any unresolved risks or required checks that could not run. Include changed files, commands, and implementation details when they help the user assess the result. Routine successful checks may be summarized; retain exact commands and results in implementation/review handoffs and active task state. Never hide a failure or missing completion evidence to shorten the report.
-
-Include workflow names, dialogue counts, reviewer selection ledgers, skipped passes, and task-state paths only when they explain a material decision, limitation, or next step, or the user asks for them. Report a learning path only when a learning was actually captured. Omit empty sections and `none` placeholders. Preserve required internal review statuses and evidence packets; the final user-facing report need not repeat their administrative fields.
-
-## Quick Examples
-
-| Task | Route | Decisive evidence |
-| --- | --- | --- |
-| Write a spec, report, release note, or prose document | No code workflow | The requested result is a non-code deliverable |
-| Create a diagram, chart, or explanatory HTML visualization | No code workflow | Rendering code exists only to produce the artifact |
-| Add an interactive chart to the shipped product UI | PoC, Fast, Deep, or Ultra by the rules above | The request changes product runtime behaviour |
-| Known bug, named function, obvious regression test | Fast | Cause, target, and verification are known |
-| User supplies a validated implementation plan for a local change | Fast | Execution-ready plan; no Deep or Ultra signal |
-| Mechanical rename across many files | Fast | Deterministic transformation; file count is irrelevant |
-| “실험해보자”: render one local UI variant and inspect it | PoC | Explicit safe experimental intent with a direct observation |
-| “이 변경 빠르게 해줘” for a known local change | Fast | Speed wording alone is not experimental intent |
-| Experiment with an authentication or production configuration change | Ultra | Ultra safety signal overrides experimental intent |
-| Keep or ship a PoC result | Fast, Deep, or Ultra by the rules above | Promotion ends the experimental lifecycle and reuses the diff only as evidence |
-| Bug symptom with unknown call path or root cause | Deep | Investigation is required before planning |
-| Schema migration or stored-data mutation | Ultra | Irreversible data and compatibility risk |
-| New public contract or responsibility moved across packages | Deep | Interface and ownership decision |
-| Bounded investigation with an unclear call path or impact surface | Deep | Investigation is needed, but the work remains one bounded plan |
-| Multi-stage change whose next step depends on earlier investigation | Ultra | Dependent coordination cannot form one bounded implementation packet |
-| Production rollout or long-running cross-environment coordination | Ultra | High-cost coordination and verification |
+Lead with the outcome, supporting verification, and unresolved risks. Preserve exact verification in handoffs; user-facing reports can summarize successful checks. Include workflow details only when they explain a decision or the user asks. Report failures and unverified requirements explicitly. Never commit or publish without authorization.

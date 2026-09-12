@@ -1,7 +1,7 @@
 {
   "name": "sb",
-  "version": "0.1.0+codex.20260908143406",
-  "description": "Portable code-change workflows and packet-adjudicated review capabilities for Codex.",
+  "version": "0.1.0+codex.20260912030912",
+  "description": "Code-change workflows with evidence-based review and conditional independent audit for Codex.",
   "author": {
     "name": "Local developer"
   },
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "SB",
     "shortDescription": "Portable code workflow capabilities",
-    "longDescription": "Compose Fast, Deep, Ultra, and PoC code-change workflows under dynamic Main orchestration. Specialist reviewers produce self-contained evidence packets after Main verification; a bounded packet-only auditor adjudicates them before findings can drive fixes.",
+    "longDescription": "Route Fast, Deep, Ultra, and PoC changes with explicit Deep/Ultra plan approval. Main coordinates focused reviewers and validates findings; independent packet-only audit is conditional on material disputes, high-impact judgments, or an explicit audit request.",
     "developerName": "Local developer",
     "category": "Developer Tools",
     "capabilities": [],

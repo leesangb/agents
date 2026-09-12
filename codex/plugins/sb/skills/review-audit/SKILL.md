@@ -1,6 +1,6 @@
 ---
 name: review-audit
-description: Adjudicate a fixed bundle of self-contained specialist evidence packets for support, consistency, completeness, and scope. Use only as the packet-only critic phase inside sb:review-with-subagents.
+description: Adjudicate a fixed bundle of self-contained specialist evidence packets for support, consistency, completeness, and scope. Use only when sb:review-with-subagents selects a separate audit for a material dispute, high-impact judgment, or explicit rigorous audit request.
 ---
 
 # Review Audit
@@ -12,8 +12,8 @@ Judge only the supplied adjudication packet. Do not inspect the artifact as anot
 Require all of the following:
 
 - The fixed review envelope version identifier plus contract metadata: exact scope and artifact version, original ask or Outcome Contract, assumptions, and behavior-preservation constraints. Source files and repository access are intentionally absent.
-- The reviewer-selection ledger with each selected capability and bounded discovery axis.
-- The raw self-contained reviewer evidence packets with stable finding and evidence IDs, compact evidence excerpts or exact supplied outputs, provenance, and coverage dispositions.
+- The audited claims and coverage, with each relevant capability and bounded discovery axis.
+- The self-contained reviewer claims and material dissent, plus any Main-supplied evidence clearly attributed. Require stable finding and evidence IDs, compact evidence excerpts or exact supplied outputs, provenance, and any coverage conclusions selected for audit.
 - The prior audit and reviewer responses when this is a later audit pass.
 
 Every supplied packet must name the same fixed review envelope version identifier. If the identifiers or declared artifact versions disagree, return `ENVELOPE_CHANGED`; do not inspect the repository to determine which one is current. If a required adjudication input is absent, return `UNRESOLVED` and name the missing packet field without trying to produce it.
@@ -27,7 +27,7 @@ Every supplied packet must name the same fixed review envelope version identifie
 - Check that every declared coverage artifact is actually present and internally consistent. Do not independently execute the capability rubric or infer omissions from repository content that was not supplied.
 - Keep the original scope fixed. Do not turn pre-existing, unrelated, speculative, or requirement-expanding concerns into blockers.
 - Do not count votes or raise confidence because multiple reviewers repeat the same claim.
-- The auditor must never discover, reconstruct, or supply new code evidence or missed findings. An unsupported or incomplete claim remains the originating reviewer's responsibility.
+- The auditor must never discover, reconstruct, or supply new code evidence or missed findings. Main or the originating reviewer must supply support for an incomplete claim; the auditor never produces that evidence.
 - The auditor must never assign final severity or disposition. Main retains that authority after adversarial validation converges.
 
 ## Finding Verdicts
@@ -35,9 +35,9 @@ Every supplied packet must name the same fixed review envelope version identifie
 Assign exactly one verdict to every supplied finding:
 
 - `AGREE`: the claim is supported, scoped, and has no material missing evidence.
-- `DISAGREE_EVIDENCE`: cite only a stable evidence ID or contract field already in the adjudication packet that contradicts the claim. The reviewer must revise or drop it.
-- `DISAGREE_CONCERN`: identify a missing, ambiguous, or internally inconsistent packet field when the claim is plausible but not substantiated. The originating reviewer must supply concrete confirming evidence or drop it.
-- `OUT_OF_SCOPE`: use only the supplied contract metadata and scoped-change evidence to show why the finding is pre-existing, unrelated, or outside the Outcome Contract. The reviewer must establish an eligible relation and contract relevance or drop it.
+- `DISAGREE_EVIDENCE`: cite only a stable evidence ID or contract field already in the adjudication packet that contradicts the claim. Main or the originating reviewer must revise or drop it.
+- `DISAGREE_CONCERN`: identify a missing, ambiguous, or internally inconsistent packet field when the claim is plausible but not substantiated. Main or the originating reviewer must supply concrete confirming evidence or drop it.
+- `OUT_OF_SCOPE`: use only the supplied contract metadata and scoped-change evidence to show why the finding is pre-existing, unrelated, or outside the Outcome Contract. Main or the originating reviewer must establish an eligible relation and contract relevance or drop it.
 
 ## Output
 
@@ -52,7 +52,7 @@ AGREE is valid only when every supplied finding has verdict `AGREE` and every su
 Then return:
 
 ```text
-finding_id | verdict | evidence or epistemic objection | required reviewer action
+finding_id | verdict | evidence or epistemic objection | required evidence or correction
 ```
 
-Include packet-completeness and declared-coverage challenges after the finding ledger. End with the specific originating-reviewer response required for another audit pass. Do not seek the evidence, rewrite the consolidated review, or add findings yourself.
+Include packet-completeness and declared-coverage challenges after the finding ledger. End with the specific evidence or correction Main or the originating reviewer must provide for another audit pass. Do not seek the evidence, rewrite the consolidated review, or add findings yourself.

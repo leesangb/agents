@@ -1,8 +1,8 @@
 # managed-by: sb@agents
 name = "sb-thinker"
 description = "Performs read-only planning or review reasoning with an explicitly injected capability."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+model = "gpt-6-astra"
+model_reasoning_effort = "xhigh"
 sandbox_mode = "read-only"
 
 developer_instructions = """
