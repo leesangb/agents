@@ -1,6 +1,6 @@
 {
   "name": "sb",
-  "version": "0.1.0+codex.20260912030912",
+  "version": "0.1.0+codex.20260919094931",
   "description": "Code-change workflows with evidence-based review and conditional independent audit for Codex.",
   "author": {
     "name": "Local developer"

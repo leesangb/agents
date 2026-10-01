@@ -2,7 +2,7 @@
 
 Use after the [router](../SKILL.md) establishes a known target, expected behavior, and focused verification with no Deep or Ultra signal.
 
-Read [Planning and Resuming](planning.md). Validate the user's direction against the relevant code and preserve meaningful constraints. State the plan at the level needed to understand the change: a local edit may need only the target, effect, and check; add scope, rationale, or structure when they matter. A clear implementation request continues immediately; planning-only and materially updated plans retain the shared approval rule.
+Read [Planning and Resuming](planning.md). Validate the user's direction against the relevant code and preserve meaningful constraints. Use its conditional overview when explanation is needed; otherwise give a brief execution note. A clear implementation request continues immediately; planning-only and materially updated plans retain the shared approval rule.
 
 Main implements directly as the sole writer. Reuse existing seams and keep the Outcome Contract intact. Fast does not load review orchestration or spawn reviewers.
 

@@ -4,16 +4,25 @@ This is the shared policy for Fast, Deep, and Ultra plans. Approval and decision
 
 ## Required plan information
 
-Keep the canonical plan in the conversation. Include:
+Keep the canonical plan in the conversation. It must establish the following information, building on what is already clear from the user's request or agreed context without restating it:
 
 - **Outcome Contract:** requested outcome and intent, observable completion evidence, constraints/invariants, scope boundaries, and material exceptions or negative evidence.
 - Relevant confirmed facts with source or runtime evidence; distinguish inference and missing evidence.
-- Recommended implementation direction, likely targets/responsibilities, and why each meaningful action is needed.
+- Recommended implementation direction and likely targets/responsibilities; explain the rationale when it differs from the user's stated direction or is otherwise non-obvious.
 - Verification that establishes completion, including runtime or integration evidence when needed.
 
 For material decisions distinguish fixed `contract-shaping` choices from adaptable `implementation recommendation` choices. Explain the chosen direction, rationale, rejected alternative, and what evidence would reopen it. Include composition analysis, new tests, and risks only when relevant.
 
-These are information requirements, not a fixed heading order or template. Use prose, bullets, a table, or a diagram according to the task. A small Fast change may fit in a few sentences. Use [Implementation Outline](implementation-outline.md) only when a structural sketch helps. Do not create a second plan artifact merely for later implementation.
+## Compact plan overview
+
+Use an overview when a new or materially updated plan needs explanation for the user to understand the proposed change. Label it **Fast Plan**, **Deep Plan**, or **Ultra Plan**, and include only the useful parts below in the user's language. These are optional prompts, not required fields:
+
+- **Why:** normally omit; explain when departing from the user's stated or agreed direction, or when the choice needs a non-obvious rationale. Ground any departure in evidence rather than guessing the user's expectations.
+- **What:** clarify the observable change and scope when they are not already clear.
+- **How:** when the implementation direction needs explanation, prefer a short calldiff-style before/after call tree or pseudocode showing the relevant change. Use [Implementation Outline](implementation-outline.md) for structural sketches.
+- **Verify:** call out completion evidence when the check is non-obvious or material to a decision.
+
+Keep prose to a sentence per included point and sketches to the few lines needed to explain the change. An already-clear Fast implementation request needs only a brief execution note. Deep and Ultra still present a complete plan for approval, expanding only consequential facts, constraints, decisions, or risks that remain unclear. Omit empty headings and repeated context. Do not create a second plan artifact merely for later implementation.
 
 ## Approval and resumption
 
