@@ -5,7 +5,7 @@ Use this index during investigation, planning, implementation, and review to fin
 | Principle | Read When |
 | --- | --- |
 | [Correctness and Failure Paths](correctness-and-failure-paths.md) | Executable logic, guards, errors, recovery, or reachability changes. |
-| [Caller Obligations](caller-obligations.md) | What must each real caller do or know, and which setup, configuration, lifecycle, or error duties belong to that caller? |
+| [Caller Obligations](caller-obligations.md) | What must each real caller do or know, which setup, configuration, lifecycle, or error duties belong to that caller, and could a language/runtime builtin express the API contract? |
 | [Composition and Mechanisms](composition-and-mechanisms.md) | Where should feature-specific ordering/branching/recovery policy be assembled, or does a proposed mechanism have an independent obligation? |
 | [Deep Modules](deep-modules.md) | How much useful behavior does this interface provide for the knowledge and duties it requires, and would deepening or a seam improve that tradeoff? |
 | [Responsibility and Change](responsibility-and-change.md) | Who should own an identified responsibility, which modules share its design knowledge, and how should dependencies or coordinated edits change? |

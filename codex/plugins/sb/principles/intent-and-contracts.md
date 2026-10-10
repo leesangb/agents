@@ -4,6 +4,7 @@ Use when names, types, values, effects, documentation, or abstractions need to m
 
 - **Names:** express the target's meaning and contract. Distinguish that meaning from the first caller's purpose or a familiar pattern label. Make risky or legacy paths recognizable.
 - **Types:** expose real relationships and exclude meaningful impossible states with precise collections, readonly/branded values, or discriminated alternatives when the benefit justifies their cost.
+- **Outcomes:** make expected branches recognizable from the result contract. Prefer discriminated results when `null`, `false`, or a sentinel would hide distinct reasons or required next actions; an ordinary absence value can remain appropriate when absence is its complete meaning. Distinguish expected outcomes from exceptional failures.
 - **Values:** make relationships behind ordering, thresholds, layering, or timing visible instead of relying on unexplained literals.
 - **Inputs and effects:** express behavior with honest variants, callback presence, or composition. Separate unrelated effects and triggers.
 - **Structure and documentation:** use names and boundaries to reveal implementation steps. Interface documentation explains otherwise unclear return meaning, units, ranges, effects, or ordering. Keep that caller-visible contract distinct from implementation rationale; document the parts that need explanation.
