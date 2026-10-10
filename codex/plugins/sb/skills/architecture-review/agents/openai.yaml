@@ -1,7 +1,0 @@
-interface:
-  display_name: "sb:architecture-review"
-  short_description: "Architecture review capability"
-  default_prompt: "Use $sb:architecture-review for this capability."
-
-policy:
-  allow_implicit_invocation: false

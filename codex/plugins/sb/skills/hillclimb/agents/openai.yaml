@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:hillclimb"
+  short_description: "Improve a fixed metric through measured keep-or-revert trials"
+  default_prompt: "Use $sb:hillclimb to improve this metric through bounded, measured attempts while preserving correct behavior."
+
+policy:
+  allow_implicit_invocation: false

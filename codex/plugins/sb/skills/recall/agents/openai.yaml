@@ -1,0 +1,4 @@
+interface:
+  display_name: "sb:recall"
+  short_description: "Recover scoped history and check current work status"
+  default_prompt: "Use $sb:recall to catch me up on recent work in this project and check where it stands now."

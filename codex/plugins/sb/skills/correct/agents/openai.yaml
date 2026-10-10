@@ -1,0 +1,4 @@
+interface:
+  display_name: "sb:correct"
+  short_description: "Prevent repeated errors with scoped enforcement"
+  default_prompt: "Use $sb:correct to find and prevent demonstrated recurring mistakes in this repository."

@@ -9,7 +9,7 @@ Main may plan directly or delegate a distinct read-only planning concern to `sb-
 
 Read [Planning and Resuming](../code/references/planning.md) for required plan information and the distinction between fixed contract-shaping choices and adaptable implementation recommendations. Read [Decision Dialogue](../code/references/decision-dialogue.md) for Deep/Ultra or unresolved design choices. Preserve its eligibility and relay rules; discoverable evidence gaps go to Main for investigation rather than automatically becoming user questions.
 
-Use current target/caller/test evidence and relevant local guidance. Read [Practical Design Foundations](../code/references/design-foundations.md) when deciding ownership, module depth, value/effect boundaries, or abstraction timing. Read [Feature Composition and Mechanism Primitives](../code/references/composition.md) only for a concrete composition, mechanism, or seam question. Keep requirement orchestration distinct from reusable mechanisms and explain the evidence for responsibility placement.
+Use current target/caller/test evidence and relevant local guidance. Consult [Shared Principles](../../principles/index.md) and read those relevant to the accepted use case, proposed interface, and ownership choices. Read [Practical Design Foundations](../../principles/design-foundations.md) when criteria conflict or a trusted-value, values/effects, or normal-flow question remains. Read [Composition and Mechanisms](../../principles/composition-and-mechanisms.md) only for a concrete composition, mechanism, or seam question. Explain the evidence behind material design choices.
 
 Return exactly one result:
 

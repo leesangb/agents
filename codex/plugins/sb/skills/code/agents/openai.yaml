@@ -1,7 +1,7 @@
 interface:
   display_name: "sb:code"
   short_description: "Route executable changes through safe workflows"
-  default_prompt: "Use $sb:code to plan and implement executable behavior changes through the appropriate workflow."
+  default_prompt: "Use $sb:code to plan or implement this change using the relevant shared principles."
 
 policy:
   allow_implicit_invocation: true

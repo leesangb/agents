@@ -1,7 +1,0 @@
-interface:
-  display_name: "sb:spec-review"
-  short_description: "Specification review capability"
-  default_prompt: "Use $sb:spec-review for this capability."
-
-policy:
-  allow_implicit_invocation: false

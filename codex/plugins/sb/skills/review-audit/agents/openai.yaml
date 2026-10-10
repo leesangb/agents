@@ -1,7 +1,7 @@
 interface:
   display_name: "sb:review-audit"
   short_description: "Adjudicate supplied review evidence packets"
-  default_prompt: "Use $sb:review-audit to adjudicate only this fixed bundle of self-contained specialist evidence packets without inspecting the repository or calling tools."
+  default_prompt: "Use $sb:review-audit to judge this supplied review packet under the shared audit protocol."
 
 policy:
   allow_implicit_invocation: false

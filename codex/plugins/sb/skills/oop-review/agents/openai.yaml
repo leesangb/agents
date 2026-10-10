@@ -1,7 +1,0 @@
-interface:
-  display_name: "sb:oop-review"
-  short_description: "Object-oriented design review capability"
-  default_prompt: "Use $sb:oop-review for this capability."
-
-policy:
-  allow_implicit_invocation: false

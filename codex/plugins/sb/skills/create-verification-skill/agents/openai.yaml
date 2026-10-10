@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:create-verification-skill"
+  short_description: "Build a reusable real-app verification recipe"
+  default_prompt: "Use $sb:create-verification-skill to create and prove a verification recipe for this project."
+
+policy:
+  allow_implicit_invocation: false

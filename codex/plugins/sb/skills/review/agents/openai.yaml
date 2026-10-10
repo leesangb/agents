@@ -1,0 +1,4 @@
+interface:
+  display_name: "sb:review"
+  short_description: "Evidence-backed review with optional specialists"
+  default_prompt: "Use $sb:review to review this change, select specialists when needed, and explain validated findings with their causes and smallest safe fixes."

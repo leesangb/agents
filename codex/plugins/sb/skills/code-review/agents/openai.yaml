@@ -1,7 +1,0 @@
-interface:
-  display_name: "sb:code-review"
-  short_description: "Correctness review capability"
-  default_prompt: "Use $sb:code-review for this capability."
-
-policy:
-  allow_implicit_invocation: false

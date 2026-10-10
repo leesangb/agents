@@ -1,0 +1,4 @@
+interface:
+  display_name: "sb:trace-forensics"
+  short_description: "Diagnose captured profiles, heaps, and execution traces"
+  default_prompt: "Use $sb:trace-forensics to analyze this captured artifact and explain the strongest supported diagnosis."

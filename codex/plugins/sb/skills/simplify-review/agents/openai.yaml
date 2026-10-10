@@ -1,7 +1,0 @@
-interface:
-  display_name: "sb:simplify-review"
-  short_description: "Safe simplification review capability"
-  default_prompt: "Use $sb:simplify-review for this capability."
-
-policy:
-  allow_implicit_invocation: false

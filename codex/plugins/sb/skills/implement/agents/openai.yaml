@@ -1,7 +1,7 @@
 interface:
   display_name: "sb:implement"
-  short_description: "Implementation capability"
-  default_prompt: "Use $sb:implement for this capability."
+  short_description: "Approved implementation and verification"
+  default_prompt: "Use $sb:implement to implement the approved plan and verify its observable contract."
 
 policy:
   allow_implicit_invocation: false

@@ -1,7 +1,0 @@
-interface:
-  display_name: "sb:risk-review"
-  short_description: "Review operational and security risks"
-  default_prompt: "Use $sb:risk-review to review concrete operational, security, and rollout risks."
-
-policy:
-  allow_implicit_invocation: false

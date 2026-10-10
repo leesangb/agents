@@ -1,0 +1,4 @@
+interface:
+  display_name: "sb:runtime-forensics"
+  short_description: "Capture live signals and test runtime explanations"
+  default_prompt: "Use $sb:runtime-forensics to capture the reported behavior and explain its mechanism with runtime evidence."

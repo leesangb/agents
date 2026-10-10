@@ -2,7 +2,7 @@
 
 Use a structural sketch when it helps explain responsibility, interfaces, or dependency changes. Prose or a short bullet is enough for a local edit.
 
-Show the relevant modules or likely files, caller-visible obligations, ownership, and preserved constraints. Keep implementation mechanics adaptable unless the Outcome Contract fixes them. Choose a tree, before/after sketch, or another compact representation that explains the decision; no marker set or depth is required.
+Show the relevant modules or likely files, caller-visible obligations, ownership, and preserved constraints. Keep implementation mechanics adaptable unless the Outcome Contract fixes them. Choose a tree, before/after sketch, or another compact representation that explains the decision.
 
 For example:
 

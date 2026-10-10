@@ -1,0 +1,4 @@
+interface:
+  display_name: "sb:reflect"
+  short_description: "Turn session evidence into targeted improvements"
+  default_prompt: "Use $sb:reflect to propose durable improvements from this conversation."
