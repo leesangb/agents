@@ -13,7 +13,7 @@ Analyze the supplied capture as a fixed dataset and return a cited diagnosis. Es
 2. Reduce to a queryable representation using the simplest useful mechanism: the viewer's filters, a focused parser, or a table/database when volume justifies it. Keep bulk out of the response and retain evidence pointers..
 3. Follow the question through the capture: self versus inclusive time and caller chains for CPU work, retained objects and paths to roots for memory, or thread state and wait reasons for stalls. Avoid double-counting inclusive totals. A hot frame is not automatically a bottleneck, and a retained object is not automatically a leak.
 4. Map the relevant frames, allocation sites, or events to file, symbol, and line using the artifact's symbols and matching source version. Identify unresolved mappings rather than inventing a location from a similar function name.
-5. Check competing explanations and capture limits, such as missing threads, sampling gaps, instrumentation overhead, or an unrepresentative workload. When interpreting a performance claim, use [Validate a Performance Claim](../../principles/performance-evidence.md).
+5. Check competing explanations and capture limits, such as missing threads, sampling gaps, instrumentation overhead, or an unrepresentative workload. When interpreting a performance claim, use [Validate a Performance Claim](../principle-performance-evidence/SKILL.md).
 
 ## Establish What the Evidence Supports
 

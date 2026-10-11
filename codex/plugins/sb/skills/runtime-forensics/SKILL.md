@@ -18,7 +18,7 @@ Return a diagnosis grounded in the target's actual execution. Establish the symp
 
 Prefer observation that distinguishes alternatives before changing the process. A bounded reversible probe may confirm a prediction when the user's authorization covers its actual effect and environment. Use temporary counters or other existing controls rather than silently hot-patching application behavior. Runtime injection changes state and must not be described as read-only.
 
-Compare the same trigger under controlled conditions and explain what changed or did not change. Account for probe/profiler overhead and separate instrumented diagnosis from reported performance timing using [Validate a Performance Claim](../../principles/performance-evidence.md). If a probe, symbol map, or target access is unavailable, return the supported observations and the unconfirmed mechanism explicitly.
+Compare the same trigger under controlled conditions and explain what changed or did not change. Account for probe/profiler overhead and separate instrumented diagnosis from reported performance timing using [Validate a Performance Claim](../principle-performance-evidence/SKILL.md). If a probe, symbol map, or target access is unavailable, return the supported observations and the unconfirmed mechanism explicitly.
 
 Restore task-owned probes/configuration and verify the intended runtime state was restored. Remove disposable residue from failed capture attempts as well as the final run, while retaining proof. If restoration is unavailable, name the remaining change and its owner.
 

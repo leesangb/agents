@@ -12,17 +12,31 @@ The repository currently contains the Codex distribution of the `sb` plugin. Oth
 - built-in `explorer`: default delegated investigation role
 - `sb-thinker`: Astra xhigh with read-only access
 
-`$sb:code` is the main entry point for routing executable changes through Fast, Deep, Ultra, or PoC workflows. Main dynamically owns orchestration: it decides when to work directly, delegate bounded investigation or implementation, use the read-only thinker for planning or review, wait, follow up, and converge. Deep and Ultra retain explicit plan approval and evidence-gated review. `$sb:review` is the single entry point for reviewing code, PRs, implementations, plans, and designs. It owns reviewer selection and coordination; Main validates findings, with an independent audit reserved for material disagreements, high-impact judgments, or an explicit request for strict review. The remaining skills provide distinct workflows or execution capabilities.
+`$sb:code` is the main entry point for routing executable changes through Fast, Deep, Ultra, or PoC workflows. Main owns orchestration and chooses useful investigation, planning, implementation, and review roles. Deep and Ultra retain deeper investigation and evidence-gated review while authorization is judged separately. `$sb:review` is the single entry point for reviewing code, PRs, implementations, plans, and designs. Main selects reviewers and validates their findings, with an independent audit reserved for material disagreements, high-impact judgments, or an explicit request for strict review.
 
-Fast shows a brief plan before editing: the change, implementation approach, and completion check. Clear implementation requests then proceed without another approval; Deep and Ultra present their complete plans for explicit approval.
+Every production workflow shows its plan before editing: Fast uses a compact overview; Deep and Ultra make consequential facts and choices clear. A clear implementation request then proceeds within its authorized outcome, scope, and effects without another plan-approval turn. A planning-only request returns the complete plan without editing. Pause only a consequential choice the request, evidence, and reasonable defaults cannot resolve, or a step needing new authority. Existing grants persist; a higher rigor tier does not itself require another approval. Reversible files do not make production effects or external messages implicitly authorized. [Planning and Resuming](codex/plugins/sb/skills/code/references/planning.md) owns the detailed policy.
 
-Judgment criteria live in [Shared Principles](codex/plugins/sb/principles/index.md). Code routing, investigation, planning, implementation, and review select applicable files from this index. A general code or PR review covers behavior and relevant design principles by default; independent reviewer selection does not limit Main's coverage. Independent reviewers receive the selected principles and the common finding contract; Main coordinates and validates their results. Invoke `$sb:review` for the current diff or a specified scope, optionally emphasizing a principle such as caller obligations or behavioral verification.
+Judgment criteria live in independently discoverable `principle-*` skills, with [Shared Principles](codex/plugins/sb/principles/index.md) as their navigation index. Skill descriptions expose the trigger and core rule; the full body is read when selected. They are not all permanently loaded, and an initial skill-list budget can shorten descriptions or omit entries. Code routing, investigation, planning, implementation, and review use the same canonical criteria. A general review covers behavior and relevant design principles by default; independent reviewer selection does not limit Main's coverage. Invoke `$sb:review` for the current diff or a specified scope, optionally emphasizing a principle such as caller obligations or behavioral verification.
 
-For an API-boundary review, invoke `$sb:review` with the target interface and caller concern. [Caller Obligations](codex/plugins/sb/principles/caller-obligations.md) owns caller ceremony and builtin alternatives; [Deep Modules](codex/plugins/sb/principles/deep-modules.md), [Responsibility and Change](codex/plugins/sb/principles/responsibility-and-change.md), and [Intent and Contracts](codex/plugins/sb/principles/intent-and-contracts.md) cover depth, leaked knowledge, and conceptual meaning when those questions arise. These criteria also apply during planning and implementation.
+For an API-boundary review, invoke `$sb:review` with the target interface and caller concern. [Caller Obligations](codex/plugins/sb/skills/principle-caller-obligations/SKILL.md) owns caller ceremony and builtin alternatives; [Deep Modules](codex/plugins/sb/skills/principle-deep-modules/SKILL.md), [Responsibility and Change](codex/plugins/sb/skills/principle-responsibility-and-change/SKILL.md), and [Intent and Contracts](codex/plugins/sb/skills/principle-intent-and-contracts/SKILL.md) cover depth, leaked knowledge, and conceptual meaning when those questions arise. These criteria also apply during planning and implementation.
 
-[Composition and Mechanisms](codex/plugins/sb/principles/composition-and-mechanisms.md) guides feature assembly and independent mechanism ownership; [Deep Modules](codex/plugins/sb/principles/deep-modules.md) guides interface depth and locality. Detailed criteria have one owning file. Start from its question in the index and follow a related link only when an actual unanswered question needs it; design foundations provide priority and navigation for broader tradeoffs. Structural explanation remains a code-workflow reference.
+[Composition and Mechanisms](codex/plugins/sb/skills/principle-composition-and-mechanisms/SKILL.md) guides feature assembly and independent mechanism ownership; [Deep Modules](codex/plugins/sb/skills/principle-deep-modules/SKILL.md) guides interface depth and locality. Detailed criteria have one owning file. Start from its question in the index and follow a related link only when an actual unanswered question needs it; design foundations provide priority and navigation for broader tradeoffs. Structural explanation remains a code-workflow reference.
 
 Review evidence, candidate disposition, and explanation follow the shared [Finding Contract](codex/plugins/sb/skills/review/references/finding-contract.md). Its [recipient-facing explanation rules](codex/plugins/sb/skills/review/references/finding-contract.md#explain-findings-for-the-recipient) apply to both specialist drafts and the consolidated review.
+
+### Explanation, writing, and parallel investigation
+
+| Capability | Use |
+| --- | --- |
+| `$sb:how` | Explain actual runtime flow, concepts, ownership, and layering at the depth the question needs. |
+| `$sb:why` | Reconstruct design rationale from relevant history and decision records, distinguishing recorded intent from inference and gaps. |
+| `$sb:blast-radius` | Identify what can break beyond the diff and connect source investigation to a distinguishing check of the key safety assumption. |
+| `$sb:swarm` | Coordinate useful independent investigation slices or candidate comparisons, preserving the selected workflow and one production writer. |
+| `$sb:unslop` | Remove vague claims, filler, jargon, and excessive compression without changing meaning or evidence. |
+| `$sb:technical-writing` | Structure docs, RFCs, procedures, and PR descriptions around the reader's task, conditions, and observable results. |
+| `$sb:bro` | Explicitly request a simpler restatement of the previous answer while preserving consequential caveats. |
+
+`how` and `why` explain rather than modify code. `blast-radius` reuses `analyze` for source investigation and leaves execution to Main within the authorized environment. `swarm` uses Codex roles and scoped evidence instead of a fixed cloud-worker or model roster; Fast and PoC code workflows remain direct paths. These capabilities do not add mandatory phases to every task.
 
 ### Verification, diagnosis, and learning
 
@@ -37,9 +51,9 @@ Review evidence, candidate disposition, and explanation follow the shared [Findi
 | `$sb:runtime-forensics` | Capture the reported behavior on the running target, analyze its evidence, and test a mechanism with authorized bounded probes. |
 | `$sb:hillclimb` | Improve one fixed metric through bounded hypotheses, comparable measurements, correctness gates, and keep-or-revert decisions within the code workflow. |
 
-Shared judgment criteria live in [principles/index.md](codex/plugins/sb/principles/index.md). Each code/review entry point consults the index for the accepted task and relevant source or proposed use case. The active workflow retains approval, writer/reviewer roles, execution, and reporting. Read a principle before applying or citing it, and explain the material choice it changes rather than only naming it. These are reference documents, not separate skill entry points. A code task uses their criteria while choosing the implementation; an independent reviewer uses the same criteria to challenge it.
+Each principle has one canonical `skills/principle-*/SKILL.md` body. Select a criterion directly or through [principles/index.md](codex/plugins/sb/principles/index.md), read it before applying its details, and explain the material choice it changes. For example, invoke `$sb:principle-separate-shared-state` when deciding whether actors need one write target, or `$sb:principle-experience-first` when implementation convenience competes with the user's core experience. Invoking a principle supplies judgment criteria; it does not authorize edits, external effects, or a new execution workflow.
 
-The collection covers [design foundations](codex/plugins/sb/principles/design-foundations.md), [independent shared-state decisions](codex/plugins/sb/principles/separate-shared-state.md), [verifiable units](codex/plugins/sb/principles/verifiable-units.md), [re-execution safety](codex/plugins/sb/principles/reexecution-safety.md), [defensive-code history](codex/plugins/sb/principles/defensive-history.md), [challenging failed premises](codex/plugins/sb/principles/challenge-shared-premise.md), [performance evidence](codex/plugins/sb/principles/performance-evidence.md), [structural enforcement](codex/plugins/sb/principles/encode-lessons-in-structure.md), and a conditional [decision trail](codex/plugins/sb/principles/decision-trail.md).
+The collection includes [experience first](codex/plugins/sb/skills/principle-experience-first/SKILL.md), [design foundations](codex/plugins/sb/skills/principle-design-foundations/SKILL.md), [independent shared-state decisions](codex/plugins/sb/skills/principle-separate-shared-state/SKILL.md), [verifiable units](codex/plugins/sb/skills/principle-verifiable-units/SKILL.md), [re-execution safety](codex/plugins/sb/skills/principle-reexecution-safety/SKILL.md), [defensive-code history](codex/plugins/sb/skills/principle-defensive-history/SKILL.md), [challenging failed premises](codex/plugins/sb/skills/principle-challenge-shared-premise/SKILL.md), [performance evidence](codex/plugins/sb/skills/principle-performance-evidence/SKILL.md), [structural enforcement](codex/plugins/sb/skills/principle-encode-lessons-in-structure/SKILL.md), and a conditional [decision trail](codex/plugins/sb/skills/principle-decision-trail/SKILL.md).
 
 ### Install or update
 
@@ -68,16 +82,18 @@ codex/
 └── plugins/sb/
     ├── .codex-plugin/plugin.json      # plugin manifest
     ├── assets/agents/                 # read-only sb-thinker profile
-    ├── principles/                    # shared planning/implementation/review criteria
+    ├── principles/index.md            # navigation to canonical criterion skills
     ├── scripts/install-agents         # profile installer and conflict protection
-    └── skills/                         # workflow and capability skills
+    └── skills/                         # workflows, capabilities, and principle-* skills
 ```
 
 ## Third-Party Attribution
 
-The verification, history, diagnosis, optimization, and learning skills
+The verification, history, diagnosis, optimization, learning, explanation,
+parallel investigation, and writing skills
 (create-verification-skill, maintain-verification-skill, correct, reflect, recall,
-trace-forensics, runtime-forensics, and hillclimb) and portions of the shared
+trace-forensics, runtime-forensics, hillclimb, how, why, blast-radius, swarm,
+unslop, technical-writing, and bro) and portions of the shared
 principles collection are adapted from pstack by Lauren Tan:
 https://github.com/cursor/plugins/tree/main/pstack
 

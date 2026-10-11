@@ -2,7 +2,7 @@
 
 Use after the [router](../SKILL.md) establishes a known target, expected behavior, and focused verification with no Deep or Ultra signal.
 
-Read [Planning and Resuming](planning.md). Validate the user's direction against the relevant code and preserve meaningful constraints. Present its compact Fast Plan before editing, even for an already-clear request. A clear implementation request continues immediately; planning-only and materially updated plans retain the shared approval rule.
+Read [Planning and Resuming](planning.md). Validate the user's direction against the relevant code and preserve meaningful constraints. Present its compact Fast Plan before editing, even for an already-clear request. Continue implementation within the existing grant; planning-only requests return the complete plan, and revisions follow the shared authorization policy.
 
 Main implements directly as the sole writer. Reuse existing seams and keep the Outcome Contract intact. Fast does not load review orchestration or spawn reviewers.
 

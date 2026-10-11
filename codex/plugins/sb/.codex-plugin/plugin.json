@@ -1,6 +1,6 @@
 {
   "name": "sb",
-  "version": "0.1.0+codex.20260919094931",
+  "version": "0.1.0+codex.20261011.1",
   "description": "Code-change workflows with evidence-based review and conditional independent audit for Codex.",
   "author": {
     "name": "Local developer"
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "SB",
     "shortDescription": "Portable code workflow capabilities",
-    "longDescription": "Route Fast, Deep, Ultra, and PoC changes with explicit Deep/Ultra plan approval. Main coordinates focused reviewers and validates findings; independent packet-only audit is conditional on material disputes, high-impact judgments, or an explicit audit request.",
+    "longDescription": "Route Fast, Deep, Ultra, and PoC changes with rigor separate from authorization. Discover principle skills, explain code and rationale, and coordinate bounded investigation. Main validates focused reviews; independent audit is conditional.",
     "developerName": "Local developer",
     "category": "Developer Tools",
     "capabilities": [],

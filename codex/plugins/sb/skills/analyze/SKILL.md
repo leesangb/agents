@@ -19,9 +19,9 @@ Perform a bounded, read-only investigation and return evidence for the caller's 
 - When an existing profile, heap snapshot, or trace is the investigation's evidence, use [Trace Forensics](../trace-forensics/SKILL.md) within this read-only scope. If live capture is needed, return the smallest request for Main or [Runtime Forensics](../runtime-forensics/SKILL.md); do not launch or instrument the app as part of this analysis.
 - Preserve an exception, negative finding, rejected path, or non-applicable pattern only when dropping it could violate an invariant, repeat a dead end, apply a pattern outside its scope, or miss observable behavior.
 - Identify state, async/cache boundaries, external I/O, validation, error handling, and reachable edge cases. Do not claim a bug without a reachable trigger.
-- Before changing or removing a defensive path whose reason is unclear, read [Recover the Contract Behind Defensive Code](../../principles/defensive-history.md) and return the supported preservation constraints, risks, and evidence gaps.
+- Before changing or removing a defensive path whose reason is unclear, read [Recover the Contract Behind Defensive Code](../principle-defensive-history/SKILL.md) and return the supported preservation constraints, risks, and evidence gaps.
 - For an impact question, identify the key fact the change's safety depends on. Follow relevant connections beyond symbol references, such as a pinned dependency or local patch, serialized data, a flag, teardown timing, or a downstream consumer. State the strongest available evidence and the smallest check Main needs when that safety fact remains unproved; do not run or create verification as part of this read-only investigation.
-- When prior attempted fixes sharing one premise repeatedly fail, apply [Challenge a Repeatedly Failing Premise](../../principles/challenge-shared-premise.md) in the next investigation.
+- When prior attempted fixes sharing one premise repeatedly fail, apply [Challenge a Repeatedly Failing Premise](../principle-challenge-shared-premise/SKILL.md) in the next investigation.
 - Keep identifiers, paths, commands, and API names in their original language; write prose in the user's or caller's requested language.
 - Do not edit, refactor, add tests, commit, or delegate.
 

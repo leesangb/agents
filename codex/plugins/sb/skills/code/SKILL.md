@@ -26,11 +26,13 @@ If Fast eligibility cannot be established, use Deep; use Ultra when the uncertai
 
 Main owns routing, user interaction, approval, and orchestration. Fast and PoC are direct paths. In Deep and Ultra, delegate only a concrete useful concern: built-in `explorer` with `$sb:analyze`, read-only `sb-thinker` with `$sb:architecture-plan` or an explicitly assigned independent review under `$sb:review`, and built-in `worker` with `$sb:implement`. Keep one implementation writer and fresh independent review threads.
 
-For Fast, Deep, and Ultra, [Planning and Resuming](references/planning.md) owns plan contents, approval, and completion policy. Deep and Ultra retain explicit plan approval; technical alternatives retain the [Decision Dialogue](references/decision-dialogue.md) eligibility rules.
+For Fast, Deep, and Ultra, [Planning and Resuming](references/planning.md) owns plan contents, authorization, and completion policy. Rigor and approval are separate: show the plan and continue requested work within its existing grant. Pause only the concern with missing authority or an unresolved consequential decision; a planning-only request returns a plan. [Decision Dialogue](references/decision-dialogue.md) governs decisions that evidence and reasonable defaults cannot resolve.
 
-Read [Composition and Mechanisms](../../principles/composition-and-mechanisms.md) when the task actually composes capabilities with requirement-owned policy, exposes an independent mechanism obligation, or changes a responsibility/interface boundary.
+Read [Composition and Mechanisms](../principle-composition-and-mechanisms/SKILL.md) when the task actually composes capabilities with requirement-owned policy, exposes an independent mechanism obligation, or changes a responsibility/interface boundary.
 
-For an explicit sustained optimization loop, use [Hillclimb](../hillclimb/SKILL.md) to coordinate measurements and attempts within the selected workflow. A concrete attempt uses the current approved scope; changed contract or risk returns here for routing and any required replanning. Hillclimb does not replace workflow approval or review gates.
+For an explicit sustained optimization loop, use [Hillclimb](../hillclimb/SKILL.md) to coordinate measurements and attempts within the selected workflow. A concrete attempt uses the current authorized scope; changed contract or risk returns here for routing and any required replanning. Hillclimb does not replace authorization or review gates.
+
+Use [How](../how/SKILL.md) for a requested explanation of runtime flow or ownership, [Why](../why/SKILL.md) for historical rationale, and [Blast Radius](../blast-radius/SKILL.md) when the change's safety depends on a fact beyond the diff. These capabilities serve their concrete question rather than adding mandatory phases. Use [Swarm](../swarm/SKILL.md) for useful independent investigation slices or candidate comparisons in Deep or Ultra; retain this workflow's writer and review boundaries.
 
 ## Reporting
 

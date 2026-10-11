@@ -9,6 +9,7 @@ An unresolved decision is eligible only when **all** of these gates pass:
 1. Discoverable facts have been investigated from code, documentation, history, logs, or other available evidence.
 2. At least two credible answers remain.
 3. The answer materially changes the Outcome Contract, top-level assembly, interface, ownership, dependency direction, or verification meaning.
+4. The current request, evidence, and a reasonable default within the granted scope cannot resolve the choice. A technical alternative is not automatically a human decision; Main can choose an implementation recommendation that preserves the accepted outcome and obligations.
 
 Workflow tier, composition evidence, reviewer availability, or a planner's preference alone never triggers dialogue. Facts that Main or an explorer can discover are not user questions.
 
@@ -43,4 +44,4 @@ evidence; credible options; recommended answer and reason; plan consequence
 - Ultra works the full currently eligible frontier round by round until the result is `ready` (with its conditional plan-review rule).
 - Reuse the same planning thinker while resolving the same design tree. Start a fresh planner after a material reframe or stale evidence; never reuse a planning thinker for review.
 
-Answers are planning inputs, not canonical plan approval. Deep and Ultra present the complete `ready` plan and obtain approval once after readiness.
+Answers resolve their specific decisions. Main presents the complete `ready` plan and applies [Planning and Resuming](planning.md): continue an already-authorized implementation request, return a planning-only deliverable, or pause only the step that needs new authority. Do not append an automatic final plan-approval gate to a resolved dialogue.

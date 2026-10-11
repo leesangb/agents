@@ -15,7 +15,7 @@ For each supported class, identify the invariant, the current cost, and whether 
 
 ## Choose the Smallest Effective Enforcement
 
-Apply [Encode Recurring Lessons in Structure](../../principles/encode-lessons-in-structure.md) to the established pattern. Return the smallest justified enforcement proposal and its cost.
+Apply [Encode Recurring Lessons in Structure](../principle-encode-lessons-in-structure/SKILL.md) to the established pattern. Return the smallest justified enforcement proposal and its cost.
 
 ## Apply and Prove
 

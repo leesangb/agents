@@ -16,7 +16,7 @@ Main is the sole writer and observer. Work directly without subagents or review 
 
 Write the smallest disposable implementation and inspect its rendered result, command output, interaction, or equivalent direct evidence. Iterate within the unchanged question and permitted effects. Automated tests, typecheck, lint, review, and production hardening are outside this experimental workflow; record any checks actually performed.
 
-If the question, permitted effects, or risk changes, stop and return to the router. A request to keep, ship, harden, or rely on the result ends PoC: use the experimental diff as evidence for a production workflow, then complete that workflow's approval and verification requirements.
+If the question, permitted effects, or risk changes, stop and return to the router. A request to keep, ship, harden, or rely on the result ends PoC: use the experimental diff as evidence for a production workflow, then complete that workflow's authorization and verification requirements.
 
 ## Report
 
