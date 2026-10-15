@@ -1,0 +1,17 @@
+{
+  "name": "agents",
+  "owner": {
+    "name": "Local developer"
+  },
+  "metadata": {
+    "description": "Portable agent workflows and capability bundles."
+  },
+  "plugins": [
+    {
+      "name": "sb",
+      "source": "./plugins/sb",
+      "description": "Code-change workflows with evidence-based review and conditional independent audit.",
+      "category": "development"
+    }
+  ]
+}
