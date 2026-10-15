@@ -1,0 +1,7 @@
+{
+  "name": "sb",
+  "description": "Code-change workflows with evidence-based review and conditional independent audit for Claude Code.",
+  "author": {
+    "name": "Local developer"
+  }
+}

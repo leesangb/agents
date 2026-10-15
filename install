@@ -1,0 +1,59 @@
+#!/bin/sh
+set -eu
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+plugin_root="$script_dir/plugins/sb"
+agent_installer="$plugin_root/scripts/install-agents"
+plugin_manifest="$plugin_root/.codex-plugin/plugin.json"
+legacy_codex_root="$script_dir/codex"
+runtime=${1:-}
+mode=${2:-install}
+
+usage() {
+  printf '%s\n' 'Usage: ./install <codex|claude> [--check]' >&2
+  exit 2
+}
+
+case "$runtime:$mode" in
+  codex:install)
+    "$agent_installer" --preflight
+
+    # A registration left at the former codex/ root makes listing fail, so read both streams.
+    marketplaces=$(codex plugin marketplace list --json 2>&1) || true
+    if ! printf '%s' "$marketplaces" | grep -F "\"root\": \"$script_dir\"" >/dev/null; then
+      if printf '%s' "$marketplaces" | grep -F "$legacy_codex_root" >/dev/null; then
+        codex plugin marketplace remove agents >/dev/null
+      fi
+      codex plugin marketplace add "$script_dir" --json >/dev/null
+    fi
+
+    codex plugin add sb@agents --json
+    "$agent_installer" --install
+    printf '%s\n' 'Installed sb@agents and sb-thinker; safely retired proven managed sb-worker/sb-explorer copies. Start a new Codex session to load the plugin.'
+    ;;
+  codex:--check)
+    "$agent_installer" --check
+    plugin_version=$(sed -n 's/.*"version": "\([^"]*\)".*/\1/p' "$plugin_manifest" | head -n 1)
+    plugin_list=$(codex plugin list --json)
+    printf '%s' "$plugin_list" | grep -F '"pluginId": "sb@agents"' >/dev/null
+    printf '%s' "$plugin_list" | grep -F "\"version\": \"$plugin_version\"" >/dev/null
+    printf '%s\n' "Verified sb@agents $plugin_version and sb-thinker."
+    ;;
+  claude:install)
+    if ! claude plugin marketplace list --json | grep -F "\"path\": \"$script_dir\"" >/dev/null; then
+      claude plugin marketplace add "$script_dir" >/dev/null
+    fi
+
+    claude plugin install sb@agents >/dev/null
+    printf '%s\n' 'Installed sb@agents. Claude Code reads the plugin from this repository; start a new session or run /reload-plugins to load edits.'
+    ;;
+  claude:--check)
+    claude plugin validate "$script_dir" >/dev/null
+    claude plugin validate "$plugin_root" >/dev/null
+    claude plugin list --json | grep -F "\"readFromFolder\": \"$plugin_root\"" >/dev/null
+    printf '%s\n' "Verified sb@agents is read from $plugin_root."
+    ;;
+  *)
+    usage
+    ;;
+esac
