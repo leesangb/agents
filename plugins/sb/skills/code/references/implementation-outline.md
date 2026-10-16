@@ -1,16 +1,16 @@
 # Implementation Outline
 
-Use a structural sketch when it helps explain responsibility, interfaces, or dependency changes. Prose or a short bullet is enough for a local edit.
+Before implementing new behavior or changing interfaces, ownership, or wiring, sketch the affected use case from the consuming caller through collaborating modules to state changes or external effects. Read the actual callers and existing interfaces first; label proposed calls as proposed. A local correction within established boundaries needs only a brief explanation of the affected flow.
 
-Show the relevant modules or likely files, caller-visible obligations, ownership, and preserved constraints. Keep implementation mechanics adaptable unless the Outcome Contract fixes them. Choose a tree, before/after sketch, or another compact representation that explains the decision.
+Use [Caller Obligations](../../principle-caller-obligations/SKILL.md) to choose the representative call and distinguish the caller's legitimate policy choices from mechanics an owner can handle completely. Establish that call and responsibility split before choosing implementation internals. Include internal collaboration boundaries, not only a short public facade. Use [Deep Modules](../../principle-deep-modules/SKILL.md) if the proposed split still leaves callers managing mechanics, and [Composition and Mechanisms](../../principle-composition-and-mechanisms/SKILL.md) when composing capabilities or deciding whether a separate mechanism is justified.
 
-For example:
+Show the caller's goal, representative call, owners, and preserved constraints in a few lines. For example, a proposed outline:
 
 ```text
-Position capability
-  reads and changes page-level coordinates
-  reuses the existing movement command
-    preserves child movement and undo restoration
+User moves a selection
+  feature calls moveSelection(selection, displacement)
+    movement command owns coordinate conversion and child movement
+      history owner preserves undo restoration
 ```
 
-Include intentional exclusions only when they constrain the design. Do not turn a planning illustration into an unnecessary commitment to helper names, file splits, or internal algorithms.
+Reuse existing owners where their contracts fit. Keep mechanics adaptable unless the Outcome Contract fixes them; the sketch does not require new helpers, layers, files, or approval. Revisit it if implementation changes who must know or do what.

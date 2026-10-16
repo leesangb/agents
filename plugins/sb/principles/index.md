@@ -12,17 +12,18 @@ The `principle-*` skills are the canonical judgment criteria. Their descriptions
 | [Responsibility and Change](../skills/principle-responsibility-and-change/SKILL.md) | Who should own an identified responsibility, which modules share its design knowledge, and how should dependencies or coordinated edits change? |
 | [Intent and Contracts](../skills/principle-intent-and-contracts/SKILL.md) | Names, types, values, effects, documentation, or abstractions need to expose a concrete meaning or constraint. |
 | [Behavioral Substitutability](../skills/principle-behavioral-substitutability/SKILL.md) | Implementations, inheritance, extension contracts, or mutable domain invariants change. |
-| [Behavioral Verification](../skills/principle-behavioral-verification/SKILL.md) | Choosing verification boundaries/scenarios or assessing behavior evidence. |
+| [Behavioral Verification](../skills/principle-behavioral-verification/SKILL.md) | Writing tests that express API/function guarantees, choosing verification boundaries/scenarios, or assessing behavior evidence. |
 | [Operational Safety](../skills/principle-operational-safety/SKILL.md) | A concrete trust, data, recovery, compatibility, lifetime, concurrency, resource, or performance question exists. |
 | [Requirement Fidelity](../skills/principle-requirement-fidelity/SKILL.md) | Mapping a plan, implementation, or proof to explicit accepted requirements. |
-| [Simplicity and Coupling](../skills/principle-simplicity-and-coupling/SKILL.md) | Can a separation, merge, inline, or deletion preserve the contract while reducing concrete coupling, change scope, or navigation cost? |
+| [Simplicity and Coupling](../skills/principle-simplicity-and-coupling/SKILL.md) | Can separation, merging, inlining, deletion, or deriving values reduce coupling, navigation, hidden mutable context, or synchronization duties while preserving the contract? |
 | [Practical Design Foundations](../skills/principle-design-foundations/SKILL.md) | Competing criteria need a judgment priority, or the question concerns trusted values, values/effects, or normal-flow visibility. |
 | [Separate Independent State](../skills/principle-separate-shared-state/SKILL.md) | Deciding whether concurrent actors need shared mutable state or serialization. |
 | [Re-execution Safety](../skills/principle-reexecution-safety/SKILL.md) | A state-changing operation permits retry or resume after partial failure. |
 | [Sequence Verifiable Units](../skills/principle-verifiable-units/SKILL.md) | A multi-step sweep or migration has dependent changes. |
 | [Challenge a Repeatedly Failing Premise](../skills/principle-challenge-shared-premise/SKILL.md) | Prior fixes sharing one premise repeatedly fail. |
 | [Recover the Contract Behind Defensive Code](../skills/principle-defensive-history/SKILL.md) | Changing/removing a defensive path whose reason is unclear. |
-| [Validate a Performance Claim](../skills/principle-performance-evidence/SKILL.md) | Measuring performance or choosing an option from benchmark evidence. |
+| [Validate Performance and Evaluation Claims](../skills/principle-performance-evidence/SKILL.md) | Interpreting performance measurements or evaluation scores, comparing equivalent completed work, or judging whether an improvement transfers. |
+| [Build the Lever](../skills/principle-build-the-lever/SKILL.md) | A transformation, analysis, or verification can be made more reliable and reviewable through a small rerunnable tool. |
 | [Encode Recurring Lessons in Structure](../skills/principle-encode-lessons-in-structure/SKILL.md) | Preventing a demonstrated recurring repository mistake. |
 | [Decision Trail](../skills/principle-decision-trail/SKILL.md) | Material decisions in long-running, unattended, or multi-session work would otherwise be lost. |
 

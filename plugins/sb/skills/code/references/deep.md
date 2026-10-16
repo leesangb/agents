@@ -2,21 +2,16 @@
 
 Use after the [router](../SKILL.md) identifies meaningful uncertainty or a caller/ownership contract change that can be handled in one bounded plan.
 
-Read [Planning and Resuming](planning.md) and [Decision Dialogue](decision-dialogue.md). The shared policies define required plan information, authorization, decision eligibility, and progress-based completion. Deep rigor does not require another approval when the implementation request already covers the work.
+Apply [Planning and Resuming](planning.md).
 
 ## Investigate and Plan
 
-- Main investigates the target, callers, behavior, verification, and relevant history far enough to identify the cause or decision surface. Use an [`explorer`](../../../roles.md) with [Analyze](../../analyze/SKILL.md) only when a separate bounded investigation helps.
-- Main fixes the Outcome Contract from user intent and confirmed evidence. Resolve discoverable facts before asking questions.
-- Main authors the plan directly or delegates a distinct read-only planning concern to a `thinker` with [Architecture Plan](../../architecture-plan/SKILL.md). Apply Decision Dialogue's readiness, eligible frontier, and relay rules in either case. Reuse a delegated planning thread for the same design tree; start fresh after a material reframe or stale evidence.
-- Present the complete ready plan and continue when the existing grant covers implementation. Return the plan for a planning-only request; pause only unresolved decisions or effects needing new authority. Do not run a separate plan-review panel on Deep. Reroute to Ultra if risk or dependent staged decisions exceed one bounded plan.
+Investigate the named uncertainty or changed obligation through target code, callers, verification, and relevant history. Establish the Outcome Contract and implementation direction from that evidence. Use [Analyze](../../analyze/SKILL.md) or [Architecture Plan](../../architecture-plan/SKILL.md) only for a useful separate investigation or planning concern. Read [Decision Dialogue](decision-dialogue.md) if a consequential choice remains unresolved. Deep has no separate plan-review panel.
+
+When a novel module shape or interaction remains uncertain, compare small, structurally different sketches against the same use case and constraints. Prototype only the behavior that can decide between them, using authorized effects and isolated disposable state; read-only planning stays with sketches. Choose from observed evidence and concrete costs rather than polished prose. Established patterns need no competing prototypes, and there is no fixed candidate count.
 
 ## Implement, Verify, and Review
 
-After authorization and resume validation, Main or one `worker` uses [Implement](../../implement/SKILL.md) and receives the complete current plan and permitted effects. Keep that writer through fixes. Implementation recommendations may adapt; contract changes return to Main for replanning.
+Main or one worker uses [Implement](../../implement/SKILL.md) with the current plan and permitted effects. Verify the contract, then invoke [Review](../../review/SKILL.md) with the Deep profile and actual diff/verification evidence; that skill owns reviewer selection and conditional audit.
 
-Run the verification needed for the Outcome Contract. Invoke [Review](../../review/SKILL.md) with the Deep profile and actual diff/verification evidence. It owns reviewer selection and conditional audit. The `simplicity` reviewer remains Ultra-only.
-
-Apply supported scoped fixes through the same writer, rerun affected checks, and re-review only claims affected by new changes or evidence. Follow the shared completion and stopping criteria; do not stop merely because a fixed number of review rounds elapsed. An unresolved review concern must be resolved or reported explicitly, never silently treated as agreement.
-
-Report the outcome, verification, material decisions, and unresolved requirements under the router's reporting policy.
+Apply supported scoped fixes, rerun affected checks, and re-review affected claims. Resolve or report remaining review concerns. Reroute to Ultra if risk or dependent staged decisions exceed one bounded plan.

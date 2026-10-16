@@ -1,11 +1,17 @@
 ---
 name: principle-performance-evidence
-description: "Validate measured performance against equivalent successful work, representative conditions, variation, and resource costs."
+description: "Validate performance or evaluation claims against comparable completed work, representative samples, variation, and measurement limits."
 ---
 
-# Validate a Performance Claim
+# Validate Performance and Evaluation Claims
 
-Use when measuring a speedup/regression or choosing an option from benchmark results. Apply the checks that can change the current claim, not a mandatory benchmark suite for every code change.
+Use when measuring a speedup/regression or choosing an option from benchmark or evaluation results. Establish what the number actually measures before trusting it. Apply only the checks that can change the claim; use the performance-specific checks below for timing and throughput, not as a mandatory suite for every evaluation.
+
+## Evaluation Claims
+
+Check that each trial completed the intended task and that its score distinguishes a meaningful failure from a valid solution. Keep workload, rubric, model/configuration, and comparison conditions fixed, or separate their effects from the proposed change. A changed rubric needs a new comparable baseline, not a silent rescore presented as improvement.
+
+Report sample size, repeat variation, failures, and the cases the workload represents. Distinguish instruction-content tests from actual installed behavior and same-task improvement from transfer to new tasks, environments, or models. Use independent cases or checks when those differences matter to the claim. A higher score may reflect the grader, easier tasks, leaked expectations, skipped work, or noise; rule out plausible alternatives before attributing the gain.
 
 ## Establish What the Number Means
 

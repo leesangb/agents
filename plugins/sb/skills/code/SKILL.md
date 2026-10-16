@@ -5,35 +5,31 @@ description: Route implementation and planning requests that change product code
 
 # Code Change Workflow Router
 
-Read the applicable local instructions and enough target code, direct callers, and nearby verification to select one workflow. Planning-only requests use the same routing as implementation requests. Use [Shared Principles](../../principles/index.md) to discover applicable criteria, then read only the selected workflow and principle files its task needs.
+Route executable changes, including operational agent instructions. Use the relevant skill directly for prose, explanations, diagrams, and standalone visual artifacts; rendering code alone does not make an artifact a product change. Route only the executable portion of mixed requests.
 
-## Scope
-
-Use this router for executable behavior, including operational agent instructions. For prose, explanations, diagrams, and standalone visual artifacts, use the relevant skill directly; rendering code alone does not make an artifact a product change. For mixed requests, route only the executable-change portion.
+Read applicable local instructions, relevant code, callers, and nearby verification. Select one workflow and the task's criteria from [Shared Principles](../../principles/index.md); read only those files. Planning-only requests use the same routing.
 
 ## Select a Workflow
 
-Apply these gates in order. Signals concern requested behavior, contracts, and operational effects; a file name or incidental mention alone does not satisfy a gate:
+Apply these gates in order to actual behavior, contracts, and effects, not incidental mentions or file names:
 
 1. **[Ultra](references/ultra.md)** for explicit ultra/max/thorough/full-path requests; changes affecting authentication, authorization, security, privacy, stored-data mutation/deletion, schema/migration/backfill, rollout, or production configuration behavior/contracts; external compatibility risk; or long-running coordination across dependent investigations, decisions, or environments.
 2. **[PoC](references/poc.md)** for an explicitly disposable experiment with no Ultra signal. Speed wording alone is not experimental intent. Keeping or shipping a PoC returns here for production routing.
 3. **[Deep](references/deep.md)** when a bounded read leaves cause, impact, product behavior, or a plan-changing design decision unresolved; when a caller-visible obligation or cross-package responsibility/dependency changes; or when investigation, competing designs, or an explicitly deep approach is the task. Name the concrete uncertainty or changed obligation.
 4. **[Fast](references/fast.md)** when target, expected behavior, and verification are known and no earlier gate applies: a validated user plan, local reversible change, known cause with a focused check, mechanical transformation, or established nearby pattern.
 
-If Fast eligibility cannot be established, use Deep; use Ultra when the uncertainty is high-cost or requires dependent stages. File count and available agents do not determine the tier. New evidence that invalidates the selected path returns here; never silently widen Fast or promote PoC to production.
+If Fast eligibility is unclear, use Deep; high-cost or dependent staged uncertainty uses Ultra. File count and agent availability do not select a tier. Reroute when new evidence changes eligibility, scope, or risk, including when keeping a PoC.
 
 ## Ownership and Conditional References
 
-Main owns routing, user interaction, approval, and orchestration. Fast and PoC are direct paths. In Deep and Ultra, delegate only a concrete useful concern: an `explorer` with [Analyze](../analyze/SKILL.md), a read-only `thinker` with [Architecture Plan](../architecture-plan/SKILL.md) or an explicitly assigned independent review under [Review](../review/SKILL.md), and a `worker` with [Implement](../implement/SKILL.md). [Runtime Roles](../../roles.md) maps each role to the current runtime. Keep one implementation writer and fresh independent review threads.
+Main owns routing, the user conversation, authority, and coordination. Fast and PoC are direct paths. Deep and Ultra may delegate concrete useful concerns using [Runtime Roles](../../roles.md): investigation with [Analyze](../analyze/SKILL.md), read-only planning with [Architecture Plan](../architecture-plan/SKILL.md), implementation with [Implement](../implement/SKILL.md), or independent review with [Review](../review/SKILL.md). Keep one implementation writer through fixes and fresh threads for independent review.
 
-For Fast, Deep, and Ultra, [Planning and Resuming](references/planning.md) owns plan contents, authorization, and completion policy. Rigor and approval are separate: show the plan and continue requested work within its existing grant. Pause only the concern with missing authority or an unresolved consequential decision; a planning-only request returns a plan. [Decision Dialogue](references/decision-dialogue.md) governs decisions that evidence and reasonable defaults cannot resolve.
+Fast, Deep, and Ultra read [Planning and Resuming](references/planning.md) for shared plan, authority, and completion rules. Read [Decision Dialogue](references/decision-dialogue.md) only when a consequential decision remains unresolved after investigation and reasonable defaults.
 
-Read [Composition and Mechanisms](../principle-composition-and-mechanisms/SKILL.md) when the task actually composes capabilities with requirement-owned policy, exposes an independent mechanism obligation, or changes a responsibility/interface boundary.
-
-For an explicit sustained optimization loop, use [Hillclimb](../hillclimb/SKILL.md) to coordinate measurements and attempts within the selected workflow. A concrete attempt uses the current authorized scope; changed contract or risk returns here for routing and any required replanning. Hillclimb does not replace authorization or review gates.
-
-Use [How](../how/SKILL.md) for a requested explanation of runtime flow or ownership, [Why](../why/SKILL.md) for historical rationale, and [Blast Radius](../blast-radius/SKILL.md) when the change's safety depends on a fact beyond the diff. These capabilities serve their concrete question rather than adding mandatory phases. Use [Swarm](../swarm/SKILL.md) for useful independent investigation slices or candidate comparisons in Deep or Ultra; retain this workflow's writer and review boundaries.
+Conditional capabilities serve their question rather than add phases: [How](../how/SKILL.md) for requested runtime explanations, [Why](../why/SKILL.md) for historical rationale, [Blast Radius](../blast-radius/SKILL.md) for safety assumptions beyond the diff, [Hillclimb](../hillclimb/SKILL.md) for explicit sustained optimization, and [Swarm](../swarm/SKILL.md) for independent investigation slices or candidate comparisons in Deep/Ultra. They retain the selected workflow's authority, writer, and review boundaries.
 
 ## Reporting
 
-Lead completion reports with the outcome, supporting verification, and unresolved risks. Preserve exact verification in handoffs; user-facing reports can summarize successful checks. Beyond the required pre-implementation plan, include workflow details only when they explain a decision or the user asks. Report failures and unverified requirements explicitly. Never commit or publish without authorization.
+Lead the final response with the outcome. Explain consequential choices in the user's language through evidence and principles actually read and applied, so the reader can assess the intent and reasoning: why this responsibility belongs here, why these parts belong together, or what concrete tradeoff favored the approach. Use the reasons that shaped the work rather than a fixed reporting template; caller benefits and alternatives matter when relevant. Reconcile the explanation with the final diff before claiming completion. One sentence can suffice for a routine correction.
+
+Connect verification to its guarantee. State failures, unverified requirements, material tradeoffs, and uncertainty. Keep exact verification in handoffs; summarize passing checks for the user. Include workflow mechanics only when they explain a decision or are requested. Commit or publish only with authorization.
