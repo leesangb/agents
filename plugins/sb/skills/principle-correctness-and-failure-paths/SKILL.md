@@ -1,6 +1,6 @@
 ---
 name: principle-correctness-and-failure-paths
-description: "Trace concrete inputs and failure paths against the owning contract when logic, guards, errors, or recovery change."
+description: "Trace correctness and failure paths; preserve error context and recovery ownership when logic, guards, errors, or fallbacks change."
 ---
 
 # Correctness and Failure Paths
@@ -12,6 +12,7 @@ Establish the expected observable behavior from the accepted requirement and the
 - Trace guarantees from the owning trust boundary before adding null checks, type guards, or fallbacks. Preserve external-input validation and real failure handling; carry proved facts into internal values rather than repeating checks or spreading optional results through callers.
 - Before removing apparently dead code, inspect its actual entrypoints, exports, registries, build aliases, and dynamic wiring as applicable. Bound this discovery to the candidate and its reachable connections.
 - Compare the normal path with the error and recovery paths. Preserve return-value meaning, effects, API usage, useful runtime observability, and the legitimate responsibilities of callers.
+- Recover failures within this boundary's responsibility and supported contract. Propagate failures it cannot resolve, preserving original causes, stacks, and relevant operation/target context. Cleanup and logging do not by themselves resolve a failure. When translating errors, keep the cause chain and meaningful distinctions; do not turn failure into success, empty data, or a generic replacement unless the contract defines that outcome.
 - Check the strongest available explanation that would make an apparent defect valid: an upstream guard, caller constraint, existing test, history, or observed execution. State which evidence resolves the concern and which part remains unverified.
 
 For a trusted-value, normal-flow, or competing-criteria question, use [Practical Design Foundations](../principle-design-foundations/SKILL.md). Use [Caller Obligations](../principle-caller-obligations/SKILL.md), [Responsibility and Change](../principle-responsibility-and-change/SKILL.md), or [Behavioral Verification](../principle-behavioral-verification/SKILL.md) for a distinct interface, ownership, or test-boundary question. Multiple lenses can explain one cause without requiring multiple changes.

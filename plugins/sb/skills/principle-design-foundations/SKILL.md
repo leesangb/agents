@@ -75,7 +75,7 @@ Use [Composition and Mechanisms](../principle-composition-and-mechanisms/SKILL.m
 - Keep orchestration flat and intention-revealing.
 - Use guard clauses for invalid inputs, failed preconditions, and exceptional states so they leave before the normal path.
 - Hide necessary low-level mechanics behind the narrowest owning interface rather than fragmenting an obvious operation into shallow helpers.
-- Let errors reach the existing user-facing boundary unless recovery is an explicit requirement.
+- Keep recovery with its owning boundary and propagate unresolved failures under [Correctness and Failure Paths](../principle-correctness-and-failure-paths/SKILL.md).
 
 **Counter-signals:** guards that obscure normal domain alternatives, helpers that only rename adjacent lines, or failure machinery added without a reachable case or runtime evidence.
 
