@@ -36,6 +36,7 @@ Review evidence, candidate disposition, and explanation follow the shared [Findi
 | --- | --- |
 | `$sb:how` | Explain actual runtime flow, concepts, ownership, and layering at the depth the question needs. |
 | `$sb:why` | Reconstruct design rationale from relevant history and decision records, distinguishing recorded intent from inference and gaps. |
+| `$sb:restate` | Restate the user's goals and underlying problem in your own words to check shared understanding, making material assumptions explicit. |
 | `$sb:blast-radius` | Identify what can break beyond the diff and connect source investigation to a distinguishing check of the key safety assumption. |
 | `$sb:swarm` | Coordinate useful independent investigation slices or candidate comparisons, preserving the selected workflow and one production writer. |
 | `$sb:unslop` | Remove vague claims, filler, jargon, and excessive compression without changing meaning or evidence. |
@@ -105,7 +106,7 @@ The verification, history, diagnosis, optimization, learning, explanation,
 parallel investigation, and writing skills
 (create-verification-skill, maintain-verification-skill, correct, reflect, recall,
 trace-forensics, runtime-forensics, hillclimb, how, why, blast-radius, swarm,
-unslop, technical-writing, and bro) and portions of the shared
+unslop, technical-writing, bro, and restate) and portions of the shared
 principles collection are adapted from pstack by Lauren Tan:
 https://github.com/cursor/plugins/tree/main/pstack
 
