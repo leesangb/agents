@@ -9,6 +9,8 @@ Route executable changes, including operational agent instructions. Use the rele
 
 Read applicable local instructions, relevant code, callers, and nearby verification. Select one workflow and the task's criteria from [Shared Principles](../../principles/index.md); read only those files. Planning-only requests use the same routing.
 
+For bug fixes, apply [Root-Cause Repair](../principle-root-cause-repair/SKILL.md) before proposing a repair or selecting Fast.
+
 ## Select a Workflow
 
 Apply these gates in order to actual behavior, contracts, and effects, not incidental mentions or file names:

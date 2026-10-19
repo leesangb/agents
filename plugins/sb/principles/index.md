@@ -6,6 +6,7 @@ The `principle-*` skills are the canonical judgment criteria. Their descriptions
 | --- | --- |
 | [Experience First](../skills/principle-experience-first/SKILL.md) | Product, UX, API, or feature-scope choices trade the consuming user's core experience against implementation convenience. |
 | [Correctness and Failure Paths](../skills/principle-correctness-and-failure-paths/SKILL.md) | Executable logic, guards, errors, recovery, or reachability changes. |
+| [Root-Cause Repair](../skills/principle-root-cause-repair/SKILL.md) | Investigating, proposing, implementing, or reviewing a bug fix: establish its causal flow and responsible owner before choosing a patch. |
 | [Caller Obligations](../skills/principle-caller-obligations/SKILL.md) | What must each real caller do or know, which setup, configuration, lifecycle, or error duties belong to that caller, and could a language/runtime builtin express the API contract? |
 | [Composition and Mechanisms](../skills/principle-composition-and-mechanisms/SKILL.md) | Where should feature-specific ordering/branching/recovery policy be assembled, or does a proposed mechanism have an independent obligation? |
 | [Deep Modules](../skills/principle-deep-modules/SKILL.md) | How much useful behavior does this interface provide for the knowledge and duties it requires, and would deepening or a seam improve that tradeoff? |
