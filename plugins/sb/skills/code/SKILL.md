@@ -32,6 +32,8 @@ Conditional capabilities serve their question rather than add phases: [How](../h
 
 Use [Benchmark Checklist](../benchmark-checklist/SKILL.md) before reporting or acting on a measured performance comparison. This capability does not add benchmark runs to unrelated changes.
 
+When reading, writing, or reviewing `.ts` or `.tsx` files, apply [TypeScript Best Practices](../typescript-best-practices/SKILL.md). It owns language-specific guidance and links to the existing principles for domain types, trust boundaries, and caller contracts.
+
 ## Reporting
 
 Lead the final response with the outcome. Explain consequential choices in the user's language through evidence and principles actually read and applied, so the reader can assess the intent and reasoning: why this responsibility belongs here, why these parts belong together, or what concrete tradeoff favored the approach. Use the reasons that shaped the work rather than a fixed reporting template; caller benefits and alternatives matter when relevant. Reconcile the explanation with the final diff before claiming completion. One sentence can suffice for a routine correction.

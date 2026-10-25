@@ -62,6 +62,7 @@ Review evidence, candidate disposition, and explanation follow the shared [Findi
 | `$sb:runtime-forensics` | Capture the reported behavior on the running target, analyze its evidence, and test a mechanism with authorized bounded probes. |
 | `$sb:hillclimb` | Improve one fixed metric through bounded hypotheses, comparable measurements, correctness gates, and keep-or-revert decisions within the code workflow. |
 | `$sb:benchmark-checklist` | Vet measured performance through successful completed work, fair tuning, measured bottlenecks, plausible bounds, repeatability, and end-to-end relevance. |
+| `$sb:typescript-best-practices` | Apply precise domain types, boundary parsing, narrowing, value-oriented code, and inferred returns when reading or changing TypeScript. |
 
 Benchmark interpretation and explaining a measured number share the existing [Performance and Evaluation Evidence](plugins/sb/skills/principle-performance-evidence/SKILL.md) principle; its performance procedure lives in `benchmark-checklist`.
 
@@ -113,13 +114,18 @@ The verification, history, diagnosis, optimization, learning, explanation,
 parallel investigation, and writing skills
 (create-verification-skill, maintain-verification-skill, correct, reflect, recall,
 trace-forensics, runtime-forensics, hillclimb, how, why, blast-radius, swarm,
-unslop, technical-writing, bro, restate, and benchmark-checklist) and portions of the shared
+unslop, technical-writing, bro, restate, benchmark-checklist, and typescript-best-practices) and portions of the shared
 principles collection are adapted from pstack by Lauren Tan:
 https://github.com/cursor/plugins/tree/main/pstack
 
-The benchmark checklist, explain-the-number, and fix-root-causes additions
+The benchmark checklist, explain-the-number, fix-root-causes, and TypeScript additions
 were adapted from commit
 [`99b609a72323b70204eab407c622f436e858e112`](https://github.com/cursor/plugins/tree/99b609a72323b70204eab407c622f436e858e112/pstack/skills).
+
+The TypeScript skill also incorporates the former personal coding guideline,
+preserving value-oriented code and return inference while adapting pstack's
+type-modeling rules to the existing shared principles. Examples distinguish
+compiler guarantees from constraints that still need runtime validation.
 
 The original license for those portions follows. This notice does not relicense
 unrelated SB files.
