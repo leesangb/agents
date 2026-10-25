@@ -59,6 +59,9 @@ Review evidence, candidate disposition, and explanation follow the shared [Findi
 | `$sb:trace-forensics` | Diagnose an existing profile, heap snapshot, or trace, preserving the capture and separating observations from causal inference. |
 | `$sb:runtime-forensics` | Capture the reported behavior on the running target, analyze its evidence, and test a mechanism with authorized bounded probes. |
 | `$sb:hillclimb` | Improve one fixed metric through bounded hypotheses, comparable measurements, correctness gates, and keep-or-revert decisions within the code workflow. |
+| `$sb:benchmark-checklist` | Vet measured performance through successful completed work, fair tuning, measured bottlenecks, plausible bounds, repeatability, and end-to-end relevance. |
+
+Benchmark interpretation and explaining a measured number share the existing [Performance and Evaluation Evidence](plugins/sb/skills/principle-performance-evidence/SKILL.md) principle; its performance procedure lives in `benchmark-checklist`. The pstack `principle-fix-root-causes` guidance extends [Root-Cause Repair](plugins/sb/skills/principle-root-cause-repair/SKILL.md), including legitimate-state handling and restart-only failures.
 
 Each principle has one canonical `skills/principle-*/SKILL.md` body. Select a criterion directly or through [principles/index.md](plugins/sb/principles/index.md), read it before applying its details, and explain the material choice it changes. For example, invoke `$sb:principle-separate-shared-state` when deciding whether actors need one write target, or `$sb:principle-experience-first` when implementation convenience competes with the user's core experience. Invoking a principle supplies judgment criteria; it does not authorize edits, external effects, or a new execution workflow.
 
@@ -108,9 +111,13 @@ The verification, history, diagnosis, optimization, learning, explanation,
 parallel investigation, and writing skills
 (create-verification-skill, maintain-verification-skill, correct, reflect, recall,
 trace-forensics, runtime-forensics, hillclimb, how, why, blast-radius, swarm,
-unslop, technical-writing, bro, and restate) and portions of the shared
+unslop, technical-writing, bro, restate, and benchmark-checklist) and portions of the shared
 principles collection are adapted from pstack by Lauren Tan:
 https://github.com/cursor/plugins/tree/main/pstack
+
+The benchmark checklist, explain-the-number, and fix-root-causes additions
+were adapted from commit
+[`99b609a72323b70204eab407c622f436e858e112`](https://github.com/cursor/plugins/tree/99b609a72323b70204eab407c622f436e858e112/pstack/skills).
 
 The original license for those portions follows. This notice does not relicense
 unrelated SB files.

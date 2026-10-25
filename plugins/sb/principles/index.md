@@ -23,7 +23,7 @@ The `principle-*` skills are the canonical judgment criteria. Their descriptions
 | [Sequence Verifiable Units](../skills/principle-verifiable-units/SKILL.md) | A multi-step sweep or migration has dependent changes. |
 | [Challenge a Repeatedly Failing Premise](../skills/principle-challenge-shared-premise/SKILL.md) | Prior fixes sharing one premise repeatedly fail. |
 | [Recover the Contract Behind Defensive Code](../skills/principle-defensive-history/SKILL.md) | Changing/removing a defensive path whose reason is unclear. |
-| [Validate Performance and Evaluation Claims](../skills/principle-performance-evidence/SKILL.md) | Interpreting performance measurements or evaluation scores, comparing equivalent completed work, or judging whether an improvement transfers. |
+| [Validate Performance and Evaluation Claims](../skills/principle-performance-evidence/SKILL.md) | Explaining a measured number and its limits, interpreting evaluation scores, or comparing equivalent completed work; timing and throughput use its linked Benchmark Checklist. |
 | [Build the Lever](../skills/principle-build-the-lever/SKILL.md) | A transformation, analysis, or verification can be made more reliable and reviewable through a small rerunnable tool. |
 | [Encode Recurring Lessons in Structure](../skills/principle-encode-lessons-in-structure/SKILL.md) | Preventing a demonstrated recurring repository mistake. |
 | [Decision Trail](../skills/principle-decision-trail/SKILL.md) | Material decisions in long-running, unattended, or multi-session work would otherwise be lost. |
