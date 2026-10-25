@@ -16,6 +16,7 @@ Perform a bounded, read-only investigation and return evidence for the caller's 
 ## Analysis Discipline
 
 - Separate observed facts, evidence-backed inferences, and contract-shaping unknowns.
+- When diagnosing a failure or reviewing a causal explanation, read and apply [Root-Cause Repair](../principle-root-cause-repair/SKILL.md), even without a code-change request; retain this role's read-only limits.
 - When an existing profile, heap snapshot, or trace is the investigation's evidence, use [Trace Forensics](../trace-forensics/SKILL.md) within this read-only scope. If live capture is needed, return the smallest request for Main or [Runtime Forensics](../runtime-forensics/SKILL.md); do not launch or instrument the app as part of this analysis.
 - Preserve an exception, negative finding, rejected path, or non-applicable pattern only when dropping it could violate an invariant, repeat a dead end, apply a pattern outside its scope, or miss observable behavior.
 - Identify state, async/cache boundaries, external I/O, validation, error handling, and reachable edge cases. Do not claim a bug without a reachable trigger.

@@ -6,7 +6,7 @@ The `principle-*` skills are the canonical judgment criteria. Their descriptions
 | --- | --- |
 | [Experience First](../skills/principle-experience-first/SKILL.md) | Product, UX, API, or feature-scope choices trade the consuming user's core experience against implementation convenience. |
 | [Correctness and Failure Paths](../skills/principle-correctness-and-failure-paths/SKILL.md) | Executable logic, guards, errors, recovery, or reachability changes. |
-| [Root-Cause Repair](../skills/principle-root-cause-repair/SKILL.md) | Investigating, proposing, implementing, or reviewing a bug fix: establish its causal flow and responsible owner before choosing a patch. |
+| [Root-Cause Repair](../skills/principle-root-cause-repair/SKILL.md) | Diagnosing a failure, reviewing a causal explanation, or fixing a bug, even without a code-change request: validate the failed precondition, first broken guarantee, and responsible owner. |
 | [Caller Obligations](../skills/principle-caller-obligations/SKILL.md) | What must each real caller do or know, which setup, configuration, lifecycle, or error duties belong to that caller, and could a language/runtime builtin express the API contract? |
 | [Composition and Mechanisms](../skills/principle-composition-and-mechanisms/SKILL.md) | Where should feature-specific ordering/branching/recovery policy be assembled, or does a proposed mechanism have an independent obligation? |
 | [Deep Modules](../skills/principle-deep-modules/SKILL.md) | How much useful behavior does this interface provide for the knowledge and duties it requires, and would deepening or a seam improve that tradeoff? |
@@ -14,6 +14,7 @@ The `principle-*` skills are the canonical judgment criteria. Their descriptions
 | [Intent and Contracts](../skills/principle-intent-and-contracts/SKILL.md) | Names, types, values, effects, documentation, or abstractions need to expose a concrete meaning or constraint. |
 | [Behavioral Substitutability](../skills/principle-behavioral-substitutability/SKILL.md) | Implementations, inheritance, extension contracts, or mutable domain invariants change. |
 | [Behavioral Verification](../skills/principle-behavioral-verification/SKILL.md) | Writing tests that express API/function guarantees, choosing verification boundaries/scenarios, or assessing behavior evidence. |
+| [Completion Evidence](../skills/principle-completion-evidence/SKILL.md) | Before claiming completion, a fix, or a passing check: directly verify the relevant final artifact or behavior and show the supporting evidence. |
 | [Operational Safety](../skills/principle-operational-safety/SKILL.md) | A concrete trust, data, recovery, compatibility, lifetime, concurrency, resource, or performance question exists. |
 | [Requirement Fidelity](../skills/principle-requirement-fidelity/SKILL.md) | Mapping a plan, implementation, or proof to explicit accepted requirements. |
 | [Simplicity and Coupling](../skills/principle-simplicity-and-coupling/SKILL.md) | Can separation, merging, inlining, deletion, or deriving values reduce coupling, navigation, hidden mutable context, or synchronization duties while preserving the contract? |
