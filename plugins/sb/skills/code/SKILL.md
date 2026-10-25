@@ -30,6 +30,8 @@ Fast, Deep, and Ultra read [Planning and Resuming](references/planning.md) for s
 
 Conditional capabilities serve their question rather than add phases: [How](../how/SKILL.md) for requested runtime explanations, [Why](../why/SKILL.md) for historical rationale, [Blast Radius](../blast-radius/SKILL.md) for safety assumptions beyond the diff, [Hillclimb](../hillclimb/SKILL.md) for explicit sustained optimization, and [Swarm](../swarm/SKILL.md) for independent investigation slices or candidate comparisons in Deep/Ultra. They retain the selected workflow's authority, writer, and review boundaries.
 
+Use [Benchmark Checklist](../benchmark-checklist/SKILL.md) before reporting or acting on a measured performance comparison. This capability does not add benchmark runs to unrelated changes.
+
 ## Reporting
 
 Lead the final response with the outcome. Explain consequential choices in the user's language through evidence and principles actually read and applied, so the reader can assess the intent and reasoning: why this responsibility belongs here, why these parts belong together, or what concrete tradeoff favored the approach. Use the reasons that shaped the work rather than a fixed reporting template; caller benefits and alternatives matter when relevant. Reconcile the explanation with the final diff before claiming completion. One sentence can suffice for a routine correction.
