@@ -1,0 +1,7 @@
+interface:
+  display_name: "sb:simplify"
+  short_description: "Simplify code and express its intent precisely"
+  default_prompt: "Use $sb:simplify to refine the current implementation while preserving its behavior and verifying affected changes."
+
+policy:
+  allow_implicit_invocation: true

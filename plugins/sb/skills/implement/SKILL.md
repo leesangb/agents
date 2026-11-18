@@ -25,4 +25,6 @@ When measuring performance or choosing an option from benchmark or evaluation re
 
 Run checks that establish completion, applicable typecheck/lint, and required project checks. Broaden or repeat only for new changes, failures, or unresolved concerns. Continue fixes and affected verification under the shared completion policy.
 
+Before handoff for review or completion, use [Simplify](../simplify/SKILL.md) on the verified implementation. Keep the same writer and scope; that pass owns refinement and affected rechecks. After later fixes, revisit only the affected simplification concerns.
+
 Return changed behavior, consequential choices with their applied principles and evidence, exact verification commands/results, material deviations, and unresolved requirements. Do not commit without authorization. Completion and user-facing reporting follow the [router](../code/SKILL.md#reporting).

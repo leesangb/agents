@@ -9,3 +9,5 @@ Main implements directly using existing seams. Fast does not load review orchest
 Use existing checks first; add a behavior test only for missing protection or an explicit request. Run applicable typecheck/lint and required project checks; mechanical changes also need a missed/stale-occurrence check. For multi-step sweeps or retryable state changes, read [Implement's verification guidance](../../implement/SKILL.md#verification).
 
 Fix change-caused failures and rerun affected checks. Broaden verification only for new changes, failures, or unresolved concerns. Reroute if the target, contract, verification, or risk no longer fits Fast.
+
+After implementation and verification, use [Simplify](../../simplify/SKILL.md) on the current task's edits before reporting completion. Main remains the writer; that pass owns refinement and affected rechecks without adding review orchestration.
