@@ -1,7 +1,7 @@
 ---
 name: thinker
 description: Performs read-only planning or review reasoning with an explicitly injected capability.
-model: opus
+model: claude-fable-5-2
 effort: xhigh
 disallowedTools: Edit, Write, NotebookEdit, Agent
 ---
