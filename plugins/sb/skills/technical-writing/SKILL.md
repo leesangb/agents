@@ -21,6 +21,7 @@ For a procedure, put prerequisites and conditions before the step they govern, g
 - Give each step one action and keep dependent conditions beside it. Use numbered lists for sequences and tables for genuine comparisons.
 - Ground commands, counts, paths, examples, and behavior claims in the relevant artifact/version. Run an authorized example when its execution is needed to establish the claim; mark unavailable execution as unverified.
 - Explain otherwise unclear inputs, outputs, ordering, lifecycle, and effects at the owning interface. Keep implementation rationale distinct from caller-visible obligations.
+- Omit step-by-step restatements of implementation logic that readers can readily follow in the code. Explain the constraints and design decisions the reader needs, and link to the relevant code when implementation details matter.
 
 Apply [Unslop](../unslop/SKILL.md) for concrete language, natural rhythm, and removal of filler. Match the user's language and the existing document's conventions; avoid turning style preferences into universal bans.
 
