@@ -1,6 +1,7 @@
 ---
 name: eval
 description: Compare versions of an agent skill or workflow on matched tasks with blinded grading. Use when deciding whether an instruction change improves agent behavior.
+disable-model-invocation: true
 ---
 
 # Eval

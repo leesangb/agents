@@ -7,8 +7,6 @@ description: Route implementation and planning requests that change product code
 
 Route executable changes, including operational agent instructions. Use the relevant skill directly for prose, explanations, diagrams, and standalone visual artifacts; rendering code alone does not make an artifact a product change. Route only the executable portion of mixed requests.
 
-When deciding whether a prompt or workflow revision improves agent behavior, use [Eval](../eval/SKILL.md) to compare the two versions on matched tasks. A comparison-only request ends with its verdict. For an implementation request, use that comparison as verification when a change in agent behavior is the acceptance criterion. Ordinary wording and packaging edits use their focused checks.
-
 Read applicable local instructions, relevant code, callers, and nearby verification. Select one workflow and the task's criteria from [Shared Principles](../../principles/index.md); read only those files. Planning-only requests use the same routing.
 
 For bug fixes, apply [Root-Cause Repair](../principle-root-cause-repair/SKILL.md) before proposing a repair. Before selecting Fast, trace the failing path through the shared API it calls. Could the path own the fix locally? Would fixing the shared API instead change observable behavior for a caller outside the incident? When both placements are plausible and their effects differ, select Deep (or retain Ultra) and run [Swarm](../swarm/SKILL.md) in arena mode. Give independent candidates the incident and caller contracts and let them determine the owner. When the requirement already specifies the shared behavior or the contract settles placement, continue with the ordinary tier gates.
