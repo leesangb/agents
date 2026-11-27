@@ -10,7 +10,7 @@ The adapted material appears in the following skills under `skills/` and in port
 - `correct`, `reflect`, `recall`
 - `trace-forensics`, `runtime-forensics`, `hillclimb`, `benchmark-checklist`
 - `how`, `why`, `blast-radius`, `swarm`
-- `eval`, `interrogate`, and the arena procedure in `swarm/references/`
+- `arena`, `eval`, `interrogate`
 - `unslop`, `technical-writing`, `bro`, `restate`
 - `typescript-best-practices`
 

@@ -9,7 +9,7 @@ Main owns scope, selection, evidence validation, and final disposition. Review o
 
 ## Evidence for open questions
 
-- When the requested decision is a choice between viable designs with materially different caller obligations or costs, compare them through [Swarm](../swarm/SKILL.md)'s arena mode. Use the submitted designs as candidates where available. Keep design-only reviews read-only.
+- When the requested decision is a choice between viable designs with materially different caller obligations or costs, compare them through [Arena](../arena/SKILL.md). Use the submitted designs as candidates where available. Keep design-only reviews read-only.
 - At initial verification, and when a behavioral dispute emerges, compare what callers rely on with what the current checks actually observe. Can a concrete, reachable wrong behavior pass those checks? If so, Main runs [Interrogate](../interrogate/SKILL.md) through the public entry point with the smallest case that distinguishes the outcomes. An observed pass can rule out the concern. Carry the result or evidence gap into the review. Existing evidence that already distinguishes the outcomes suffices. Source reviewers stay read-only.
 
 ## Workflow

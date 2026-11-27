@@ -26,7 +26,7 @@ Start with `code` or `review` and describe the outcome. Code compares candidate 
 | `code` | Plan and implement changes. |
 | `review` | Review code, PRs, plans, and designs. |
 | `interrogate` | Probe a change for functional failures and rerun each reported case. |
-| `swarm` | Split an investigation or compare alternative solutions to the same task (arena). |
+| `arena` | Compare independent solutions to the same task and verify the selected design. |
 | `eval` | Invoke `$sb:eval` (Codex) or `/sb:eval` (Claude Code) directly to compare skill versions on matched tasks with blinded grading. |
 | `how` | Explain how code works. |
 | `why` | Investigate why code took its current shape. |

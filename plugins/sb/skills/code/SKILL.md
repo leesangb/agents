@@ -9,7 +9,7 @@ Route executable changes, including operational agent instructions. Use the rele
 
 Read applicable local instructions, relevant code, callers, and nearby verification. Select one workflow and the task's criteria from [Shared Principles](../../principles/index.md); read only those files. Planning-only requests use the same routing.
 
-For bug fixes, apply [Root-Cause Repair](../principle-root-cause-repair/SKILL.md) before proposing a repair. Before selecting Fast, trace the failing path through the shared API it calls. Could the path own the fix locally? Would fixing the shared API instead change observable behavior for a caller outside the incident? When both placements are plausible and their effects differ, select Deep (or retain Ultra) and run [Swarm](../swarm/SKILL.md) in arena mode. Give independent candidates the incident and caller contracts and let them determine the owner. When the requirement already specifies the shared behavior or the contract settles placement, continue with the ordinary tier gates.
+For bug fixes, apply [Root-Cause Repair](../principle-root-cause-repair/SKILL.md) before proposing a repair. Before selecting Fast, trace the failing path through the shared API it calls. Could the path own the fix locally? Would fixing the shared API instead change observable behavior for a caller outside the incident? When both placements are plausible and their effects differ, select Deep (or retain Ultra) and run [Arena](../arena/SKILL.md). Give independent candidates the incident and caller contracts and let them determine the owner. When the requirement already specifies the shared behavior or the contract settles placement, continue with the ordinary tier gates.
 
 ## Select a Workflow
 
@@ -28,7 +28,7 @@ Main owns routing, the user conversation, authority, and coordination. Fast and 
 
 Fast, Deep, and Ultra read [Planning and Resuming](references/planning.md) for shared plan, authority, and completion rules. Read [Decision Dialogue](references/decision-dialogue.md) only when a consequential decision remains unresolved after investigation and reasonable defaults.
 
-In Deep or Ultra, when two viable designs remain after inspecting the callers and choosing between them changes a caller contract or another material tradeoff, run [Swarm](../swarm/SKILL.md) in its arena mode before committing to one. Compare sketches for a planning request and keep one writer for production changes. Use Swarm's partitioned mode for distinct investigation questions.
+In Deep or Ultra, when two viable designs remain after inspecting the callers and choosing between them changes a caller contract or another material tradeoff, run [Arena](../arena/SKILL.md) before committing to one. Compare sketches for a planning request and keep one writer for production changes. Use [Swarm](../swarm/SKILL.md) for independent investigation slices.
 
 Use [How](../how/SKILL.md) for requested runtime explanations, [Why](../why/SKILL.md) for historical rationale, [Blast Radius](../blast-radius/SKILL.md) for safety assumptions beyond the diff, and [Hillclimb](../hillclimb/SKILL.md) for explicit sustained optimization. Deep and Ultra pass disputed behavior claims and existing checks to [Review](../review/SKILL.md) for verification.
 
