@@ -19,10 +19,15 @@ Check your installation with `./install codex --check` or `./install claude --ch
 
 Invoke skills as `$sb:<name>` in Codex or `/sb:<name>` in Claude Code.
 
+Start with `code` or `review` and describe the outcome. Code compares candidate repairs when changing a shared API and fixing one caller have different effects. Review probes a plausible wrong behavior that the current checks would accept.
+
 | Skill | Purpose |
 | --- | --- |
 | `code` | Plan and implement changes. |
 | `review` | Review code, PRs, plans, and designs. |
+| `interrogate` | Probe a change for functional failures and rerun each reported case. |
+| `arena` | Compare independent solutions to the same task and verify the selected design. |
+| `eval` | Invoke `$sb:eval` (Codex) or `/sb:eval` (Claude Code) directly to compare skill versions on matched tasks with blinded grading. |
 | `how` | Explain how code works. |
 | `why` | Investigate why code took its current shape. |
 
