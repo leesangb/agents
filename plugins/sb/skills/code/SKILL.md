@@ -9,6 +9,8 @@ Route executable changes, including operational agent instructions. Use the rele
 
 Read applicable local instructions, relevant code, callers, and nearby verification. Select one workflow and the task's criteria from [Shared Principles](../../principles/index.md); read only those files. Planning-only requests use the same routing.
 
+When a request prescribes implementation steps, first identify the outcome those steps are meant to achieve and which technical choices the user requires. Check the proposal against current behavior. If a consequential assumption about the goal remains, describe the difference with a concrete example and ask which outcome the user wants before building on it. When the intent is clear, proceed within the stated constraints.
+
 For bug fixes, apply [Root-Cause Repair](../principle-root-cause-repair/SKILL.md) before proposing a repair. Before selecting Fast, trace the failing path through the shared API it calls. Could the path own the fix locally? Would fixing the shared API instead change observable behavior for a caller outside the incident? When both placements are plausible and their effects differ, select Deep (or retain Ultra) and run [Arena](../arena/SKILL.md). Give independent candidates the incident and caller contracts and let them determine the owner. When the requirement already specifies the shared behavior or the contract settles placement, continue with the ordinary tier gates.
 
 ## Select a Workflow
@@ -21,6 +23,8 @@ Apply these gates in order to actual behavior, contracts, and effects, not incid
 4. **[Fast](references/fast.md)** when target, expected behavior, and verification are known and no earlier gate applies: a validated user plan, local reversible change, known cause with a focused check, mechanical transformation, or established nearby pattern.
 
 If Fast eligibility is unclear, use Deep; high-cost or dependent staged uncertainty uses Ultra. File count and agent availability do not select a tier. Reroute when new evidence changes eligibility, scope, or risk, including when keeping a PoC.
+
+When a change looks large or grows during implementation, reconsider it from the original need before extending the diff. What would remain unsolved if we kept the current behavior? Could a smaller change satisfy the same constraints? Narrow the work if it can. If the broader change is necessary, name the case the smaller approach misses and weigh its benefit against the implementation and maintenance cost. Bring that tradeoff to the user when it calls the agreed scope or outcome into question.
 
 ## Ownership and Conditional References
 
