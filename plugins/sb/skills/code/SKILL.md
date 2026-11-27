@@ -24,6 +24,8 @@ If Fast eligibility is unclear, use Deep; high-cost or dependent staged uncertai
 
 ## Ownership and Conditional References
 
+When writing code comments, apply [Code comments](../implement/SKILL.md#code-comments).
+
 Main owns routing, the user conversation, authority, and coordination. Fast and PoC are direct paths. Deep and Ultra may delegate concrete useful concerns using [Runtime Roles](../../roles.md): investigation with [Analyze](../analyze/SKILL.md), read-only planning with [Architecture Plan](../architecture-plan/SKILL.md), implementation with [Implement](../implement/SKILL.md), or independent review with [Review](../review/SKILL.md). Keep one implementation writer through fixes and fresh threads for independent review.
 
 Fast, Deep, and Ultra read [Planning and Resuming](references/planning.md) for shared plan, authority, and completion rules. Read [Decision Dialogue](references/decision-dialogue.md) only when a consequential decision remains unresolved after investigation and reasonable defaults.

@@ -13,6 +13,10 @@ Complete any missing [caller-first outline](../code/references/implementation-ou
 
 Use existing mechanisms and narrowly scoped changes. A simpler internal seam, ordering, or test placement is allowed when the contract remains intact; explain material departures in the handoff. If evidence changes a contract field or contract-shaping decision, stop that concern and return the evidence to Main for replanning under [Planning and Resuming](../code/references/planning.md).
 
+## Code comments
+
+Omit comments that paraphrase the surrounding code. If a reader needs a comment to understand our own logic, first see whether a clearer name, type, or control flow would convey it. Keep comments that define a public contract or explain a constraint the code cannot show, such as why an external system requires two operations to run in a particular order.
+
 ## Verification
 
 Run relevant existing checks first. Add or update tests only for changed observable behavior they do not protect or an explicit request; when a behavior test is needed, add the smallest distinguishing case, observe its expected failure, implement the correction, and verify it passes. Use [Behavioral Verification](../principle-behavioral-verification/SKILL.md) for scenario and boundary choices. Preserve validation, types, security, accessibility, error handling, data integrity, and performance-sensitive behavior.

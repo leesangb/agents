@@ -13,6 +13,7 @@ The adapted material appears in the following skills under `skills/` and in port
 - `arena`, `eval`, `interrogate`
 - `unslop`, `technical-writing`, `bro`, `restate`
 - `typescript-best-practices`
+- The code comment guidance in `implement`
 
 The license below applies to the adapted pstack material. This notice does not relicense unrelated SB material. Include this file when distributing the plugin.
 
